@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="appThemeColor">#25A3A2</color>
+    <color name="input_editText">#666666</color>
+    <color name="link_text_dark">#5c5cff</color>
+    <color name="color_black">#ff000000</color>
+    <color name="hint_foreground_light">#808080</color>
+    <color name="highlight_text">#177bbd</color>
+</resources>
