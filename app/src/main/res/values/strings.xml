@@ -3,4 +3,8 @@
     <string name="login_str_btn">登  录</string>
     <string name="forget_psw_tv">忘记密码</string>
     <string name="register_tv">注册账户</string>
+    <string name="bottom_tab_main">首页</string>
+    <string name="bottom_tab_repair">维修</string>
+    <string name="bottom_tab_maintain">保养</string>
+    <string name="bottom_tab_mine">我的</string>
 </resources>

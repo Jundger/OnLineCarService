@@ -1,0 +1,83 @@
+package com.jundger.carservice.util;
+
+import android.util.Log;
+
+import com.jundger.carservice.util.StreamTool;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Map;
+
+/**
+ * Created by 14246 on 2018/1/2.
+ */
+
+public class HttpUtil {
+    private static final String TAG = "HttpUtil";
+
+    public static void sendHttpRequset(final String address, final Map<String, String> params, final HttpCallbackListener listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection connection = null;
+                try {
+                    StringBuilder data = new StringBuilder();
+                    if (params != null && !params.isEmpty()) {
+                        for (Map.Entry<String, String> entry : params.entrySet()) {
+                            data.append(entry.getKey()).append("=");
+                            data.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+                            data.append("&");
+                        }
+                        data.deleteCharAt(data.length() - 1);
+                    }
+                    byte[] entity = data.toString().getBytes();
+
+                    URL url = new URL(address);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setConnectTimeout(8000);
+                    connection.setReadTimeout(8000);
+                    connection.setDoInput(true);
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestProperty("Content-Length", String.valueOf(entity.length));
+                    OutputStream outputStream = connection.getOutputStream();
+                    outputStream.write(entity);
+
+                    if (connection.getResponseCode() == 200) { //请求成功
+                        InputStream is = connection.getInputStream();
+                        String result = new String(StreamTool.read(is));
+                        if (listener != null) {
+                            listener.onFinish(result);
+                        }
+                    } else {
+                        if (listener != null) {
+                            listener.onError("服务器请求失败！");
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "HttpUtil exception: " + e.toString());
+                    if (listener != null) {
+                        listener.onError("未知错误！");
+                    }
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public interface HttpCallbackListener {
+
+        void onFinish(String response);
+
+        void onError(String error);
+    }
+}
+

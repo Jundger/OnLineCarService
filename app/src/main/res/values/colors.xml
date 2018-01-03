@@ -9,4 +9,8 @@
     <color name="color_black">#ff000000</color>
     <color name="hint_foreground_light">#808080</color>
     <color name="highlight_text">#177bbd</color>
+    <color name="linearLayout_below_color">#f2f2f2</color>
+    <color name="tab_text_color_select">#25A3A2</color>
+    <!--Android TextView 默认值-->
+    <color name="tab_text_color_normal">#8A000000</color>
 </resources>

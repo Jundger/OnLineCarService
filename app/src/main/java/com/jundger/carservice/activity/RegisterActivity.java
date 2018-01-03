@@ -1,11 +1,11 @@
 package com.jundger.carservice.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.jundger.carservice.R;
+import com.jundger.carservice.base.BaseActivity;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

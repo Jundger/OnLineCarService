@@ -8,11 +8,24 @@ public class UrlConsts {
 
     // 服务器路径
     private static final String SERVER_URL = "http://39.108.160.249/webssm";
+//    private static final String SERVER_URL = "http://localhost";
 
-    //请求参数键
-    public static final String KEY_TOKEN = "sessionid";
+    // 请求参数键
+    public static final String KEY_TOKEN = "token";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
+
+    // 返回参数键
+    public static final String KEY_RETURN_MSG = "msg";
+    public static final String KEY_RETURN_CODE = "return_code";
+    public static final String KEY_RETURN_NAME = "username";
+    public static final String KEY_RETURN_TOKEN = "token";
+
+    // 请求结果
+    public static final String REQUEST_SUCCESS_MSG = "USER_LOGIN_SUCCESS";
+    public static final String REQUEST_FAIL_MSG = "USER_LOGIN_FAIL";
+    public static final String REQUEST_SUCCESS_CODE = "1";
+    public static final String REQUEST_FAIL_CODE = "0";
 
     /**
      * 登录请求的action

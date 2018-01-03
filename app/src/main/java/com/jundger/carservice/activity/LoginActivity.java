@@ -1,10 +1,9 @@
 package com.jundger.carservice.activity;
 
 import android.app.Dialog;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,9 +12,19 @@ import android.widget.Toast;
 
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
+import com.jundger.carservice.base.BaseActivity;
+import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.util.InjectUtil;
+import com.jundger.carservice.util.JsonParser;
+import com.jundger.carservice.util.SharedPreferencesUtil;
+import com.jundger.carservice.util.HttpUtil;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.HashMap;
+import java.util.Map;
+
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
+
+    private static final String TAG = "LoginActivity";
 
     private Dialog dialog = null;
 
@@ -64,8 +73,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         final String PASSWORD_NOT_NULL = "密码不能为空";
         final String PASSWORD_NOT_MORE_SIX = "密码长度必须大于6位";
 
-        String phoneNumber = username_clear_et.getText().toString().trim();
-        String password = password_clear_et.getText().toString().trim();
+        final String phoneNumber = username_clear_et.getText().toString().trim();
+        final String password = password_clear_et.getText().toString().trim();
 
         if (TextUtils.isEmpty(phoneNumber)) {
             Toast.makeText(LoginActivity.this, PHONE_NOT_NULL, Toast.LENGTH_SHORT).show();
@@ -88,27 +97,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        if ("13983348685".equals(phoneNumber) && "123456".equals(password)) {
+        startDialog("正在登录");
+        HashMap<String, String> params = new HashMap<>();
+        params.put(UrlConsts.KEY_USERNAME, phoneNumber);
+        params.put(UrlConsts.KEY_PASSWORD, password);
+        HttpUtil.sendHttpRequset(UrlConsts.getRequestURL(UrlConsts.ACTION_LOGIN), params, new HttpUtil.HttpCallbackListener() {
+            @Override
+            public void onFinish(String response) {
+                endDialog();
+                if (null != response && !"".equals(response)) {
+                    Log.d(TAG, "onFinish | recieve from server: " + response);
+                    Map<String, String> map = JsonParser.parseLogin(response);
+                    if (null != map) {
+                        if (UrlConsts.REQUEST_SUCCESS_CODE.equals(map.get(UrlConsts.KEY_RETURN_CODE))) {
+                            // 在本地存储服务器返回的Token值
+                            SharedPreferencesUtil.save(LoginActivity.this, UrlConsts.KEY_TOKEN, map.get(UrlConsts.KEY_RETURN_TOKEN));
+                            // 跳转到主页面
+                            MainActivity.launchActivity(LoginActivity.this, phoneNumber, password);
+                            LoginActivity.this.finish();
+                        } else {
+                            Log.d(TAG, "onFinish: 账号或者密码错误！");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(LoginActivity.this, "账号或者密码错误！", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
 
-            startDialog("正在登陆");
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    } else {
+                        Log.e(TAG, "onFinish: JSON数据解析错误！");
                     }
-                    endDialog();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                } else {
+                    Log.d(TAG, "onFinish: 服务器返回值为空！");
                 }
-            }).start();
+            }
 
-        } else {
-            Toast.makeText(this, "账号或者密码错误", Toast.LENGTH_SHORT).show();
-        } 
-
+            @Override
+            public void onError(String error) {
+                Log.e(TAG, "onError: " + error);
+                endDialog();
+            }
+        });
     }
 
     private void forgetPswClickListener() {

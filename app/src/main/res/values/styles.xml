@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/highlight_text</item>
     </style>
 
+    <!--parent="android:Theme"-->
     <style name="MyDialogStyle">
         <item name="android:windowBackground">@android:color/transparent</item><!--背景透明-->
         <item name="android:windowFrame">@null</item><!--边框-->
