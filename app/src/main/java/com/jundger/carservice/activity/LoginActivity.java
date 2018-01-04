@@ -53,6 +53,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         login_btn.setOnClickListener(this);
         forget_psw_tv.setOnClickListener(this);
         register_tv.setOnClickListener(this);
+
+        // TODO 测试阶段直接跳转到主界面
+//        MainActivity.launchActivity(LoginActivity.this, "13983348685", "123456");
+//        LoginActivity.this.finish();
     }
 
     @Override

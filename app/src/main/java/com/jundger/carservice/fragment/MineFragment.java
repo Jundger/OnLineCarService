@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -12,8 +13,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.SimpleAdapter;
 
 import com.jundger.carservice.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +43,15 @@ public class MineFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private Toolbar toolbar;
+
+    private GridView gridView;
+    private List<Map<String, Object>> list;
+    private SimpleAdapter simpleAdapter;
+
+    private int[] icon = {R.drawable.order_icon, R.drawable.claim_icon, R.drawable.collect_icon};
+    private String[] iconName = {"维修订单", "保险理赔", "收藏"};
+
     public MineFragment() {
         // Required empty public constructor
     }
@@ -49,10 +66,32 @@ public class MineFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Toolbar toolbar = getView().findViewById(R.id.mine_activity_tb);
-        toolbar.setTitle("我的");
+
+        bindView();
+        init();
+    }
+
+    private void bindView() {
+        toolbar = getActivity().findViewById(R.id.mine_activity_tb);
+        gridView = getActivity().findViewById(R.id.mine_page_gview);
+    }
+
+    private void init() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (null != actionBar) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+
+        list = new ArrayList<>();
+        getData();
+        String[] from = {"image", "text"};
+        int[] to = {R.id.item_grid_img_tv, R.id.item_grid_name_tv};
+        simpleAdapter = new SimpleAdapter(getView().getContext(), list, R.layout.item_mine_grid, from, to);
+        gridView.setAdapter(simpleAdapter);
     }
 
     /**
@@ -111,6 +150,15 @@ public class MineFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void getData() {
+        for (int i = 0; i < icon.length; i++) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("image", icon[i]);
+            map.put("text", iconName[i]);
+            list.add(map);
+        }
     }
 
     /**

@@ -42,8 +42,8 @@ public class MaintainFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Toolbar toolbar = getView().findViewById(R.id.maintain_activity_tb);
-        toolbar.setTitle("保养");
+        Toolbar toolbar = getActivity().findViewById(R.id.maintain_activity_tb);
+        toolbar.setTitle("汽车保养知识");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
     }

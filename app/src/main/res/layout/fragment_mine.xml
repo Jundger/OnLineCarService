@@ -15,12 +15,40 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mine_activity_tb"
+        android:id="@+id/head_ll"
+        android:background="@color/appThemeColor"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@mipmap/app_log1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:text="@string/edit_info_str"/>
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/mine_page_gview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Welcome to Minepage!"
-        android:textSize="20sp"
-        android:layout_below="@id/mine_activity_tb"/>
+        android:columnWidth="50dp"
+        android:numColumns="3"
+        android:layout_margin="15dp"
+        android:gravity="center_horizontal"
+        android:stretchMode="columnWidth"
+        android:layout_below="@id/head_ll"
+        android:horizontalSpacing="20dp">
+
+    </GridView>
 
 </RelativeLayout>

@@ -1,19 +1,34 @@
 package com.jundger.carservice.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jundger.carservice.R;
+import com.jundger.carservice.activity.LoginActivity;
+import com.jundger.carservice.adapter.FaultInfoAdapter;
+import com.jundger.carservice.domain.FaultInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +49,20 @@ public class MainPageFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private FloatingActionButton getInfoFab;
+    private RecyclerView recyclerView;
+    private TextView toolbarTitle;
+    private Toolbar toolbar;
+    private Dialog dialog;
+
+    private Menu menu;
+
+    private FaultInfo[] info = {new FaultInfo("P107801", "动力总成系统", "尼桑（日产）、英菲尼迪", "排气阀门正时控制位置传感器-电路故障"),
+            new FaultInfo("B009A", "车身系统", "所有汽车制造商", "一般由安全带传感器，其电路或接头故障所致"),
+            new FaultInfo("U0112", "网络通讯系统", "所有汽车制造商", "与电池能量控制模块B通讯丢失")};
+    private List<FaultInfo> infoList = new ArrayList<>();
+    private FaultInfoAdapter faultInfoAdapter;
 
     public MainPageFragment() {
         // Required empty public constructor
@@ -81,19 +110,58 @@ public class MainPageFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.main_toolbar, menu);
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Toolbar toolbar = getView().findViewById(R.id.main_activity_tb);
-        toolbar.setTitle("首页");
+
+//        startDialog("正在加载数据……");
+        bindView();
+        init();
+
+        initFaultInfo();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getView().getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        faultInfoAdapter = new FaultInfoAdapter(infoList);
+        recyclerView.setAdapter(faultInfoAdapter);
+//        endDialog();
+    }
+
+    private void bindView() {
+        getInfoFab = getActivity().findViewById(R.id.get_info_fab);
+        toolbar = getActivity().findViewById(R.id.main_activity_tb);
+        recyclerView = getActivity().findViewById(R.id.fault_info_recycler_view);
+        toolbarTitle = getActivity().findViewById(R.id.toolbar_title_tv);
+    }
+
+    private void init() {
+        toolbar.setTitle("故障检测");
+        toolbarTitle.setText("已连接");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        setHasOptionsMenu(true);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (null != actionBar) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+//            actionBar.setDisplayShowTitleEnabled(false);
+        }
+
+        getInfoFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String info = "未连接".equals(toolbarTitle.getText()) ? "已连接" : "未连接";
+//                toolbar.setTitle(info);
+                toolbarTitle.setText(info);
+//                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(info);
+                ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+            }
+        });
+    }
+
+    private void initFaultInfo() {
+        infoList.clear();
+        for (int i = 0; i < 10; i++) {
+            Random random = new Random();
+            int index = random.nextInt(info.length);
+            infoList.add(info[index]);
+        }
     }
 
     @Override
@@ -126,5 +194,22 @@ public class MainPageFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void startDialog(String msg) {
+        dialog = new Dialog(getView().getContext(), R.style.MyDialogStyle);
+        dialog.setContentView(R.layout.loading);
+        dialog.setCanceledOnTouchOutside(false);
+        TextView message = dialog.getWindow().findViewById(R.id.load_msg);
+        if (dialog != null && !dialog.isShowing()) {
+            message.setText(msg);
+            dialog.show();
+        }
+    }
+
+    private void endDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 }

@@ -83,7 +83,7 @@ public class RepairFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Toolbar toolbar = getView().findViewById(R.id.repair_activity_tb);
+        Toolbar toolbar = getActivity().findViewById(R.id.repair_activity_tb);
         toolbar.setTitle("维修");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);

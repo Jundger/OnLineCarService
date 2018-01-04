@@ -19,8 +19,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Welcome to Maintainpage!"
-        android:textSize="20sp"
+        android:text="This is Maintainpage!"
+        android:gravity="center"
+        android:textSize="30sp"
         android:layout_below="@id/maintain_activity_tb"/>
 
 </RelativeLayout>
