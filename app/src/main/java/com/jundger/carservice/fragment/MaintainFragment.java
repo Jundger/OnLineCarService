@@ -5,7 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jundger.carservice.R;
+import com.jundger.carservice.adapter.ArticleAdapter;
+import com.jundger.carservice.domain.Article;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +43,12 @@ public class MaintainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefresh;
+
+    private ArticleAdapter articleAdapter;
+    private List<Article> shopList = new ArrayList<>();
+
     public MaintainFragment() {
         // Required empty public constructor
     }
@@ -43,13 +57,62 @@ public class MaintainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         init();
-
+        initArticle();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getView().getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        articleAdapter = new ArticleAdapter(shopList);
+        recyclerView.setAdapter(articleAdapter);
     }
 
     private void init() {
+        recyclerView = getActivity().findViewById(R.id.maintain_knowledge_rv);
+        swipeRefresh = getActivity().findViewById(R.id.swipe_refresh_maintain);
+        swipeRefresh.setColorSchemeResources(R.color.appThemeColor);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshArticle();
+            }
+        });
 //        Toolbar toolbar = getActivity().findViewById(R.id.maintain_fragment_tb);
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 //        setHasOptionsMenu(true);
+    }
+
+    private void initArticle() {
+        for (int i = 0; i < 3; i++) {
+            Article sp1 = new Article(R.drawable.maintain_article05, "微整形手术 宝马7系中期改款或今年底亮相", "网易汽车", "01-04 22:28");
+            shopList.add(sp1);
+            Article sp2 = new Article(R.drawable.maintain_article04, "细节方面有所提升 奔驰全新一代G级官图", "汽车最前第一线");
+            shopList.add(sp2);
+            Article sp3 = new Article(R.drawable.maintain_article03, "把凯美瑞爆改成皮卡车 当作毕业作品", "改装车", "12-03 18:21");
+            shopList.add(sp3);
+            Article sp4 = new Article(R.drawable.maintain_article01, "微整形手术 宝马7系中期改款或今年底亮相", "超跑密探", "11-14 11:42");
+            shopList.add(sp4);
+            Article sp5 = new Article(R.drawable.maintain_article02, "细节方面有所提升 奔驰全新一代G级官图", "网易汽车综合", "08-23 14:59");
+            shopList.add(sp5);
+        }
+    }
+
+    private void refreshArticle() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initArticle();
+                        articleAdapter.notifyDataSetChanged();
+                        swipeRefresh.setRefreshing(false);
+                    }
+                });
+            }
+        }).start();
     }
 
     @Override

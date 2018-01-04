@@ -107,6 +107,7 @@ public class RepairFragment extends Fragment {
 //        mSearchView.setMaxWidth(800);
         // 设置输入框提示语
         mSearchView.setQueryHint("搜索附近维修店");
+        mSearchView.clearFocus();
 //        mSearchView.setBackground(getResources().getDrawable(R.drawable.search_et_bk));
     }
 
