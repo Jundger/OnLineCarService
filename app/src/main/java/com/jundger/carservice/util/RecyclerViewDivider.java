@@ -12,7 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by 14246 on 2018/1/5.
+ * Created by Jundger on 2018/1/5.
+ * RecyclerView万能分割线
+ * from: http://blog.csdn.net/pengkv/article/details/50538121
+ *
+ * 使用方法：
+ * 1、添加默认分割线：高度为2px，颜色为灰色
+ * mRecyclerView.addItemDecoration(new RecycleViewDivider(mContext, LinearLayoutManager.VERTICAL));
+ * 2、添加自定义分割线：可自定义分割线drawable
+ * mRecyclerView.addItemDecoration(new RecycleViewDivider(mContext, LinearLayoutManager.VERTICAL, R.drawable.divider_mileage));));
+ * 3、添加自定义分割线：可自定义分割线高度和颜色
+ * mRecyclerView.addItemDecoration(new RecycleViewDivider(mContext, LinearLayoutManager.VERTICAL，10, getResources().getColor(R.color.divide_gray_color)));));
  */
 
 public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
