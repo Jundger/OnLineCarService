@@ -10,18 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/appThemeColor"
+        app:title="附近服务点"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     </android.support.v7.widget.Toolbar>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/service_point_show_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="This is Repairpage!"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:layout_below="@id/repair_activity_tb"/>
+        android:layout_below="@id/repair_activity_tb" />
 
 </RelativeLayout>

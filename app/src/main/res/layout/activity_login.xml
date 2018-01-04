@@ -30,6 +30,8 @@
         android:textColor="@color/input_editText"
         android:background="@drawable/et_bg"
         android:drawableLeft="@drawable/username_et_left_icon"
+        android:drawableStart="@drawable/username_et_left_icon"
+        android:drawableEnd="@drawable/et_delete_right"
         android:drawableRight="@drawable/et_delete_right"/>
 
     <com.jundger.carservice.widget.ClearEditText
@@ -47,6 +49,8 @@
         android:textCursorDrawable="@drawable/edit_cursor"
         android:textColor="@color/input_editText"
         android:background="@drawable/et_bg"
+        android:drawableStart="@drawable/password_et_left_icon"
+        android:drawableEnd="@drawable/et_delete_right"
         android:drawableLeft="@drawable/password_et_left_icon"
         android:drawableRight="@drawable/et_delete_right"/>
 

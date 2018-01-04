@@ -7,16 +7,16 @@ import android.os.Bundle;
 import com.jundger.carservice.R;
 import com.jundger.carservice.base.BaseActivity;
 
-public class RegisterActivity extends BaseActivity {
+public class ForgetPswActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_forget_psw);
     }
 
     public static void launchActivity(Context context) {
-        Intent intent = new Intent(context, RegisterActivity.class);
+        Intent intent = new Intent(context, ForgetPswActivity.class);
         context.startActivity(intent);
     }
 }

@@ -55,8 +55,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         register_tv.setOnClickListener(this);
 
         // TODO 测试阶段直接跳转到主界面
-//        MainActivity.launchActivity(LoginActivity.this, "13983348685", "123456");
-//        LoginActivity.this.finish();
+        MainActivity.launchActivity(LoginActivity.this, "13983348685", "123456");
+        LoginActivity.this.finish();
     }
 
     @Override
@@ -146,11 +146,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void forgetPswClickListener() {
-        Toast.makeText(LoginActivity.this, "Forget Password Click!", Toast.LENGTH_SHORT).show();
+        ForgetPswActivity.launchActivity(LoginActivity.this);
     }
 
     private void registerClickListener() {
-        Toast.makeText(LoginActivity.this, "Register User Click!", Toast.LENGTH_SHORT).show();
+        RegisterActivity.launchActivity(LoginActivity.this);
     }
 
     private void startDialog(String msg) {

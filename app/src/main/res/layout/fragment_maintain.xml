@@ -6,7 +6,8 @@
     tools:context="com.jundger.carservice.fragment.MaintainFragment">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/maintain_activity_tb"
+        app:title="汽车保养知识"
+        android:id="@+id/maintain_fragment_tb"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/appThemeColor"
@@ -15,13 +16,10 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/maintain_knowledge_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="This is Maintainpage!"
-        android:gravity="center"
-        android:textSize="30sp"
-        android:layout_below="@id/maintain_activity_tb"/>
+        android:layout_below="@id/maintain_fragment_tb" />
 
 </RelativeLayout>
