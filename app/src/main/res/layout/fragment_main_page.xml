@@ -8,7 +8,7 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:background="@color/appThemeColor"
-        android:layout_height="300dp">
+        android:layout_height="260dp">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -19,8 +19,8 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:layout_width="175dp"
-                android:layout_height="175dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 app:layout_collapseMode="parallax"
                 android:layout_gravity="center"
                 android:src="@drawable/car_logo"/>
@@ -32,15 +32,14 @@
                 android:background="@color/appThemeColor"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="pin">
+                app:layout_collapseMode="parallax">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:id="@+id/toolbar_title_tv"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                <ImageView
+                    android:id="@+id/connect_state_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:src="@drawable/no_connect_red"/>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

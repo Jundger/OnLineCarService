@@ -57,16 +57,8 @@ public class MineFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.main_toolbar, menu);
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         bindView();
         init();
     }
@@ -77,8 +69,9 @@ public class MineFragment extends Fragment {
     }
 
     private void init() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
+        toolbar.inflateMenu(R.menu.mine_toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (null != actionBar) {
@@ -119,6 +112,7 @@ public class MineFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setHasOptionsMenu(true); // 加上这句话，Toolbar的menu才会显示出来
     }
 
     @Override

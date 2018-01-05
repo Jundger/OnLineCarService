@@ -2,6 +2,7 @@ package com.jundger.carservice.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,11 +14,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,11 +56,13 @@ public class MainPageFragment extends Fragment {
 
     private FloatingActionButton getInfoFab;
     private RecyclerView recyclerView;
-    private TextView toolbarTitle;
+    private ImageView connect_state_iv;
     private Toolbar toolbar;
     private Dialog dialog;
 
     private Menu menu;
+
+    private Boolean isConnect = false;
 
     private FaultInfo[] info = {new FaultInfo("P107801", "动力总成系统", "尼桑（日产）、英菲尼迪", "排气阀门正时控制位置传感器-电路故障"),
             new FaultInfo("B009A", "车身系统", "所有汽车制造商", "一般由安全带传感器，其电路或接头故障所致"),
@@ -112,7 +118,7 @@ public class MainPageFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        Log.i("Toolbar", "onActivityCreated: MainPageFragment");
 //        startDialog("正在加载数据……");
         bindView();
         init();
@@ -129,28 +135,29 @@ public class MainPageFragment extends Fragment {
         getInfoFab = getActivity().findViewById(R.id.get_info_fab);
         toolbar = getActivity().findViewById(R.id.main_activity_tb);
         recyclerView = getActivity().findViewById(R.id.fault_info_recycler_view);
-        toolbarTitle = getActivity().findViewById(R.id.toolbar_title_tv);
+        connect_state_iv = getActivity().findViewById(R.id.connect_state_iv);
     }
 
     private void init() {
         toolbar.setTitle("故障检测");
-        toolbarTitle.setText("已连接");
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        toolbar.setLogo(R.mipmap.app_log1);
+//        setHasOptionsMenu(true);
+//        toolbar.inflateMenu(R.menu.main_toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (null != actionBar) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+//            actionBar.setIcon(R.mipmap.app_log);
 //            actionBar.setDisplayShowTitleEnabled(false);
         }
 
         getInfoFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String info = "未连接".equals(toolbarTitle.getText()) ? "已连接" : "未连接";
-//                toolbar.setTitle(info);
-                toolbarTitle.setText(info);
-//                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(info);
-                ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+                isConnect = !isConnect;
+                int pic = isConnect ? R.drawable.has_connect_black : R.drawable.no_connect_red;
+                connect_state_iv.setImageResource(pic);
             }
         });
     }

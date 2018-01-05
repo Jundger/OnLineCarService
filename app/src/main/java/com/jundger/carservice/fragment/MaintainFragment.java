@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,6 +57,7 @@ public class MaintainFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.i("Toolbar", "onActivityCreated: MaintainFragment");
         init();
         initArticle();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getView().getContext());
@@ -80,6 +82,7 @@ public class MaintainFragment extends Fragment {
     }
 
     private void initArticle() {
+        shopList.clear();
         for (int i = 0; i < 3; i++) {
             Article sp1 = new Article(R.drawable.maintain_article05, "微整形手术 宝马7系中期改款或今年底亮相", "网易汽车", "01-04 22:28");
             shopList.add(sp1);
@@ -120,6 +123,7 @@ public class MaintainFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 //        menu.clear();
 //        inflater.inflate(R.menu.main_toolbar, menu);
+        Log.i("Toolbar", "onCreateOptionsMenu: MaintainFragment");
     }
 
     /**

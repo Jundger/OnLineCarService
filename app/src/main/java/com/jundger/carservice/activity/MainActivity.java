@@ -146,4 +146,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     public void onPageScrollStateChanged(int state) {
 
     }
+
+    public ViewPager getMyViewPager() {
+        return myViewPager;
+    }
 }
