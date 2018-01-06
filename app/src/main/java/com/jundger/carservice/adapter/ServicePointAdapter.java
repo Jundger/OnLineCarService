@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jundger.carservice.R;
 import com.jundger.carservice.domain.ServicePoint;
@@ -23,11 +24,13 @@ public class ServicePointAdapter extends RecyclerView.Adapter<ServicePointAdapte
     private List<ServicePoint> mServicePointList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        View shopView;
         ImageView imageView;
         TextView name_tv, score_tv, distance_tv, evaNum_tv, address_tv;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            shopView = itemView;
             imageView = itemView.findViewById(R.id.shop_img_id_tv);
             name_tv = itemView.findViewById(R.id.shop_name_tv);
             score_tv = itemView.findViewById(R.id.shop_score_tv);
@@ -47,7 +50,25 @@ public class ServicePointAdapter extends RecyclerView.Adapter<ServicePointAdapte
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_service_point, parent, false);
-        return new ViewHolder(view);
+
+        final ViewHolder holder = new ViewHolder(view);
+        holder.shopView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                ServicePoint shop = mServicePointList.get(position);
+                Toast.makeText(view.getContext(), "子项：" + shop.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                ServicePoint shop = mServicePointList.get(position);
+                Toast.makeText(view.getContext(), "图片：" + shop.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        return holder;
     }
 
     @Override

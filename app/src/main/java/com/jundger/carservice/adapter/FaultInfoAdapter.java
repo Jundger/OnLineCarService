@@ -58,7 +58,7 @@ public class FaultInfoAdapter extends RecyclerView.Adapter<FaultInfoAdapter.View
         holder.faultCode.setText(faultInfo.getCode());
         holder.system.setText(faultInfo.getSystem());
         holder.scope.setText(faultInfo.getScope());
-        holder.descripe.setText(faultInfo.getDescripe());
+        holder.descripe.setText(faultInfo.getDescribe());
     }
 
     @Override

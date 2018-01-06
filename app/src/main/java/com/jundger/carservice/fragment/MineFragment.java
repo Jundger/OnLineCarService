@@ -1,6 +1,7 @@
 package com.jundger.carservice.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,15 +9,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.jundger.carservice.R;
+import com.jundger.carservice.activity.SettingsActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,13 +76,28 @@ public class MineFragment extends Fragment {
     private void init() {
         setHasOptionsMenu(true);
         toolbar.inflateMenu(R.menu.mine_toolbar);
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
-        }
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.setting_item:
+                        Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.message_item:
+                        Toast.makeText(getActivity(), "Message button click!", Toast.LENGTH_SHORT).show();
+                        break;
+                    default: break;
+                }
+                return true;
+            }
+        });
+//        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+//        if (null != actionBar) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//            actionBar.setDisplayShowTitleEnabled(false);
+//            actionBar.setHomeButtonEnabled(true);
+//        }
 
         list = new ArrayList<>();
         getData();

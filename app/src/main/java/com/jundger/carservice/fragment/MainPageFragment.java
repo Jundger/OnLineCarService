@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.LoginActivity;
 import com.jundger.carservice.adapter.FaultInfoAdapter;
+import com.jundger.carservice.database.OBDDatabaseUtil;
 import com.jundger.carservice.domain.FaultInfo;
 
 import java.util.ArrayList;
@@ -64,9 +65,11 @@ public class MainPageFragment extends Fragment {
 
     private Boolean isConnect = false;
 
+    private OBDDatabaseUtil databaseUtil;
     private FaultInfo[] info = {new FaultInfo("P107801", "动力总成系统", "尼桑（日产）、英菲尼迪", "排气阀门正时控制位置传感器-电路故障"),
             new FaultInfo("B009A", "车身系统", "所有汽车制造商", "一般由安全带传感器，其电路或接头故障所致"),
-            new FaultInfo("U0112", "网络通讯系统", "所有汽车制造商", "与电池能量控制模块B通讯丢失")};
+            new FaultInfo("U0112", "网络通讯系统", "所有汽车制造商", "与电池能量控制模块B通讯丢失"),
+            new FaultInfo("U0556", "所有系统", "所有汽车制造商", "与电池能量控制模块B通讯丢失")};
     private List<FaultInfo> infoList = new ArrayList<>();
     private FaultInfoAdapter faultInfoAdapter;
 
@@ -123,8 +126,14 @@ public class MainPageFragment extends Fragment {
         bindView();
         init();
 
-        initFaultInfo();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getView().getContext());
+        insertDatebase();
+        infoList.clear();
+        infoList.add(databaseUtil.query("P107801"));
+        infoList.add(databaseUtil.query("B009A"));
+        infoList.add(databaseUtil.query("U0112"));
+        infoList.add(databaseUtil.query("U0556"));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         faultInfoAdapter = new FaultInfoAdapter(infoList);
         recyclerView.setAdapter(faultInfoAdapter);
@@ -139,16 +148,13 @@ public class MainPageFragment extends Fragment {
     }
 
     private void init() {
+        databaseUtil = new OBDDatabaseUtil(getActivity());
+
         toolbar.setTitle("故障检测");
-//        toolbar.setLogo(R.mipmap.app_log1);
-//        setHasOptionsMenu(true);
-//        toolbar.inflateMenu(R.menu.main_toolbar);
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (null != actionBar) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-//            actionBar.setIcon(R.mipmap.app_log);
 //            actionBar.setDisplayShowTitleEnabled(false);
         }
 
@@ -162,12 +168,9 @@ public class MainPageFragment extends Fragment {
         });
     }
 
-    private void initFaultInfo() {
-        infoList.clear();
-        for (int i = 0; i < 10; i++) {
-            Random random = new Random();
-            int index = random.nextInt(info.length);
-            infoList.add(info[index]);
+    private void insertDatebase() {
+        for (int i = 0; i < info.length; i++) {
+            databaseUtil.insert(info[i]);
         }
     }
 

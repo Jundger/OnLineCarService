@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import com.jundger.carservice.R;
@@ -57,6 +59,9 @@ public class RepairFragment extends Fragment {
 
     private ServicePointAdapter shopAdapter;
     private List<ServicePoint> shopList = new ArrayList<>();
+
+    // 下拉刷新
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public RepairFragment() {
         // Required empty public constructor
@@ -132,6 +137,8 @@ public class RepairFragment extends Fragment {
     private void init() {
         recyclerView = getActivity().findViewById(R.id.service_point_show_rv);
         mToolbar = getActivity().findViewById(R.id.repair_activity_tb);
+        swipeRefreshLayout = getActivity().findViewById(R.id.swipe_refresh_repair);
+        swipeRefreshLayout.setColorSchemeResources(R.color.appThemeColor);
 //        toolbar.setTitle("维修");
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
@@ -152,6 +159,34 @@ public class RepairFragment extends Fragment {
                 return false;
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshShopInfo();
+            }
+        });
+    }
+
+    private void refreshShopInfo() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initServicePoint();
+                        shopAdapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+        }).start();
     }
 
     private void initServicePoint() {

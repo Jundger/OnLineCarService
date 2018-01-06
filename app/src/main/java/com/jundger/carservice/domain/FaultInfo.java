@@ -16,13 +16,16 @@ public class FaultInfo {
     private String scope;
 
     // 描述
-    private String descripe;
+    private String describe;
+
+    public FaultInfo() {
+    }
 
     public FaultInfo(String code, String system, String scope, String descripe) {
         this.code = code;
         this.system = system;
         this.scope = scope;
-        this.descripe = descripe;
+        this.describe = descripe;
     }
 
     public String getCode() {
@@ -49,11 +52,11 @@ public class FaultInfo {
         this.scope = scope;
     }
 
-    public String getDescripe() {
-        return descripe;
+    public String getDescribe() {
+        return describe;
     }
 
-    public void setDescripe(String descripe) {
-        this.descripe = descripe;
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 }

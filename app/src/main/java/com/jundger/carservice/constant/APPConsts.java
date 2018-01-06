@@ -7,10 +7,24 @@ package com.jundger.carservice.constant;
 public class APPConsts {
 
     /**
-     * 本地存储文件名
+     * 本地SP存储文件名
      */
     public static final String SHARED_SAVE_NAME = "OnLineCarService";
 
+    /**
+     * 本地SQLite数据库名称
+     */
+    public static final String DATABASE_NAME = "OnLineCarService.db";
+
+    /**
+     * 本地SQLite数据库表名
+     */
+    public static final String DB_TABLE_OBD = "OBD_Info";
+
+    /**
+     * 本地SQLite数据库存储版本号
+     */
+    public static final int DATABASE_VERSION = 1;
     /**
      * 初始定位地点纬度
      * 重庆市城区

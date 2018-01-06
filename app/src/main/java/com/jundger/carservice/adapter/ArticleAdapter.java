@@ -3,11 +3,13 @@ package com.jundger.carservice.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jundger.carservice.R;
 import com.jundger.carservice.domain.Article;
@@ -50,7 +52,25 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_maintain_article, parent, false);
-        return new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Article article = mArticleList.get(position);
+
+                Toast.makeText(view.getContext(), "子项：" + article.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.articleImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position = holder.getAdapterPosition();
+                Article article = mArticleList.get(position);
+                Toast.makeText(view.getContext(), "图片：" + article.getTitle(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        return holder;
     }
 
     @Override
