@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jundger.carservice">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <!--允许程序打开网络套接字-->
     <uses-permission android:name="android.permission.INTERNET" />
     <!--允许程序设置内置sd卡的写权限-->
@@ -16,6 +14,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -40,7 +44,9 @@
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.ForgetPswActivity" />
-        <activity android:name=".activity.MapActivity"></activity>
+        <activity android:name=".activity.MapActivity" />
+
+        <service android:name="com.amap.api.location.APSService"></service>
     </application>
 
 </manifest>

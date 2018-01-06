@@ -38,7 +38,7 @@
                     android:id="@+id/connect_state_iv"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:src="@drawable/no_connect_red"/>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>

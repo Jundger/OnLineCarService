@@ -134,8 +134,8 @@ public class RepairFragment extends Fragment {
         mToolbar = getActivity().findViewById(R.id.repair_activity_tb);
 //        toolbar.setTitle("维修");
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        mToolbar.inflateMenu(R.menu.repair_toolbar);
         setHasOptionsMenu(true);
+        mToolbar.inflateMenu(R.menu.repair_toolbar);
 
         recyclerView.addItemDecoration(new RecyclerViewDivider(getView().getContext(),
                 LinearLayoutManager.VERTICAL, R.drawable.recycler_view_divider));

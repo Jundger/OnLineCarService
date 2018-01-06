@@ -56,6 +56,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         // TODO 测试阶段直接跳转到主界面
         MainActivity.launchActivity(LoginActivity.this, "13983348685", "123456");
+//        MapActivity.launchActivity(LoginActivity.this);
         LoginActivity.this.finish();
     }
 

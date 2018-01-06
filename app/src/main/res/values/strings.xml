@@ -9,6 +9,9 @@
     <string name="bottom_tab_mine">我的</string>
     <string name="edit_info_str">编辑个人资料></string>
 
+    <!--MapActivity-->
+    <string name="default_location_city">重庆市</string>
+
     <!--MainPageFragment-->
     <string name="fault_info_str">----故障信息----</string>
     <string name="fault_code_str">故障码：</string>
