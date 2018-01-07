@@ -11,4 +11,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:icon="@drawable/setting_pic"
         android:title="setting"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/exit_login_item"
+        android:title="退出登录"
+        app:showAsAction="never" />
 </menu>

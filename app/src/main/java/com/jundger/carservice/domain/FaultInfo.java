@@ -21,11 +21,11 @@ public class FaultInfo {
     public FaultInfo() {
     }
 
-    public FaultInfo(String code, String system, String scope, String descripe) {
+    public FaultInfo(String code, String system, String scope, String describe) {
         this.code = code;
         this.system = system;
         this.scope = scope;
-        this.describe = descripe;
+        this.describe = describe;
     }
 
     public String getCode() {

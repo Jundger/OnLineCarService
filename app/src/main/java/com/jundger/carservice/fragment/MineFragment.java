@@ -21,6 +21,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.jundger.carservice.R;
+import com.jundger.carservice.activity.LoginActivity;
 import com.jundger.carservice.activity.SettingsActivity;
 
 import java.util.ArrayList;
@@ -87,6 +88,9 @@ public class MineFragment extends Fragment {
                     case R.id.message_item:
                         Toast.makeText(getActivity(), "Message button click!", Toast.LENGTH_SHORT).show();
                         break;
+                    case R.id.exit_login_item:
+                        LoginActivity.launchActivity(getActivity());
+                        getActivity().finish();
                     default: break;
                 }
                 return true;

@@ -121,23 +121,36 @@ public class MainPageFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i("Toolbar", "onActivityCreated: MainPageFragment");
 //        startDialog("正在加载数据……");
         bindView();
         init();
 
-        insertDatebase();
-        infoList.clear();
-        infoList.add(databaseUtil.query("P107801"));
-        infoList.add(databaseUtil.query("B009A"));
-        infoList.add(databaseUtil.query("U0112"));
-        infoList.add(databaseUtil.query("U0556"));
+        addToRecyclerView();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        faultInfoAdapter = new FaultInfoAdapter(infoList);
-        recyclerView.setAdapter(faultInfoAdapter);
 //        endDialog();
+    }
+
+    private void addToRecyclerView() {
+        insertDatebase();
+//        startDialog("正在加载数据……");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                infoList.clear();
+                infoList.add(databaseUtil.query("P107801"));
+                infoList.add(databaseUtil.query("B009A"));
+                infoList.add(databaseUtil.query("U0112"));
+                infoList.add(databaseUtil.query("U0556"));
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        faultInfoAdapter = new FaultInfoAdapter(infoList);
+                        recyclerView.setAdapter(faultInfoAdapter);
+                    }
+                });
+            }
+        }).start();
     }
 
     private void bindView() {
@@ -152,17 +165,14 @@ public class MainPageFragment extends Fragment {
 
         toolbar.setTitle("故障检测");
 
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-//            actionBar.setDisplayShowTitleEnabled(false);
-        }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
 
         getInfoFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isConnect = !isConnect;
-                int pic = isConnect ? R.drawable.has_connect_black : R.drawable.no_connect_red;
+                int pic = isConnect ? R.drawable.has_connect_white : R.drawable.no_connect_red;
                 connect_state_iv.setImageResource(pic);
             }
         });

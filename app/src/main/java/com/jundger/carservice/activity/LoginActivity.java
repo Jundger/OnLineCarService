@@ -1,6 +1,8 @@
 package com.jundger.carservice.activity;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -53,11 +55,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         login_btn.setOnClickListener(this);
         forget_psw_tv.setOnClickListener(this);
         register_tv.setOnClickListener(this);
-
-        // TODO 测试阶段直接跳转到主界面
-        MainActivity.launchActivity(LoginActivity.this, "13983348685", "123456");
-//        MapActivity.launchActivity(LoginActivity.this);
-        LoginActivity.this.finish();
     }
 
     @Override
@@ -80,6 +77,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         final String phoneNumber = username_clear_et.getText().toString().trim();
         final String password = password_clear_et.getText().toString().trim();
+        Log.i(TAG, "loginClickListener: phoneNumber-->" + phoneNumber);
+        Log.i(TAG, "loginClickListener: password-->" + password);
 
         if (TextUtils.isEmpty(phoneNumber)) {
             Toast.makeText(LoginActivity.this, PHONE_NOT_NULL, Toast.LENGTH_SHORT).show();
@@ -102,14 +101,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             return;
         }
 
-        startDialog("正在登录");
+        startDialog("正在登录……");
+        final long startTime = System.currentTimeMillis();
         HashMap<String, String> params = new HashMap<>();
         params.put(UrlConsts.KEY_USERNAME, phoneNumber);
         params.put(UrlConsts.KEY_PASSWORD, password);
         HttpUtil.sendHttpRequset(UrlConsts.getRequestURL(UrlConsts.ACTION_LOGIN), params, new HttpUtil.HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
-                endDialog();
                 if (null != response && !"".equals(response)) {
                     Log.d(TAG, "onFinish | recieve from server: " + response);
                     Map<String, String> map = JsonParser.parseLogin(response);
@@ -117,8 +116,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         if (UrlConsts.REQUEST_SUCCESS_CODE.equals(map.get(UrlConsts.KEY_RETURN_CODE))) {
                             // 在本地存储服务器返回的Token值
                             SharedPreferencesUtil.save(LoginActivity.this, UrlConsts.KEY_TOKEN, map.get(UrlConsts.KEY_RETURN_TOKEN));
+                            long endTime = System.currentTimeMillis();
+                            if (endTime - startTime < 1500) {
+                                try {
+                                    Thread.sleep(1500 - (endTime - startTime));
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                endDialog();
+                            }
                             // 跳转到主页面
-                            MainActivity.launchActivity(LoginActivity.this, phoneNumber, password);
+                            MainActivity.launchActivity(LoginActivity.this, phoneNumber);
                             LoginActivity.this.finish();
                         } else {
                             Log.d(TAG, "onFinish: 账号或者密码错误！");
@@ -136,6 +144,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 } else {
                     Log.d(TAG, "onFinish: 服务器返回值为空！");
                 }
+                endDialog();
             }
 
             @Override
@@ -171,4 +180,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    public static void launchActivity(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
 }

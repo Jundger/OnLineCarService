@@ -83,10 +83,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mine_page_rl.setSelected(false);
     }
 
-    public static void launchActivity(Context context, String username, String password) {
+    public static void launchActivity(Context context, String username) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra("username", username);
-        intent.putExtra("password", password);
         context.startActivity(intent);
     }
 
