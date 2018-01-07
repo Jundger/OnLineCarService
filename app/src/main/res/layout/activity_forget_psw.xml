@@ -1,14 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@color/appThemeColor">
+    android:background="@color/appThemeColor"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="This is ForgetPswActivity!"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/forget_activity_tb"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/appThemeColor"
+        app:title="忘记密码"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.jundger.carservice.widget.ClearEditText
+            android:id="@+id/username_forget_et"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:singleLine="true"
+            android:inputType="number"
+            android:maxLength="11"
+            android:textSize="25sp"
+            android:hint="@string/forget_phone_hint"
+            android:textCursorDrawable="@drawable/edit_cursor"
+            android:textColor="@color/input_editText"
+            android:background="@drawable/et_bg"
+            android:drawableLeft="@drawable/username_et_left_icon"
+            android:drawableStart="@drawable/username_et_left_icon"
+            android:drawableEnd="@drawable/et_delete_right"
+            android:drawableRight="@drawable/et_delete_right"/>
+
+        <com.jundger.carservice.widget.ClearEditText
+            android:id="@+id/code_forget_et"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"
+            android:inputType="number"
+            android:ems="20"
+            android:textSize="25sp"
+            android:maxLength="12"
+            android:hint="@string/forget_code_hint"
+            android:textCursorDrawable="@drawable/edit_cursor"
+            android:textColor="@color/input_editText"
+            android:background="@drawable/et_bg"
+            android:drawableStart="@drawable/verif_code_et_left_icon"
+            android:drawableLeft="@drawable/verif_code_et_left_icon"
+            android:drawableEnd="@drawable/et_delete_right"
+            android:drawableRight="@drawable/et_delete_right"/>
+
+        <TextView
+            android:id="@+id/get_code_forget_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/forget_get_code_hint"/>
+
+        <Button
+            android:id="@+id/forget_psw_btn"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_bg"
+            android:text="@string/forget_next_str_btn"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"/>
+    </LinearLayout>
+
+
 
 </LinearLayout>
