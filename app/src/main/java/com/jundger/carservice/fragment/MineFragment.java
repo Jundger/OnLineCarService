@@ -1,12 +1,14 @@
 package com.jundger.carservice.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,6 +25,8 @@ import android.widget.Toast;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.LoginActivity;
 import com.jundger.carservice.activity.SettingsActivity;
+import com.jundger.carservice.constant.UrlConsts;
+import com.jundger.carservice.util.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,19 +93,12 @@ public class MineFragment extends Fragment {
                         Toast.makeText(getActivity(), "Message button click!", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.exit_login_item:
-                        LoginActivity.launchActivity(getActivity());
-                        getActivity().finish();
+                        showNormalDialog();
                     default: break;
                 }
                 return true;
             }
         });
-//        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-//        if (null != actionBar) {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//            actionBar.setDisplayShowTitleEnabled(false);
-//            actionBar.setHomeButtonEnabled(true);
-//        }
 
         list = new ArrayList<>();
         getData();
@@ -109,6 +106,26 @@ public class MineFragment extends Fragment {
         int[] to = {R.id.item_grid_img_tv, R.id.item_grid_name_tv};
         simpleAdapter = new SimpleAdapter(getView().getContext(), list, R.layout.item_mine_grid, from, to);
         gridView.setAdapter(simpleAdapter);
+    }
+
+    private void showNormalDialog(){
+
+        final AlertDialog.Builder normalDialog = new AlertDialog.Builder(getActivity());
+        normalDialog.setIcon(R.mipmap.app_log);
+        normalDialog.setTitle("提示");
+        normalDialog.setMessage("是否要退出账号?");
+        normalDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SharedPreferencesUtil.save(getActivity(), UrlConsts.SHARED_IS_LOGIN, false);
+
+                LoginActivity.launchActivity(getActivity());
+                getActivity().finish();
+            }
+        });
+
+        normalDialog.setNegativeButton("取消", null);
+        normalDialog.show();
     }
 
     /**

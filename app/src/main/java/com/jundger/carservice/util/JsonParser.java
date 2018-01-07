@@ -1,7 +1,9 @@
 package com.jundger.carservice.util;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.jundger.carservice.constant.UrlConsts;
 
@@ -42,5 +44,17 @@ public class JsonParser {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String parseRegister(String jsonData) {
+        String msg = null;
+        try {
+            JSONObject obj = new JSONObject(jsonData);
+            msg = obj.getString(UrlConsts.KEY_RETURN_MSG);
+        } catch (JSONException e) {
+            Log.e(TAG, "parseRegister: error!");
+            e.printStackTrace();
+        }
+        return msg;
     }
 }

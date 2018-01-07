@@ -17,10 +17,11 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        String token = (String) SharedPreferencesUtil.query(this, UrlConsts.KEY_RETURN_TOKEN, "String");
+        String token = (String) SharedPreferencesUtil.query(this, UrlConsts.SHARED_TOKEN, "String");
+        boolean isLogin = (boolean) SharedPreferencesUtil.query(this, UrlConsts.SHARED_IS_LOGIN, "boolean");
         Log.i(TAG, "onCreate: token from sharedpreference-->" + token);
-        if (token != null && !TextUtils.isEmpty(token)) {
-            String phoneNumber = (String) SharedPreferencesUtil.query(this, UrlConsts.KEY_RETURN_TOKEN, "String");
+        if (token != null && !TextUtils.isEmpty(token) && isLogin) {
+            String phoneNumber = (String) SharedPreferencesUtil.query(this, UrlConsts.SHARED_TOKEN, "String");
             MainActivity.launchActivity(SplashActivity.this, phoneNumber);
         } else {
             LoginActivity.launchActivity(SplashActivity.this);

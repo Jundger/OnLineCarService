@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +15,7 @@ import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.constant.UrlConsts;
+import com.jundger.carservice.util.FormatCheckUtil;
 import com.jundger.carservice.util.InjectUtil;
 import com.jundger.carservice.util.JsonParser;
 import com.jundger.carservice.util.SharedPreferencesUtil;
@@ -69,35 +69,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void loginClickListener() {
-        final String PHONE_NOT_NULL = "手机号码不能为空";
-        final String PHONE_FORM_NOT_SPECS = "手机号码不符合大陆规范";
-        final String PHONE_LENGTH_NOT_SPECS = "手机号码长度不符合大陆规范";
-        final String PASSWORD_NOT_NULL = "密码不能为空";
-        final String PASSWORD_NOT_MORE_SIX = "密码长度必须大于6位";
 
         final String phoneNumber = username_clear_et.getText().toString().trim();
         final String password = password_clear_et.getText().toString().trim();
         Log.i(TAG, "loginClickListener: phoneNumber-->" + phoneNumber);
         Log.i(TAG, "loginClickListener: password-->" + password);
 
-        if (TextUtils.isEmpty(phoneNumber)) {
-            Toast.makeText(LoginActivity.this, PHONE_NOT_NULL, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!phoneNumber.substring(0, 1).equals("1")) {
-            Toast.makeText(LoginActivity.this, PHONE_FORM_NOT_SPECS, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (phoneNumber.length() != 11) {
-            Toast.makeText(LoginActivity.this, PHONE_LENGTH_NOT_SPECS, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(LoginActivity.this, PASSWORD_NOT_NULL, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (password.length() < 6) {
-            Toast.makeText(LoginActivity.this, PASSWORD_NOT_MORE_SIX, Toast.LENGTH_SHORT).show();
+        // 进行手机号和密码的格式校验
+        if (!FormatCheckUtil.checkPhoneNumber(LoginActivity.this, phoneNumber) ||
+                !FormatCheckUtil.checkPassword(LoginActivity.this, password)) {
             return;
         }
 
@@ -110,12 +90,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onFinish(String response) {
                 if (null != response && !"".equals(response)) {
-                    Log.d(TAG, "onFinish | recieve from server: " + response);
+                    Log.d(TAG, "Login | recieve from server: " + response);
                     Map<String, String> map = JsonParser.parseLogin(response);
                     if (null != map) {
                         if (UrlConsts.REQUEST_SUCCESS_CODE.equals(map.get(UrlConsts.KEY_RETURN_CODE))) {
-                            // 在本地存储服务器返回的Token值
-                            SharedPreferencesUtil.save(LoginActivity.this, UrlConsts.KEY_TOKEN, map.get(UrlConsts.KEY_RETURN_TOKEN));
+                            // 在本地存储服务器返回的Token值及登录状态
+                            SharedPreferencesUtil.save(LoginActivity.this, UrlConsts.SHARED_TOKEN, map.get(UrlConsts.KEY_RETURN_TOKEN));
+                            SharedPreferencesUtil.save(LoginActivity.this, UrlConsts.SHARED_PHONE, map.get(UrlConsts.KEY_RETURN_NAME));
+                            SharedPreferencesUtil.save(LoginActivity.this, UrlConsts.SHARED_IS_LOGIN, true);
                             long endTime = System.currentTimeMillis();
                             if (endTime - startTime < 1500) {
                                 try {

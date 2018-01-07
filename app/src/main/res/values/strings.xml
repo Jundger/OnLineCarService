@@ -10,6 +10,19 @@
     <string name="edit_info_str">编辑个人资料></string>
     <string name="no_data_show">没有相关数据</string>
 
+    <!--LoginActivity-->
+    <string name="phone_not_null">手机号码不能为空</string>
+    <string name="phone_form_not_specs">手机号码不符合大陆规范</string>
+    <string name="phone_length_not_specs">手机号码长度不符合大陆规范</string>
+    <string name="password_not_null">密码不能为空</string>
+    <string name="password_not_more_six">密码长度必须大于6位</string>
+
+    <!--RegisterActivity-->
+    <string name="register_phone_hint">请输入手机号</string>
+    <string name="register_password_hint">请输入密码</string>
+    <string name="register_re_password_hint">请再次输入密码</string>
+
+
     <!--MapActivity-->
     <string name="default_location_city">重庆市</string>
 

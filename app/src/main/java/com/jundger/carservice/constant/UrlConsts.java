@@ -24,8 +24,16 @@ public class UrlConsts {
     // 请求结果
     public static final String REQUEST_SUCCESS_MSG = "USER_LOGIN_SUCCESS";
     public static final String REQUEST_FAIL_MSG = "USER_LOGIN_FAIL";
+    public static final String REGISTER_SUCCESS = "USER_REGISTER_SUCCESS";
+    public static final String REGISTER_FAIL = "UNKNOWN_ERROR";
+    public static final String REGISTER_USER_EXIT = "USER_EXIST";
     public static final String REQUEST_SUCCESS_CODE = "1";
     public static final String REQUEST_FAIL_CODE = "0";
+
+    // SharedPreferences存储key值
+    public static final String SHARED_TOKEN = "TOKEN";
+    public static final String SHARED_PHONE = "PHONE_NUMBER";
+    public static final String SHARED_IS_LOGIN = "LOGIN_STATE";
 
     /**
      * 登录请求的action
@@ -35,7 +43,7 @@ public class UrlConsts {
     /**
      * 注册请求的action
      */
-    public static final String ACTION_REGIST = "ssm/register";
+    public static final String ACTION_REGISTER = "ssm/register";
 
     /**
      * 得到相应action请求的URL路径

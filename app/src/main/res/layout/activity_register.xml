@@ -1,120 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appThemeColor">
+    android:background="@color/appThemeColor"
+    android:orientation="vertical">
 
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:columnCount="4"
-        android:layout_gravity="center"
-        android:useDefaultMargins="true"
-        >
-        <!--usedefaultMargins=true使用缺省的空间-->
-        <!--本xml共有四列-->
-        <!--网格布局layout_gravity适用于wrap_content-->
-        <TextView
-            android:text="用户名：" />
-        <!--ems输入框设定15个字符 android:layout_columnSpan="3"表示此控件跨越3列-->
-        <!--网格中列宽由那一列内容最宽的宽度的决定-->
-        <EditText
-            android:id="@+id/reg_user"
-            android:ems="11"
-            android:hint="请输入用户名"
-            android:layout_columnSpan="3"/>
-        <TextView
-            android:text="密码："/>
-        <EditText
-            android:id="@+id/reg_pwd"
-            android:ems="11"
-            android:hint="请输入密码"
-            android:layout_columnSpan="3"
-            android:inputType="textPassword"/>
-        <TextView
-            android:text="确认密码："/>
-        <EditText
-            android:id="@+id/regagain_pwd"
-            android:ems="11"
-            android:hint="请输入密码"
-            android:layout_columnSpan="3"
-            android:inputType="textPassword"/>
-        <TextView
-            android:text="性别："
-            android:layout_gravity="center_vertical"
-            />
-        <RadioGroup
-            android:id="@+id/radiogroup"
-            android:orientation="horizontal"
-            android:layout_columnSpan="2"
-            >
-            <RadioButton
-                android:id="@+id/reg_man"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="男"/>
-            <RadioButton
-                android:id="@+id/reg_woman"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="女"/>
-        </RadioGroup>
-        <TextView
-            android:text="爱好："
-            android:layout_column="0" />
-        <CheckBox
-            android:id="@+id/reg_traval"
-            android:text="旅游" />
-        <CheckBox
-            android:id="@+id/reg_swim"
-            android:text="游泳" />
-        <CheckBox
-            android:id="@+id/reg_sword"
-            android:text="击剑"
-            />
-        <CheckBox
-            android:id="@+id/reg_dance"
-            android:layout_column="1"
-            android:text="跳舞"/>
-        <CheckBox
-            android:id="@+id/reg_read"
-            android:layout_columnSpan="2"
-            android:text="阅读" />
-        />
-        <TextView
-            android:text="学历："
-            />
-        <Spinner
-            android:id="@+id/spinner_edu"
-            android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/register_activity_tb"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/appThemeColor"
+        app:title="注册"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.jundger.carservice.widget.ClearEditText
+            android:id="@+id/username_register_et"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_column="1"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:singleLine="true"
+            android:inputType="number"
+            android:maxLength="11"
+            android:textSize="25sp"
+            android:hint="@string/register_phone_hint"
+            android:textCursorDrawable="@drawable/edit_cursor"
+            android:textColor="@color/input_editText"
+            android:background="@drawable/et_bg"
+            android:drawableLeft="@drawable/username_et_left_icon"
+            android:drawableStart="@drawable/username_et_left_icon"
+            android:drawableEnd="@drawable/et_delete_right"
+            android:drawableRight="@drawable/et_delete_right"/>
 
-        <LinearLayout
-            android:layout_column="0"
-            android:layout_columnSpan="4"
-            android:layout_gravity="center_horizontal">
-            <Button
-                android:id="@+id/reg_btn_register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="注册"
-                android:background="@drawable/btn_bg"/>
-            <Button
-                android:id="@+id/reg_btn_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="重置"
-                android:layout_marginLeft="20dp"
-                android:background="@drawable/btn_bg"/>
-            <Button
-                android:id="@+id/reg_btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="取消"
-                android:layout_marginLeft="20dp"
-                android:background="@drawable/btn_bg"/>
-        </LinearLayout>
-    </GridLayout>
+        <com.jundger.carservice.widget.ClearEditText
+            android:id="@+id/password_register_et"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:ems="20"
+            android:textSize="25sp"
+            android:maxLength="20"
+            android:hint="@string/register_password_hint"
+            android:textCursorDrawable="@drawable/edit_cursor"
+            android:textColor="@color/input_editText"
+            android:background="@drawable/et_bg"
+            android:drawableStart="@drawable/password_et_left_icon"
+            android:drawableLeft="@drawable/password_et_left_icon"
+            android:drawableEnd="@drawable/et_delete_right"
+            android:drawableRight="@drawable/et_delete_right"/>
+
+        <com.jundger.carservice.widget.ClearEditText
+            android:id="@+id/re_password_register_et"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"
+            android:inputType="textPassword"
+            android:ems="20"
+            android:textSize="25sp"
+            android:maxLength="20"
+            android:hint="@string/register_re_password_hint"
+            android:textCursorDrawable="@drawable/edit_cursor"
+            android:textColor="@color/input_editText"
+            android:background="@drawable/et_bg"
+            android:drawableStart="@drawable/password_et_left_icon"
+            android:drawableLeft="@drawable/password_et_left_icon"
+            android:drawableEnd="@drawable/et_delete_right"
+            android:drawableRight="@drawable/et_delete_right"/>
+
+        <Button
+            android:id="@+id/register_btn"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/btn_bg"
+            android:text="@string/login_str_btn"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"/>
+    </LinearLayout>
+
+
+
 </LinearLayout>
