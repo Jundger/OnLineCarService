@@ -98,4 +98,26 @@ public class OBDDatabaseUtil {
         db.close();
         return faultInfo;
     }
+
+    /**
+     * 删除表中所有数据
+     * @return
+     */
+    public boolean deleteAll() {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        boolean state;
+        db.beginTransaction();
+        try {
+            db.execSQL("delete from " + APPConsts.DB_TABLE_OBD);
+            db.setTransactionSuccessful();
+            state = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            state = false;
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return state;
+    }
 }

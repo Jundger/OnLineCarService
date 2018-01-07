@@ -124,16 +124,16 @@ public class MainPageFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.i("Jundger", "onActivityCreated: ");
 //        startDialog("正在加载数据……");
         bindView();
         init();
 
-//        addToRecyclerView();
+        addToRecyclerView();
 //        endDialog();
     }
 
     private void addToRecyclerView() {
-        insertDatebase();
 //        startDialog("正在加载数据……");
         new Thread(new Runnable() {
             @Override
@@ -147,7 +147,7 @@ public class MainPageFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (null != infoList && !infoList.isEmpty()) {
+                        if (!isListEmpty(infoList)) {
                             emptyView.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
                             fault_info_title_tv.setVisibility(View.VISIBLE);
@@ -187,6 +187,7 @@ public class MainPageFragment extends Fragment {
                 isConnect = !isConnect;
                 int pic = isConnect ? R.drawable.has_connect_white : R.drawable.no_connect_red;
                 connect_state_iv.setImageResource(pic);
+                insertDatebase();
                 addToRecyclerView();
             }
         });
@@ -213,6 +214,7 @@ public class MainPageFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        databaseUtil.deleteAll();
     }
 
     /**
@@ -245,5 +247,17 @@ public class MainPageFragment extends Fragment {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
+    }
+
+    public boolean isListEmpty(List<FaultInfo> list) {
+        if (null != list && !list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                if (null == list.get(i)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
     }
 }

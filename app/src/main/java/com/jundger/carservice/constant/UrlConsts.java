@@ -18,7 +18,7 @@ public class UrlConsts {
     // 返回参数键
     public static final String KEY_RETURN_MSG = "msg";
     public static final String KEY_RETURN_CODE = "return_code";
-    public static final String KEY_RETURN_NAME = "username";
+    public static final String KEY_RETURN_NAME = "phone_number";
     public static final String KEY_RETURN_TOKEN = "token";
 
     // 请求结果
