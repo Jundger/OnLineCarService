@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,8 @@ public class MainPageFragment extends Fragment {
     private Dialog dialog;
 
     private Menu menu;
+    private TextView fault_info_title_tv;
+    private LinearLayout emptyView;
 
     private Boolean isConnect = false;
 
@@ -125,8 +128,7 @@ public class MainPageFragment extends Fragment {
         bindView();
         init();
 
-        addToRecyclerView();
-
+//        addToRecyclerView();
 //        endDialog();
     }
 
@@ -145,8 +147,17 @@ public class MainPageFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        faultInfoAdapter = new FaultInfoAdapter(infoList);
-                        recyclerView.setAdapter(faultInfoAdapter);
+                        if (null != infoList && !infoList.isEmpty()) {
+                            emptyView.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            fault_info_title_tv.setVisibility(View.VISIBLE);
+                            faultInfoAdapter = new FaultInfoAdapter(infoList);
+                            recyclerView.setAdapter(faultInfoAdapter);
+                        } else {
+                            emptyView.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                            fault_info_title_tv.setVisibility(View.GONE);
+                        }
                     }
                 });
             }
@@ -158,6 +169,8 @@ public class MainPageFragment extends Fragment {
         toolbar = getActivity().findViewById(R.id.main_activity_tb);
         recyclerView = getActivity().findViewById(R.id.fault_info_recycler_view);
         connect_state_iv = getActivity().findViewById(R.id.connect_state_iv);
+        emptyView = getActivity().findViewById(R.id.empty_layout_ll);
+        fault_info_title_tv = getActivity().findViewById(R.id.fault_info_title_tv);
     }
 
     private void init() {
@@ -174,6 +187,7 @@ public class MainPageFragment extends Fragment {
                 isConnect = !isConnect;
                 int pic = isConnect ? R.drawable.has_connect_white : R.drawable.no_connect_red;
                 connect_state_iv.setImageResource(pic);
+                addToRecyclerView();
             }
         });
     }
