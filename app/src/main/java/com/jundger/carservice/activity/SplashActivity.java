@@ -20,26 +20,31 @@ public class SplashActivity extends AppCompatActivity {
 
         String token = (String) SharedPreferencesUtil.query(this, UrlConsts.SHARED_TOKEN, "String");
         boolean isLogin = (boolean) SharedPreferencesUtil.query(this, UrlConsts.SHARED_IS_LOGIN, "boolean");
-        Log.i(TAG, "onCreate: token from sharedpreference-->" + token);
-//        if (token != null && !TextUtils.isEmpty(token) && isLogin) {
-//            final String phoneNumber = (String) SharedPreferencesUtil.query(this, UrlConsts.SHARED_TOKEN, "String");
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    MainActivity.launchActivity(SplashActivity.this, phoneNumber);
-//                    SplashActivity.this.finish();
-//                }
-//            }, 1500);
-//        } else {
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    LoginActivity.launchActivity(SplashActivity.this);
-//                    SplashActivity.this.finish();
-//                }
-//            }, 1500);
-//        }
+        if (token != null && !TextUtils.isEmpty(token) && isLogin) {
+            final String phoneNumber = (String) SharedPreferencesUtil.query(this, UrlConsts.SHARED_TOKEN, "String");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    MainActivity.launchActivity(SplashActivity.this, phoneNumber);
+                    SplashActivity.this.finish();
+                    // 淡入淡出动画效果
+//                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    // 类似iphone进入和退出效果
+                    overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
+                }
+            }, 1000);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    LoginActivity.launchActivity(SplashActivity.this);
+                    SplashActivity.this.finish();
+                    // 淡入淡出动画效果
+//                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    // 类似iphone进入和退出效果
+                    overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
+                }
+            }, 1000);
+        }
     }
 }
