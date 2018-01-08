@@ -10,7 +10,7 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginTop="55dp"
-        android:background="@mipmap/app_log1"
+        android:background="@mipmap/app_portrait"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_gravity="center"/>

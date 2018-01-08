@@ -1,5 +1,6 @@
 package com.jundger.carservice.activity;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,11 +22,27 @@ public class SplashActivity extends AppCompatActivity {
         boolean isLogin = (boolean) SharedPreferencesUtil.query(this, UrlConsts.SHARED_IS_LOGIN, "boolean");
         Log.i(TAG, "onCreate: token from sharedpreference-->" + token);
         if (token != null && !TextUtils.isEmpty(token) && isLogin) {
-            String phoneNumber = (String) SharedPreferencesUtil.query(this, UrlConsts.SHARED_TOKEN, "String");
-            MainActivity.launchActivity(SplashActivity.this, phoneNumber);
+            final String phoneNumber = (String) SharedPreferencesUtil.query(this, UrlConsts.SHARED_TOKEN, "String");
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    MainActivity.launchActivity(SplashActivity.this, phoneNumber);
+                    SplashActivity.this.finish();
+                }
+            }, 1500);
+//            MainActivity.launchActivity(SplashActivity.this, phoneNumber);
         } else {
-            LoginActivity.launchActivity(SplashActivity.this);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    LoginActivity.launchActivity(SplashActivity.this);
+                    SplashActivity.this.finish();
+                }
+            }, 1500);
+//            LoginActivity.launchActivity(SplashActivity.this);
         }
-        SplashActivity.this.finish();
+//        SplashActivity.this.finish();
     }
 }
