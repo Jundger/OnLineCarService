@@ -18,8 +18,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jundger.carservice.R;
@@ -58,6 +60,7 @@ public class MineFragment extends Fragment {
     private GridView gridView;
     private List<Map<String, Object>> list;
     private SimpleAdapter simpleAdapter;
+    private TextView edit_person_data_tv;
 
     private int[] icon = {R.drawable.order_icon, R.drawable.claim_icon, R.drawable.collect_icon};
     private String[] iconName = {"维修订单", "保险理赔", "收藏"};
@@ -76,6 +79,7 @@ public class MineFragment extends Fragment {
     private void bindView() {
         toolbar = getActivity().findViewById(R.id.mine_activity_tb);
         gridView = getActivity().findViewById(R.id.mine_page_gview);
+        edit_person_data_tv = getActivity().findViewById(R.id.edit_person_data_tv);
     }
 
     private void init() {
@@ -106,6 +110,24 @@ public class MineFragment extends Fragment {
         int[] to = {R.id.item_grid_img_tv, R.id.item_grid_name_tv};
         simpleAdapter = new SimpleAdapter(getView().getContext(), list, R.layout.item_mine_grid, from, to);
         gridView.setAdapter(simpleAdapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (i) {
+                    case 0:
+                        Toast.makeText(getActivity(), "抱歉，维修订单模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        Toast.makeText(getActivity(), "抱歉，保险理赔模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(getActivity(), "抱歉，收藏模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        break;
+                    default: break;
+                }
+            }
+        });
     }
 
     private void showNormalDialog(){

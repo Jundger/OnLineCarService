@@ -29,10 +29,13 @@
             android:src="@mipmap/app_portrait"/>
 
         <TextView
+            android:id="@+id/edit_person_data_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:textSize="15sp"
+            android:clickable="true"
+            android:focusable="true"
             android:textColor="@android:color/white"
             android:text="@string/edit_info_str"/>
     </LinearLayout>
