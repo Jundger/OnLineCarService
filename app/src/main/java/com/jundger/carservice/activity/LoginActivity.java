@@ -3,6 +3,8 @@ package com.jundger.carservice.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.util.FormatCheckUtil;
 import com.jundger.carservice.util.InjectUtil;
 import com.jundger.carservice.util.JsonParser;
+import com.jundger.carservice.util.NetCheckUtil;
 import com.jundger.carservice.util.SharedPreferencesUtil;
 import com.jundger.carservice.util.HttpUtil;
 
@@ -55,6 +58,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         login_btn.setOnClickListener(this);
         forget_psw_tv.setOnClickListener(this);
         register_tv.setOnClickListener(this);
+
+        if (!NetCheckUtil.isNetworkConnected(this)) {
+            Toast.makeText(this, "请打开网络连接！", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -78,6 +85,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         // 进行手机号和密码的格式校验
         if (!FormatCheckUtil.checkPhoneNumber(LoginActivity.this, phoneNumber) ||
                 !FormatCheckUtil.checkPassword(LoginActivity.this, password)) {
+            return;
+        }
+
+        if (!NetCheckUtil.isNetworkConnected(this)) {
+            Toast.makeText(this, "请打开网络连接！", Toast.LENGTH_SHORT).show();
             return;
         }
 

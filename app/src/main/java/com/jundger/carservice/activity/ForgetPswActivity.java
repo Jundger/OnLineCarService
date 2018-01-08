@@ -18,6 +18,7 @@ import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.util.FormatCheckUtil;
 import com.jundger.carservice.util.InjectUtil;
+import com.jundger.carservice.util.NetCheckUtil;
 
 public class ForgetPswActivity extends BaseActivity {
 
@@ -55,6 +56,11 @@ public class ForgetPswActivity extends BaseActivity {
             public void onClick(View view) {
                 final String phoneNumber = username_forget_et.getText().toString().trim();
                 final String code = code_forget_et.getText().toString().trim();
+
+                if (!NetCheckUtil.isNetworkConnected(ForgetPswActivity.this)) {
+                    Toast.makeText(ForgetPswActivity.this, "请打开网络连接！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 if (FormatCheckUtil.checkPhoneNumber(ForgetPswActivity.this, phoneNumber)) {
                     Toast.makeText(ForgetPswActivity.this, "抱歉，忘记密码功能尚未开通！", Toast.LENGTH_SHORT).show();

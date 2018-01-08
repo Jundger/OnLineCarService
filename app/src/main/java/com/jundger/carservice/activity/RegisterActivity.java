@@ -22,6 +22,7 @@ import com.jundger.carservice.util.FormatCheckUtil;
 import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.InjectUtil;
 import com.jundger.carservice.util.JsonParser;
+import com.jundger.carservice.util.NetCheckUtil;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -67,6 +68,11 @@ public class RegisterActivity extends BaseActivity {
                 final String phoneNumber = username_register_et.getText().toString().trim();
                 final String password = password_register_et.getText().toString().trim();
                 final String rePassword = re_password_register_et.getText().toString().trim();
+
+                if (!NetCheckUtil.isNetworkConnected(RegisterActivity.this)) {
+                    Toast.makeText(RegisterActivity.this, "请打开网络连接！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // 进行手机号和密码的格式校验
                 if (FormatCheckUtil.checkPhoneNumber(RegisterActivity.this, phoneNumber) &&
