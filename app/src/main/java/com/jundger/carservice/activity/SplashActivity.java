@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
                     // 类似iphone进入和退出效果
                     overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
                 }
-            }, 1000);
+            }, 1200);
         } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
                     // 类似iphone进入和退出效果
                     overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
                 }
-            }, 1000);
+            }, 1200);
         }
     }
 }

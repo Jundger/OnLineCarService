@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appThemeColor"
-    android:gravity="center"
-    android:orientation="vertical"
     android:id="@+id/rl_splash">
 
     <RelativeLayout
         android:id="@+id/main_title_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:gravity="center_horizontal">
         <ImageView
             android:id="@+id/car_log_iv"
@@ -18,6 +17,7 @@
             android:layout_height="60dp"
             android:src="@mipmap/app_log"/>
         <TextView
+            android:id="@+id/main_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/car_log_iv"
@@ -25,15 +25,24 @@
             android:textSize="40sp"
             android:textColor="@android:color/white"
             android:text="@string/app_name"/>
-    </RelativeLayout>
 
+        <View android:layout_width="263dp"
+            android:layout_height="1px"
+            android:layout_alignLeft="@id/car_log_iv"
+            android:layout_alignStart="@id/car_log_iv"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/main_title_tv"
+            android:background="#dddddd"/>
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
         android:textColor="@android:color/white"
         android:text="@string/copyright_show_str"/>
 
-</LinearLayout>
+</RelativeLayout>

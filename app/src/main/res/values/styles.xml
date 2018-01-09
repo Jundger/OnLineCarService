@@ -20,4 +20,7 @@
         <item name="android:backgroundDimEnabled">true</item><!--模糊-->
     </style>
 
+    <style name="MyActivityTheme" parent="AppTheme">
+    </style>
+
 </resources>

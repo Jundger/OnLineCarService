@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jundger.carservice.R;
+import com.jundger.carservice.activity.ShopDetailActivity;
 import com.jundger.carservice.domain.ServicePoint;
 
 import java.util.List;
@@ -57,7 +58,8 @@ public class ServicePointAdapter extends RecyclerView.Adapter<ServicePointAdapte
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
                 ServicePoint shop = mServicePointList.get(position);
-                Toast.makeText(view.getContext(), "子项：" + shop.getName(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext(), "子项：" + shop.getName(), Toast.LENGTH_SHORT).show();
+                ShopDetailActivity.launchActivity(view.getContext(), shop);
             }
         });
         holder.imageView.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +67,8 @@ public class ServicePointAdapter extends RecyclerView.Adapter<ServicePointAdapte
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
                 ServicePoint shop = mServicePointList.get(position);
-                Toast.makeText(view.getContext(), "图片：" + shop.getName(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext(), "图片：" + shop.getName(), Toast.LENGTH_SHORT).show();
+                ShopDetailActivity.launchActivity(view.getContext(), shop);
             }
         });
         return holder;

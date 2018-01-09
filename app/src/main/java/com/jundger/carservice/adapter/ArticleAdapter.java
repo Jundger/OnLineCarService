@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jundger.carservice.R;
+import com.jundger.carservice.activity.MaintainShowActivity;
+import com.jundger.carservice.activity.ShopDetailActivity;
 import com.jundger.carservice.domain.Article;
 
 import java.util.List;
@@ -58,8 +60,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
                 Article article = mArticleList.get(position);
-
-                Toast.makeText(view.getContext(), "子项：" + article.getTitle(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext(), "子项：" + article.getTitle(), Toast.LENGTH_SHORT).show();
+                MaintainShowActivity.launchActivity(view.getContext(), article);
             }
         });
         holder.articleImage.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +69,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
                 Article article = mArticleList.get(position);
-                Toast.makeText(view.getContext(), "图片：" + article.getTitle(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(view.getContext(), "图片：" + article.getTitle(), Toast.LENGTH_SHORT).show();
+                MaintainShowActivity.launchActivity(view.getContext(), article);
             }
         });
         return holder;

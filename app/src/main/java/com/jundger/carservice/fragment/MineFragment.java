@@ -35,21 +35,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MineFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MineFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MineFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -128,6 +117,13 @@ public class MineFragment extends Fragment {
                 }
             }
         });
+
+        edit_person_data_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "抱歉，尚不能修改个人资料！", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showNormalDialog(){
@@ -150,15 +146,6 @@ public class MineFragment extends Fragment {
         normalDialog.show();
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MineFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static MineFragment newInstance(String param1, String param2) {
         MineFragment fragment = new MineFragment();
         Bundle args = new Bundle();
@@ -185,7 +172,6 @@ public class MineFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_mine, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

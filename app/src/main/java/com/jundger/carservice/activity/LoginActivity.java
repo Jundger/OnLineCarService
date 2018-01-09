@@ -142,8 +142,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
 
             @Override
-            public void onError(String error) {
+            public void onError(final String error) {
                 Log.e(TAG, "onError: " + error);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
+                    }
+                });
                 endDialog();
             }
         });

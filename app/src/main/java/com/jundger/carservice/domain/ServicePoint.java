@@ -1,10 +1,12 @@
 package com.jundger.carservice.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by 14246 on 2018/1/5.
  */
 
-public class ServicePoint {
+public class ServicePoint implements Serializable {
     // 图片资源ID
     private Integer imageId;
 

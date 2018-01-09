@@ -6,6 +6,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -29,43 +30,47 @@ import android.widget.Toast;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.LoginActivity;
 import com.jundger.carservice.adapter.FaultInfoAdapter;
+import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.database.OBDDatabaseUtil;
 import com.jundger.carservice.domain.FaultInfo;
+import com.jundger.carservice.util.InjectUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MainPageFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MainPageFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MainPageFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
+    @InjectView(R.id.get_info_fab)
     private FloatingActionButton getInfoFab;
-    private RecyclerView recyclerView;
-    private ImageView connect_state_iv;
-    private Toolbar toolbar;
-    private Dialog dialog;
 
-    private Menu menu;
+    @InjectView(R.id.fault_info_recycler_view)
+    private RecyclerView recyclerView;
+
+    @InjectView(R.id.connect_state_iv)
+    private ImageView connect_state_iv;
+
+    @InjectView(R.id.main_page_fragment_tb)
+    private Toolbar toolbar;
+
+    @InjectView(R.id.fault_info_title_tv)
     private TextView fault_info_title_tv;
+
+    @InjectView(R.id.empty_layout_ll)
     private LinearLayout emptyView;
 
+    @InjectView(R.id.collapsing_toolbar)
+    private CollapsingToolbarLayout collapsingLayout;
+
+    private Dialog dialog;
+    private Menu menu;
     private Boolean isConnect = false;
 
     private OBDDatabaseUtil databaseUtil;
@@ -80,15 +85,6 @@ public class MainPageFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MainPageFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static MainPageFragment newInstance(String param1, String param2) {
         MainPageFragment fragment = new MainPageFragment();
         Bundle args = new Bundle();
@@ -114,7 +110,6 @@ public class MainPageFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_main_page, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -126,6 +121,7 @@ public class MainPageFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Log.i("Jundger", "onActivityCreated: ");
 //        startDialog("正在加载数据……");
+//        InjectUtil.InjectView(getActivity());
         bindView();
         init();
 
@@ -166,17 +162,18 @@ public class MainPageFragment extends Fragment {
 
     private void bindView() {
         getInfoFab = getActivity().findViewById(R.id.get_info_fab);
-        toolbar = getActivity().findViewById(R.id.main_activity_tb);
+        toolbar = getActivity().findViewById(R.id.main_page_fragment_tb);
         recyclerView = getActivity().findViewById(R.id.fault_info_recycler_view);
         connect_state_iv = getActivity().findViewById(R.id.connect_state_iv);
         emptyView = getActivity().findViewById(R.id.empty_layout_ll);
         fault_info_title_tv = getActivity().findViewById(R.id.fault_info_title_tv);
+        collapsingLayout = getActivity().findViewById(R.id.collapsing_toolbar);
     }
 
     private void init() {
         databaseUtil = new OBDDatabaseUtil(getActivity());
 
-        toolbar.setTitle("故障检测");
+//        toolbar.setTitle("故障检测");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -191,6 +188,7 @@ public class MainPageFragment extends Fragment {
                 addToRecyclerView();
             }
         });
+        collapsingLayout.setTitle("奔驰 E200 Coupe");
     }
 
     private void insertDatebase() {
@@ -215,21 +213,6 @@ public class MainPageFragment extends Fragment {
         super.onDetach();
         mListener = null;
         databaseUtil.deleteAll();
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     private void startDialog(String msg) {
@@ -259,5 +242,10 @@ public class MainPageFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }

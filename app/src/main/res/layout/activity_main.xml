@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -24,8 +25,8 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="5dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="3dp"
         android:orientation="horizontal"
         android:background="@color/linearLayout_below_color">
 
@@ -37,8 +38,8 @@
 
             <ImageView
                 android:id="@+id/main_page_iv"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:focusable="true"
                 android:layout_centerHorizontal="true"
                 app:srcCompat="@drawable/main_page_selector"
@@ -53,7 +54,8 @@
                 android:focusable="true"
                 android:textColor="@drawable/tab_text_color_selector"
                 android:text="@string/bottom_tab_main"
-                android:textSize="12sp" />
+                android:textSize="11sp"
+                tools:ignore="SmallSp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -64,8 +66,8 @@
 
             <ImageView
                 android:id="@+id/repair_page_iv"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:focusable="true"
                 android:layout_centerHorizontal="true"
                 app:srcCompat="@drawable/repair_page_selector"
@@ -80,7 +82,8 @@
                 android:focusable="true"
                 android:textColor="@drawable/tab_text_color_selector"
                 android:text="@string/bottom_tab_repair"
-                android:textSize="12sp" />
+                tools:ignore="SmallSp"
+                android:textSize="11sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -91,8 +94,8 @@
 
             <ImageView
                 android:id="@+id/maintain_page_iv"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:focusable="true"
                 app:srcCompat="@drawable/maintain_page_selector"
@@ -107,7 +110,8 @@
                 android:focusable="true"
                 android:textColor="@drawable/tab_text_color_selector"
                 android:text="@string/bottom_tab_maintain"
-                android:textSize="12sp" />
+                tools:ignore="SmallSp"
+                android:textSize="11sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -118,8 +122,8 @@
 
             <ImageView
                 android:id="@+id/mine_page_iv"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:focusable="true"
                 android:layout_centerHorizontal="true"
                 app:srcCompat="@drawable/mine_page_selector"
@@ -134,7 +138,8 @@
                 android:focusable="true"
                 android:textColor="@drawable/tab_text_color_selector"
                 android:text="@string/bottom_tab_mine"
-                android:textSize="12sp" />
+                tools:ignore="SmallSp"
+                android:textSize="11sp" />
         </RelativeLayout>
     </LinearLayout>
 
