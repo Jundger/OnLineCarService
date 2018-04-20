@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="85dp"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/shop_img_id_tv"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/service_point01"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/shop_img_id_tv"
+        android:layout_toRightOf="@id/shop_img_id_tv">
+        <TextView
+            android:id="@+id/shop_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="重庆车行舰汽车维修店"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:maxEms="12"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shop_name_tv"
+            android:id="@+id/line1_ll"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/shop_score_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3.6"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分  距此"/>
+            <TextView
+                android:id="@+id/shop_distance_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2.5"/>
+            <TextView
+                android:id="@+id/distance_unit_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="km"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/line2_ll"
+            android:layout_below="@id/line1_ll"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="评价人数："/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="358"
+                android:id="@+id/evaluation_count_tv"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="人"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/shop_address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line2_ll"
+            android:text="重庆市南岸区南坪大石路56号坪大石路5号"
+            android:maxEms="15"
+            android:singleLine="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

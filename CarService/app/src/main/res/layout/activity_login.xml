@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appThemeColor"
+    android:orientation="vertical" >
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="55dp"
+        android:background="@mipmap/app_portrait"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_gravity="center"/>
+
+    <com.jundger.carservice.widget.ClearEditText
+        android:id="@+id/username_clear_et"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:inputType="number"
+        android:maxLength="11"
+        android:textSize="25sp"
+        android:text="13900000000"
+        android:textCursorDrawable="@drawable/edit_cursor"
+        android:textColor="@color/input_editText"
+        android:background="@drawable/et_bg"
+        android:drawableLeft="@drawable/username_et_left_icon"
+        android:drawableStart="@drawable/username_et_left_icon"
+        android:drawableEnd="@drawable/et_delete_right"
+        android:drawableRight="@drawable/et_delete_right"/>
+
+    <com.jundger.carservice.widget.ClearEditText
+        android:id="@+id/password_clear_et"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:inputType="textPassword"
+        android:ems="20"
+        android:textSize="25sp"
+        android:maxLength="20"
+        android:text="000000"
+        android:textCursorDrawable="@drawable/edit_cursor"
+        android:textColor="@color/input_editText"
+        android:background="@drawable/et_bg"
+        android:drawableStart="@drawable/password_et_left_icon"
+        android:drawableLeft="@drawable/password_et_left_icon"
+        android:drawableEnd="@drawable/et_delete_right"
+        android:drawableRight="@drawable/et_delete_right"/>
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn_bg"
+        android:text="@string/login_str_btn"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/forget_psw_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forget_psw_tv"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#bfc0c1" />
+
+        <TextView
+            android:id="@+id/register_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_tv"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+</LinearLayout>
