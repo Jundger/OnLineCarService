@@ -62,7 +62,6 @@
                     android:id="@+id/maintain_show_tv"
                     android:layout_width="match_parent"
                     android:layout_height="82dp"
-                    android:text="细节方面有所提升 奔驰全新一代G级官图"
                     android:textSize="25sp"
                     android:paddingRight="55dp"
                     android:paddingEnd="55dp"
@@ -82,11 +81,24 @@
                         android:layout_height="18dp"
                         android:src="@drawable/ic_shop_com_from"/>
                     <TextView
+                        android:id="@+id/origin_show_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginStart="5dp"
-                        android:text="重庆奔驰4S店"/>
+                        android:text="网易汽车"/>
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:src="@drawable/liked_count_pic"/>
+                    <TextView
+                        android:id="@+id/liked_count_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -94,20 +106,21 @@
                 android:id="@+id/detail_empty_layout_ll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="40dp"
-                android:gravity="center"
+                android:paddingTop="10dp"
                 android:orientation="vertical">
                 <ImageView
+                    android:id="@+id/place_holder_pic_iv"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_gravity="center_horizontal"
                     android:src="@drawable/empty_image"/>
                 <TextView
+                    android:id="@+id/maintain_article_show_tv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textColor="@color/divider_gray_color"
-                    android:text="@string/no_data_show"/>
+                    android:gravity="start"
+                    android:lineSpacingExtra="2dp"
+                    android:textSize="16sp"/>
             </LinearLayout>
 
         </LinearLayout>

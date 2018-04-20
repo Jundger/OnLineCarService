@@ -22,8 +22,13 @@ import com.jundger.carservice.util.NetCheckUtil;
 import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.SharedPreferencesUtil;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 

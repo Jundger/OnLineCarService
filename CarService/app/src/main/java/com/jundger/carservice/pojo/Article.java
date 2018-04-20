@@ -18,18 +18,24 @@ public class Article implements Serializable{
     private String from;
 
     // 发布时间
-    @SerializedName("create_time")
+    @SerializedName("createTime")
     private String time;
 
     // 图片网络路径
     @SerializedName("picture")
     private String image;
 
-    public Article(String title, String from, String time, String image) {
+    private String content;
+
+    private Integer liked;
+
+    public Article(String title, String from, String time, String image, String content, Integer liked) {
         this.title = title;
         this.from = from;
         this.time = time;
         this.image = image;
+        this.content = content;
+        this.liked = liked;
     }
 
     public String getTitle() {
@@ -62,5 +68,21 @@ public class Article implements Serializable{
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getLiked() {
+        return liked;
+    }
+
+    public void setLiked(Integer liked) {
+        this.liked = liked;
     }
 }

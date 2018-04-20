@@ -43,8 +43,8 @@ public class CustomerController {
 		try {
 			customer = this.customerService.validateLogin(username, password);
 		} catch (Exception e) {
-			returnMsg.put("return_code", "2");
-			returnMsg.put("msg", "UNKNOWN_ERROR");
+			returnMsg.put("return_code", "0");
+			returnMsg.put("msg", "QUERY_FAIL");
 			logger.error("数据库查询失败！", e);
 			return returnMsg;
 		}
@@ -60,7 +60,7 @@ public class CustomerController {
 			returnMsg.put("token", this.customerService.generalToken(customer, 60 * 60 * 1000));
 		} else {
 			returnMsg.put("return_code", "0");
-			returnMsg.put("msg", "USER_NOT_EXIST");
+			returnMsg.put("msg", "USERNAME_OR_PASSWORD_ERROR");
 		}
 
 		return returnMsg;
@@ -80,7 +80,7 @@ public class CustomerController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			returnMsg.put("return_code", "0");
-			returnMsg.put("msg", "UNKNOWN_ERROR");
+			returnMsg.put("msg", "QUERY_FAIL");
 			System.out.println("数据库查询失败！");
 			return returnMsg;
 		}
@@ -98,7 +98,7 @@ public class CustomerController {
 			this.customerService.register(customer);
 		} catch (Exception e) {
 			returnMsg.put("return_code", "0");
-			returnMsg.put("msg", "UNKNOWN_ERROR");
+			returnMsg.put("msg", "QUERY_FAIL");
 			System.out.println("数据库查询失败！");
 			return returnMsg;
 		}
