@@ -5,7 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by Jundger on 2017/12/3.
+ * Title: CarService
+ * Date: Create in 2018/4/21 20:52
+ * Description:
+ *
+ * @author Jundger
+ * @version 1.0
  */
 
 public class StreamTool {

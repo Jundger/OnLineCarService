@@ -5,7 +5,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- * Created by Jundger on 2018/1/8.
+ * Title: CarService
+ * Date: Create in 2018/4/21 20:52
+ * Description:
+ *
+ * @author Jundger
+ * @version 1.0
  */
 
 public class NetCheckUtil {

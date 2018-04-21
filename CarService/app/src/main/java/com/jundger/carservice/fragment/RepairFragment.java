@@ -1,13 +1,20 @@
 package com.jundger.carservice.fragment;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +42,7 @@ import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.pojo.Result;
 import com.jundger.carservice.pojo.ServicePoint;
 import com.jundger.carservice.util.HttpUtil;
+import com.jundger.carservice.util.LocationUtil;
 import com.jundger.carservice.util.RecyclerViewDivider;
 
 import java.io.IOException;
@@ -60,6 +68,8 @@ public class RepairFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private Dialog dialog = null;
+
+    private Location location = null;
 
     private SiteAdapter siteAdapter;
     private List<ServicePoint> siteList = new ArrayList<>();
@@ -126,11 +136,14 @@ public class RepairFragment extends Fragment {
         init();
         event();
 
-        Log.d(TAG, "onActivityCreated: coming!!!!!!!!!!!!!");
+        location = LocationUtil.requestLocation(getActivity());
+        if (location != null) {
+            Log.d(TAG, "获取到当前经纬度: " + "longitude-->" + location.getLongitude() + " | latitude-->" + location.getLatitude());
+        } else {
+            Log.d(TAG, "onActivityCreated: 获取经纬度失败！");
+        }
+
         requestServicePoint();
-
-
-        Log.d(TAG, "onActivityCreated: coming!");
 
     }
 
@@ -173,7 +186,7 @@ public class RepairFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        endDialog();
+//                        endDialog();
                         Toast.makeText(getContext(), "获取信息失败！", Toast.LENGTH_SHORT).show();
                     }
                 });

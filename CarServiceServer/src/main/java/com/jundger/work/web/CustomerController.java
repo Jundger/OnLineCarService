@@ -58,6 +58,9 @@ public class CustomerController {
 			returnMsg.put("car_brand", customer.getCarBrand());
 			returnMsg.put("email", customer.getCustEmail());
 			returnMsg.put("token", this.customerService.generalToken(customer, 60 * 60 * 1000));
+
+			customer.setLoginIp(request.getRemoteAddr());
+			customerService.updateByPrimaryKeySelective(customer);
 		} else {
 			returnMsg.put("return_code", "0");
 			returnMsg.put("msg", "USERNAME_OR_PASSWORD_ERROR");

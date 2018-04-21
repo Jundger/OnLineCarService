@@ -9,7 +9,12 @@ import com.jundger.carservice.annotation.InjectView;
 import java.lang.reflect.Field;
 
 /**
- * Created by Jundger on 2017/12/22.
+ * Title: CarService
+ * Date: Create in 2018/4/21 20:52
+ * Description:
+ *
+ * @author Jundger
+ * @version 1.0
  */
 
 public class InjectUtil {

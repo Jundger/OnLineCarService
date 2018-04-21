@@ -88,10 +88,13 @@
                         android:layout_marginStart="5dp"
                         android:text="网易汽车"/>
                     <ImageView
+                        android:id="@+id/give_liked_iv"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_marginLeft="25dp"
                         android:layout_marginStart="25dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:src="@drawable/liked_count_pic"/>
                     <TextView
                         android:id="@+id/liked_count_tv"

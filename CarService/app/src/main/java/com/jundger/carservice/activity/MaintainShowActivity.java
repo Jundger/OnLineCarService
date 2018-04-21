@@ -45,6 +45,9 @@ public class MaintainShowActivity extends AppCompatActivity {
     @InjectView(R.id.maintain_show_iv)
     private ImageView maintain_show_iv;
 
+    @InjectView(R.id.give_liked_iv)
+    private ImageView give_liked_iv;
+
     @InjectView(R.id.place_holder_pic_iv)
     private ImageView place_holder_pic_iv;
 
@@ -68,6 +71,8 @@ public class MaintainShowActivity extends AppCompatActivity {
 
         init();
 
+        event();
+
 //        maintain_show_iv.setImageResource(article.getImageId());
 //        maintain_show_tv.setText(article.getTitle());
 //        maintain_show_tllt.setExpandedTitleColor(getResources().getColor(R.color.appThemeColor));
@@ -88,6 +93,16 @@ public class MaintainShowActivity extends AppCompatActivity {
                 .load(article.getImage())
                 .thumbnail(0.2f)
                 .into(maintain_show_iv);
+    }
+
+    void event() {
+        give_liked_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                liked_count_tv.setText(String.valueOf(article.getLiked() + 1));
+            }
+        });
     }
 
     public static void launchActivity(Context context, Article article) {

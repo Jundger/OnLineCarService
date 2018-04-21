@@ -111,6 +111,12 @@ public class MineFragment extends Fragment {
                         Toast.makeText(getActivity(), "抱歉，保险理赔模块尚未完善！", Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
+                        Toast.makeText(getActivity(), "抱歉，反馈模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        Toast.makeText(getActivity(), "抱歉，评价模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 4:
                         Toast.makeText(getActivity(), "抱歉，收藏模块尚未完善！", Toast.LENGTH_SHORT).show();
                         break;
                     default: break;

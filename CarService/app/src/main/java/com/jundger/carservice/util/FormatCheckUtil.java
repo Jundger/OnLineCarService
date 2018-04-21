@@ -7,7 +7,12 @@ import android.widget.Toast;
 import com.jundger.carservice.R;
 
 /**
- * Created by Jundger on 2018/1/8.
+ * Title: CarService
+ * Date: Create in 2018/4/21 20:52
+ * Description:
+ *
+ * @author Jundger
+ * @version 1.0
  */
 
 public class FormatCheckUtil {

@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.pojo.ServicePoint;
@@ -18,7 +20,7 @@ import com.jundger.carservice.util.InjectUtil;
 
 public class ShopDetailActivity extends AppCompatActivity {
 
-    private ServicePoint mServicePoint;
+    ServicePoint mServicePoint;
 
     @InjectView(R.id.detail_collapsing_tllt)
     private CollapsingToolbarLayout detail_collapsing_tllt;
@@ -28,6 +30,9 @@ public class ShopDetailActivity extends AppCompatActivity {
 
     @InjectView(R.id.shop_detail_tv)
     private TextView shop_detail_tv;
+
+    @InjectView(R.id.main_picture_show_iv)
+    private ImageView main_picture_show_iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,10 @@ public class ShopDetailActivity extends AppCompatActivity {
         }
 
         shop_detail_tv.setText(mServicePoint.getName());
+        Glide.with(ShopDetailActivity.this)
+                .load(mServicePoint.getImage())
+                .thumbnail(0.2f)
+                .into(main_picture_show_iv);
     }
 
     public static void launchActivity(Context context, ServicePoint servicePoint) {
