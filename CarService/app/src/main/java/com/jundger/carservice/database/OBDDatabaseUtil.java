@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jundger.carservice.constant.APPConsts;
-import com.jundger.carservice.pojo.FaultInfo;
+import com.jundger.carservice.pojo.FaultCode;
 
 /**
  * Created by Jundger on 2018/1/6.
@@ -24,7 +24,7 @@ public class OBDDatabaseUtil {
      * @param faultInfo
      * @return
      */
-    public Boolean insert(FaultInfo faultInfo) {
+    public Boolean insert(FaultCode faultInfo) {
         boolean state;
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -53,7 +53,7 @@ public class OBDDatabaseUtil {
      * @param faultInfo
      * @return
      */
-    public boolean update(FaultInfo faultInfo) {
+    public boolean update(FaultCode faultInfo) {
         SQLiteDatabase db = helper.getWritableDatabase();
         boolean state;
         ContentValues values = new ContentValues();
@@ -78,8 +78,8 @@ public class OBDDatabaseUtil {
      * @param code
      * @return
      */
-    public FaultInfo query(String code) {
-        FaultInfo faultInfo = new FaultInfo();
+    public FaultCode query(String code) {
+        FaultCode faultInfo = new FaultCode();
         SQLiteDatabase db = helper.getReadableDatabase();
         String statement = "SELECT * FROM " + APPConsts.DB_TABLE_OBD + " WHERE code=?";
         Cursor cursor = db.rawQuery(statement, new String[]{code});

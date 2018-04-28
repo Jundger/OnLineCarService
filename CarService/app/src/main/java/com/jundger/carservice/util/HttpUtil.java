@@ -11,8 +11,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 
 /**
  * Title: CarService
@@ -26,15 +28,24 @@ import okhttp3.Request;
 public class HttpUtil {
     private static final String TAG = "HttpUtil";
 
-    public static void sendOkHttpRequest(String address, okhttp3.Callback callback) {
+    public static void okHttpGet(String url, okhttp3.Callback callback) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(address)
+                .url(url)
                 .build();
         client.newCall(request).enqueue(callback);
     }
 
-    public static void sendHttpRequset(final String address, final Map<String, String> params, final HttpCallbackListener listener) {
+    public static void okHttpPost(String url, RequestBody body, Callback callback) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void sendHttpRequest(final String address, final Map<String, String> params, final HttpCallbackListener listener) {
         new Thread(new Runnable() {
             @Override
             public void run() {

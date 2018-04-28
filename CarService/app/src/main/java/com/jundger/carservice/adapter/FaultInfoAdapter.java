@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jundger.carservice.R;
-import com.jundger.carservice.pojo.FaultInfo;
+import com.jundger.carservice.pojo.FaultCode;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class FaultInfoAdapter extends RecyclerView.Adapter<FaultInfoAdapter.View
 
     private Context mContext;
 
-    private List<FaultInfo> mFaultInfoList;
+    private List<FaultCode> mFaultInfoList;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -40,7 +40,7 @@ public class FaultInfoAdapter extends RecyclerView.Adapter<FaultInfoAdapter.View
         }
     }
 
-    public FaultInfoAdapter(List<FaultInfo> mFaultInfoList) {
+    public FaultInfoAdapter(List<FaultCode> mFaultInfoList) {
         this.mFaultInfoList = mFaultInfoList;
     }
     @Override
@@ -54,7 +54,7 @@ public class FaultInfoAdapter extends RecyclerView.Adapter<FaultInfoAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        FaultInfo faultInfo = mFaultInfoList.get(position);
+        FaultCode faultInfo = mFaultInfoList.get(position);
         holder.faultCode.setText(faultInfo.getCode());
         holder.system.setText(faultInfo.getSystem());
         holder.scope.setText(faultInfo.getScope());

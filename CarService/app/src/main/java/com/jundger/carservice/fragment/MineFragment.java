@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.LoginActivity;
 import com.jundger.carservice.activity.SettingsActivity;
+import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.util.SharedPreferencesUtil;
 
@@ -141,7 +142,7 @@ public class MineFragment extends Fragment {
         normalDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SharedPreferencesUtil.save(getActivity(), UrlConsts.SHARED_IS_LOGIN, false);
+                SharedPreferencesUtil.save(getActivity(), APPConsts.SHARED_KEY_ISLOGIN, false);
 
                 LoginActivity.launchActivity(getActivity());
                 getActivity().finish();

@@ -1,20 +1,23 @@
 package com.jundger.carservice.pojo;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /**
- * Created by 14246 on 2018/4/19.
+ * Title: CarService
+ * Date: Create in 2018/4/21 20:52
+ * Description:
+ *
+ * @author Jundger
+ * @version 1.0
  */
 
-public class Result<T> {
+public class ResultObject<T> {
 
     private String code;
 
     private String msg;
 
-    private List<T> data;
+    private T data;
 
     public String getCode() {
         return code;
@@ -32,11 +35,11 @@ public class Result<T> {
         this.msg = msg;
     }
 
-    public List<T> getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

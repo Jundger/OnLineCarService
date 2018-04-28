@@ -172,4 +172,8 @@
       detail = #{detail,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectBySiteId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from comment where site_id = #{site_id,jdbcType=VARCHAR};
+  </select>
 </mapper>

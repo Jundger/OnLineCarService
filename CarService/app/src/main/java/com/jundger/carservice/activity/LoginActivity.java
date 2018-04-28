@@ -11,10 +11,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.base.BaseActivity;
+import com.jundger.carservice.constant.APPConsts;
+import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
+import com.jundger.carservice.pojo.ResultObject;
+import com.jundger.carservice.pojo.User;
 import com.jundger.carservice.util.FormatCheckUtil;
 import com.jundger.carservice.util.InjectUtil;
 import com.jundger.carservice.util.JsonParser;
@@ -22,13 +28,8 @@ import com.jundger.carservice.util.NetCheckUtil;
 import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.SharedPreferencesUtil;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -102,18 +103,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         params.put(UrlConsts.KEY_USERNAME, phoneNumber);
         params.put(UrlConsts.KEY_PASSWORD, password);
 
-        HttpUtil.sendHttpRequset(UrlConsts.getRequestURL(UrlConsts.ACTION_CUSTOMER_LOGIN), params, new HttpUtil.HttpCallbackListener() {
+        HttpUtil.sendHttpRequest(UrlConsts.getRequestURL(Actions.ACTION_CUSTOMER_LOGIN), params, new HttpUtil.HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
                 if (null != response && !"".equals(response)) {
                     Log.d(TAG, "Login | recieve from server: " + response);
-                    Map<String, String> map = JsonParser.parseLogin(response);
-                    if (null != map) {
-                        if (UrlConsts.REQUEST_SUCCESS_CODE.equals(map.get(UrlConsts.KEY_RETURN_CODE))) {
+
+                    ResultObject<User> result = new Gson().fromJson(response, new TypeToken<ResultObject<User>>(){}.getType());
+//                    Map<String, String> map = JsonParser.parseLogin(response);
+                    if (null != result) {
+                        if (UrlConsts.CODE_SUCCESS.equals(result.getCode())) {
+                            User user = result.getData();
                             // 在本地存储服务器返回的Token值及登录状态
-                            SharedPreferencesUtil.save(LoginActivity.this, UrlConsts.SHARED_TOKEN, map.get(UrlConsts.KEY_RETURN_TOKEN));
-                            SharedPreferencesUtil.save(LoginActivity.this, UrlConsts.SHARED_PHONE, map.get(UrlConsts.KEY_RETURN_NAME));
-                            SharedPreferencesUtil.save(LoginActivity.this, UrlConsts.SHARED_IS_LOGIN, true);
+//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_TOKEN, user.getToken());
+//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_PHONE, user.getPhone());
+//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_NICKNAME, user.getNickname());
+//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_BRAND, user.getBrand());
+//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_BRAND_NO, user.getBrand_no());
+//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_PORTRAIT, user.getPortrait());
+                            SharedPreferencesUtil.save(LoginActivity.this, "USER_JSON", response);
+                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_ISLOGIN, true);
                             long endTime = System.currentTimeMillis();
                             if (endTime - startTime < 1500) {
                                 try {
@@ -124,7 +133,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 endDialog();
                             }
                             // 跳转到主页面
-                            MainActivity.launchActivity(LoginActivity.this, phoneNumber);
+                            MainActivity.launchActivity(LoginActivity.this, user);
                             LoginActivity.this.finish();
                         } else {
                             Log.d(TAG, "onFinish: 账号或者密码错误！");

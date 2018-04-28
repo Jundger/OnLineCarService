@@ -1,20 +1,12 @@
 package com.jundger.carservice.fragment;
 
-import android.Manifest;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,12 +26,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
-import com.jundger.carservice.activity.LoginActivity;
 import com.jundger.carservice.activity.MapActivity;
 import com.jundger.carservice.adapter.SiteAdapter;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
-import com.jundger.carservice.pojo.Result;
+import com.jundger.carservice.pojo.ResultArray;
 import com.jundger.carservice.pojo.ServicePoint;
 import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.LocationUtil;
@@ -152,14 +143,14 @@ public class RepairFragment extends Fragment {
 
         String url = UrlConsts.getRequestURL(Actions.ACTION_GET_SITE);
 
-        HttpUtil.sendOkHttpRequest(url, new Callback() {
+        HttpUtil.okHttpGet(url, new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 Log.d(TAG, "RepairFragment | okHttp success!");
                 String responseData = response.body().string();
 
                 // Gson解析json数据
-                Result<ServicePoint> result = new Gson().fromJson(responseData, new TypeToken<Result<ServicePoint>>(){}.getType());
+                ResultArray<ServicePoint> result = new Gson().fromJson(responseData, new TypeToken<ResultArray<ServicePoint>>(){}.getType());
 
                 /**
                  * 易错点！！！！！！！！！！

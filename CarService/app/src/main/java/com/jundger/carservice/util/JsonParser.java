@@ -1,14 +1,9 @@
 package com.jundger.carservice.util;
 
-import android.content.Context;
-import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.jundger.carservice.constant.UrlConsts;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,13 +28,14 @@ public class JsonParser {
             JSONObject obj = new JSONObject(jsonData);
             String code = obj.getString(UrlConsts.KEY_RETURN_CODE);
             String msg = obj.getString(UrlConsts.KEY_RETURN_MSG);
-            if (UrlConsts.REQUEST_SUCCESS_CODE.equals(code)) {
+            if (UrlConsts.CODE_SUCCESS.equals(code)) {
                 String token = obj.getString(UrlConsts.KEY_RETURN_TOKEN);
-                String user = obj.getString(UrlConsts.KEY_RETURN_NAME);
+                String user = obj.getString(UrlConsts.KEY_RETURN_PHONE);
                 returnMap.put(UrlConsts.KEY_RETURN_CODE, code);
+                returnMap.put(UrlConsts.KEY_RETURN_MSG, msg);
                 returnMap.put(UrlConsts.KEY_TOKEN, token);
                 returnMap.put(UrlConsts.KEY_USERNAME, user);
-                returnMap.put(UrlConsts.KEY_RETURN_MSG, msg);
+
             } else {
                 returnMap.put(UrlConsts.KEY_RETURN_CODE, code);
                 returnMap.put(UrlConsts.KEY_RETURN_MSG, msg);

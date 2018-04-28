@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by 14246 on 2018/1/5.
  */
 
-public class Article implements Serializable{
+public class Article implements Serializable {
 
     // 文章标题
     private String title;

@@ -1,5 +1,7 @@
 package com.jundger.work.service;
 
+import com.jundger.work.pojo.Comment;
+import com.jundger.work.pojo.FaultCode;
 import com.jundger.work.pojo.Site;
 
 import java.util.List;
@@ -16,4 +18,6 @@ import java.util.Map;
 public interface SiteService {
 
 	List<Map<String, Object>> getShowList();
+
+	List<Comment> getCommentBySite(String site_id);
 }

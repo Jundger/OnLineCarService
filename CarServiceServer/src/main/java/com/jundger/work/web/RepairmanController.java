@@ -43,7 +43,7 @@ public class RepairmanController {
 		Map<String, Object> returnMsg = new HashMap<String, Object>();
 
 		Repairman repairman = repairmanService.getById(id);
-		returnMsg.put("return_code", "1");
+		returnMsg.put("code", "1");
 		returnMsg.put("msg", "SUCCESS");
 		returnMsg.put("nickname", repairman.getNickname());
 		returnMsg.put("phone", repairman.getPhone());

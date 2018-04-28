@@ -1,7 +1,12 @@
 package com.jundger.carservice.constant;
 
 /**
- * Created by 14246 on 2018/4/19.
+ * Title: CarService
+ * Date: Create in 2018/4/21 20:52
+ * Description:
+ *
+ * @author Jundger
+ * @version 1.0
  */
 
 public class Actions {
@@ -25,4 +30,9 @@ public class Actions {
      * 获取所有文章的action
      */
     public static final String ACTION_GET_ARTICLE = "article/getlist.do";
+
+    /**
+     * 查询故障码的action
+     */
+    public static final String ACTION_QUERY_CODE = "customer/querycode.do";
 }

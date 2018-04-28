@@ -23,6 +23,7 @@ import com.jundger.carservice.fragment.MainPageFragment;
 import com.jundger.carservice.fragment.MaintainFragment;
 import com.jundger.carservice.fragment.MineFragment;
 import com.jundger.carservice.fragment.RepairFragment;
+import com.jundger.carservice.pojo.User;
 import com.jundger.carservice.util.InjectUtil;
 
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         MineFragment.OnFragmentInteractionListener, ViewPager.OnPageChangeListener {
 
     private static final String TAG = "MainActivity";
+    public static final String TRANSMIT_PARAM = "USER";
+
+    private User user;
 
     @InjectView(R.id.main_page_rl)
     private RelativeLayout main_page_rl;
@@ -64,12 +68,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         maintain_page_rl.setOnClickListener(this);
         mine_page_rl.setOnClickListener(this);
 
+        user = (User) getIntent().getSerializableExtra(TRANSMIT_PARAM);
+
         initFragment();
     }
 
     private void initFragment() {
         ArrayList<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new MainPageFragment());
+        fragmentList.add(MainPageFragment.newInstance(user.getBrand(), user.getBrand_no()));
         fragmentList.add(new RepairFragment());
         fragmentList.add(new MaintainFragment());
         fragmentList.add(new MineFragment());
@@ -83,9 +89,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mine_page_rl.setSelected(false);
     }
 
-    public static void launchActivity(Context context, String username) {
+    public static void launchActivity(Context context, User user) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("username", username);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(TRANSMIT_PARAM, user);
+        intent.putExtras(bundle);
         context.startActivity(intent);
     }
 

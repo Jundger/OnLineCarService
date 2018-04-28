@@ -40,6 +40,10 @@
     <string name="use_scope_str">适用范围：</string>
     <string name="describe_str">故障描述：</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="hint_connect_bluetooth">请选择连接设备</string>
+    <string name="hint_scan_bluetooth">正在扫描蓝牙设备……</string>
+    <string name="hint_request_open_bluetooth">请打开蓝牙</string>
+    <string name="hint_not_support_bluetooth">该设备不支持蓝牙功能！</string>
 
     <!-- Strings related to Settings -->
 

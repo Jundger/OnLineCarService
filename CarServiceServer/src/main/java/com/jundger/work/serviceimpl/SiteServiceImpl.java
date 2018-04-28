@@ -1,8 +1,11 @@
 package com.jundger.work.serviceimpl;
 
+import com.jundger.work.dao.CommentMapper;
 import com.jundger.work.dao.SiteMapper;
+import com.jundger.work.pojo.Comment;
 import com.jundger.work.pojo.Site;
 import com.jundger.work.service.SiteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,8 +26,16 @@ public class SiteServiceImpl implements SiteService {
 	@Resource
 	private SiteMapper siteMapper;
 
+	@Autowired
+	private CommentMapper commentMapper;
+
 	@Override
 	public List<Map<String, Object>> getShowList() {
 		return siteMapper.selectShowList();
+	}
+
+	@Override
+	public List<Comment> getCommentBySite(String site_id) {
+		return commentMapper.selectBySiteId(site_id);
 	}
 }

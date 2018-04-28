@@ -1,6 +1,7 @@
 package com.jundger.work.service;
 
 import com.jundger.work.pojo.Customer;
+import com.jundger.work.pojo.FaultCode;
 
 public interface CustomerService {
     // 通过ID查询用户信息
@@ -10,7 +11,7 @@ public interface CustomerService {
     int updateByPrimaryKeySelective(Customer customer);
 
     // 通过手机号查询用户信息
-    Customer getByphoneName(String phoneNumber);
+    Customer getByphoneNumber(String phoneNumber);
 
     // 通过手机号和密码验证登录信息
     Customer validateLogin(String phoneNumber, String password);
@@ -20,4 +21,7 @@ public interface CustomerService {
 
     // 注册用户
     int register(Customer customer);
+
+    // 根据故障码和汽车型号查询故障信息
+    FaultCode queryFaultCode(String code, String brand);
 }

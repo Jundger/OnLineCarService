@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.base.BaseActivity;
+import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.util.FormatCheckUtil;
 import com.jundger.carservice.util.HttpUtil;
@@ -83,7 +84,7 @@ public class RegisterActivity extends BaseActivity {
                         HashMap<String, String> params = new HashMap<>();
                         params.put(UrlConsts.KEY_USERNAME, phoneNumber);
                         params.put(UrlConsts.KEY_PASSWORD, password);
-                        HttpUtil.sendHttpRequset(UrlConsts.getRequestURL(UrlConsts.ACTION_CUSTOMER_REGISTER), params, new HttpUtil.HttpCallbackListener() {
+                        HttpUtil.sendHttpRequest(UrlConsts.getRequestURL(Actions.ACTION_CUSTOMER_REGISTER), params, new HttpUtil.HttpCallbackListener() {
                             @Override
                             public void onFinish(String response) {
                                 Log.d(TAG, "Register | recieve from server: " + response);

@@ -24,7 +24,7 @@ import com.jundger.carservice.adapter.ArticleAdapter;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.pojo.Article;
-import com.jundger.carservice.pojo.Result;
+import com.jundger.carservice.pojo.ResultArray;
 import com.jundger.carservice.util.HttpUtil;
 
 import java.io.IOException;
@@ -66,13 +66,13 @@ public class MaintainFragment extends Fragment {
     private void requestArticle() {
 
         String url = UrlConsts.getRequestURL(Actions.ACTION_GET_ARTICLE);
-        HttpUtil.sendOkHttpRequest(url, new Callback() {
+        HttpUtil.okHttpGet(url, new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String res = response.body().string();
 
                 // Gson解析json数据
-                final Result<Article> result = new Gson().fromJson(res, new TypeToken<Result<Article>>(){}.getType());
+                final ResultArray<Article> result = new Gson().fromJson(res, new TypeToken<ResultArray<Article>>(){}.getType());
 
                 shopList.clear();
                 shopList.addAll(result.getData());
