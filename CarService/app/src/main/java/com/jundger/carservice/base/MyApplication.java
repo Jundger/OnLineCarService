@@ -3,8 +3,15 @@ package com.jundger.carservice.base;
 import android.app.Application;
 import android.content.Context;
 
+import org.litepal.LitePal;
+
 /**
- * Created by 14246 on 2018/4/20.
+ * Title: CarService
+ * Date: Create in 2018/4/21 21:56
+ * Description:
+ *
+ * @author Jundger
+ * @version 1.0
  */
 
 public class MyApplication extends Application {
@@ -14,6 +21,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LitePal.initialize(this);
         context = getApplicationContext();
     }
 

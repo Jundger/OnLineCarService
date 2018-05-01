@@ -139,8 +139,13 @@
   </update>
 
   <select id="selectByCode" resultMap="BaseResultMap">
-    SELECT * FROM fault_code
-    WHERE code = #{code,jdbcType=VARCHAR}
-    AND (scope LIKE CONCAT('%',#{brand},'%') OR scope = '所有汽车制造商')
+    SELECT *
+    FROM fault_code
+    WHERE (scope LIKE CONCAT('%',#{brand},'%') OR scope = '所有汽车制造商')
+    AND code IN 
+    <foreach collection="codes" item="code" index="index"
+      open="(" separator="," close=")">
+      #{code,jdbcType=VARCHAR}
+    </foreach>
   </select>
 </mapper>

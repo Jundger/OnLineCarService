@@ -2,6 +2,8 @@ package com.jundger.carservice.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.Serializable;
 
 /**
@@ -13,7 +15,7 @@ import java.io.Serializable;
  * @version 1.0
  */
 
-public class User implements Serializable {
+public class User extends DataSupport implements Serializable {
 
     @SerializedName("phone_number")
     private String phone;
@@ -31,6 +33,9 @@ public class User implements Serializable {
     private String brand_no;
 
     private String token;
+
+    public User() {
+    }
 
     public User(String phone, String email, String nickname, String portrait, String brand, String brand_no, String token) {
         this.phone = phone;

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+import java.util.List;
+
 import static com.jundger.common.util.JwtUtil.createJWT;
 import static com.jundger.common.util.JwtUtil.generalSubject;
 
@@ -60,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public FaultCode queryFaultCode(String code, String brand) {
-        return faultCodeMapper.selectByCode(code, brand);
+    public List<FaultCode> queryFaultCode(List<String> codes, String brand) {
+        return faultCodeMapper.selectByCode(codes, brand);
     }
 }

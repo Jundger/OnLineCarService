@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.drm.DrmStore;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,17 +47,22 @@ import com.jundger.carservice.pojo.FaultCode;
 import com.jundger.carservice.pojo.ResultArray;
 import com.jundger.carservice.pojo.ResultObject;
 import com.jundger.carservice.util.HttpUtil;
+import com.shinelw.library.ColorArcProgressBar;
 import com.syd.oden.circleprogressdialog.core.CircleProgressDialog;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
@@ -71,6 +77,8 @@ public class MainPageFragment extends Fragment {
     private String mBrandNo; // 型号
 
     private OnFragmentInteractionListener mListener;
+
+    private ColorArcProgressBar colorArcProgressBar;
 
     @InjectView(R.id.get_info_fab)
     private FloatingActionButton getInfoFab;
@@ -95,6 +103,7 @@ public class MainPageFragment extends Fragment {
 
     private CircleProgressDialog circleProgressDialog;
     private BluetoothAdapter bluetoothAdapter;
+    private BluetoothDevice connectDevice;
 
     IntentFilter filter;
     BroadcastReceiver receiver;
@@ -105,6 +114,7 @@ public class MainPageFragment extends Fragment {
     Set<BluetoothDevice> pairedDevices;
     ConnectedThread connectedThread;
     private Boolean isBluetoothConnect;
+    private String receiveData;
 
     private String scanHint;
 
@@ -120,19 +130,21 @@ public class MainPageFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case APPConsts.CONNECT_SUCCESS:
-
                     connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
                     connectedThread.write("MiPhone".getBytes());
                     connectedThread.start();
                     stopProgressDialog();
                     break;
                 case APPConsts.MESSAGE_READ:
-
-                    String fault_code = (String) msg.obj;
-                    Log.i(TAG, "handleMessage: recieve from bluetooth-->" + fault_code);
-//                    Toast.makeText(getActivity(), "receive--> " + fault_code, Toast.LENGTH_SHORT).show();
-
-                    queryCodeAndShowResult(fault_code);
+                    receiveData = (String) msg.obj;
+                    Log.d(TAG, "handleMessage: recieve from bluetooth-->" + receiveData);
+                    break;
+                case APPConsts.SHOW_RESULT:
+                    Log.d(TAG, "handleMessage: SHOW_RESULT");
+                    queryCodeAndShowResult(receiveData);
+                    break;
+                default:
+                    Log.d(TAG, "handleMessage: no such msg.what!");
                     break;
             }
         }
@@ -177,10 +189,24 @@ public class MainPageFragment extends Fragment {
     }
 
     private void queryCodeAndShowResult(String fault_code) {
-        RequestBody requestBody = new FormBody.Builder()
-                .add("brand", mBrand)
-                .add("code", fault_code)
-                .build();
+        if (fault_code == null) {
+            Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        List<String> list = new ArrayList<>();
+        list = new Gson().fromJson(fault_code, new TypeToken<List<String>>(){}.getType());
+        for (String str : list) {
+            Log.i(TAG, "onClick: " + str);
+        }
+
+        Map<String, Object> sendMsg = new HashMap<>();
+        sendMsg.put("brand", mBrand);
+        sendMsg.put("code", list);
+        String json = new Gson().toJson(sendMsg);
+        Log.i(TAG, "json-->" +  json);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+
         HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_QUERY_CODE), requestBody, new okhttp3.Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -198,15 +224,20 @@ public class MainPageFragment extends Fragment {
                 String res = response.body().string();
                 Log.i(TAG, "onResponse: receive from server: " + res);
                 // Gson解析json数据
-                ResultObject<FaultCode> result = new Gson().fromJson(res, new TypeToken<ResultObject<FaultCode>>(){}.getType());
+                final ResultArray<FaultCode> result = new Gson().fromJson(res, new TypeToken<ResultArray<FaultCode>>(){}.getType());
 
                 if (UrlConsts.CODE_SUCCESS.equals(result.getCode())) {
-//                    infoList.clear();
-                    infoList.add(result.getData());
+                    infoList.clear();
+                    infoList.addAll(result.getData());
 
                     refreshRecyclerView();
                 } else {
-                    Toast.makeText(getActivity(), result.getMsg(), Toast.LENGTH_SHORT).show();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), result.getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -221,7 +252,7 @@ public class MainPageFragment extends Fragment {
                     @Override
                     public void run() {
                         faultInfoAdapter.notifyDataSetChanged();
-                        if (!isListEmpty(infoList)) {
+                        if (!infoList.isEmpty()) {
                             emptyView.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
                             fault_info_title_tv.setVisibility(View.VISIBLE);
@@ -247,9 +278,23 @@ public class MainPageFragment extends Fragment {
     }
 
     private void init() {
-//        toolbar.setTitle("故障检测");
-        isBluetoothConnect = false;
         isReceiverRegister = false;
+
+        colorArcProgressBar = getActivity().findViewById(R.id.bar1);
+        colorArcProgressBar.setBackgroundResource(R.drawable.car_logo);
+
+        if (connectDevice != null && connectDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
+            isBluetoothConnect = true;
+            connect_state_iv.setImageResource(R.drawable.has_connect_white);
+            colorArcProgressBar.setCurrentValues(100);
+        } else {
+            isBluetoothConnect = false;
+            connect_state_iv.setImageResource(R.drawable.no_connect_red);
+        }
+        if (!infoList.isEmpty()) {
+            emptyView.setVisibility(View.GONE);
+            fault_info_title_tv.setVisibility(View.VISIBLE);
+        }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -263,6 +308,15 @@ public class MainPageFragment extends Fragment {
                     openBlueTooth();
                 } else {
                     connectedThread.write("MiPhone".getBytes());
+
+                    colorArcProgressBar.setCurrentValues(0);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            colorArcProgressBar.setCurrentValues(100);
+                            mHandler.obtainMessage(APPConsts.SHOW_RESULT).sendToTarget();
+                        }
+                    }, 1000);
                 }
             }
         });
@@ -376,6 +430,7 @@ public class MainPageFragment extends Fragment {
 
                             if ("H-C-2010-06-01".equals(device.getName())) {
                                 bluetoothAdapter.cancelDiscovery();
+                                connectDevice = device;
                             }
                         }
                         break;
@@ -492,18 +547,6 @@ public class MainPageFragment extends Fragment {
         } else {
             startDiscovery();
         }
-    }
-
-    public boolean isListEmpty(List<FaultCode> list) {
-        if (null != list && !list.isEmpty()) {
-            for (int i = 0; i < list.size(); i++) {
-                if (null == list.get(i)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        return true;
     }
 
     public interface OnFragmentInteractionListener {

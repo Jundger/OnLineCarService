@@ -28,6 +28,8 @@ import com.jundger.carservice.util.NetCheckUtil;
 import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.SharedPreferencesUtil;
 
+import org.litepal.LitePal;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,6 +64,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         login_btn.setOnClickListener(this);
         forget_psw_tv.setOnClickListener(this);
         register_tv.setOnClickListener(this);
+
+        // LitePal根据assets中的配置文件建立数据库和对应的表结构
+        LitePal.getDatabase();
 
         if (!NetCheckUtil.isNetworkConnected(this)) {
             Toast.makeText(this, "请打开网络连接！", Toast.LENGTH_LONG).show();
@@ -114,15 +119,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     if (null != result) {
                         if (UrlConsts.CODE_SUCCESS.equals(result.getCode())) {
                             User user = result.getData();
-                            // 在本地存储服务器返回的Token值及登录状态
-//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_TOKEN, user.getToken());
-//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_PHONE, user.getPhone());
-//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_NICKNAME, user.getNickname());
-//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_BRAND, user.getBrand());
-//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_BRAND_NO, user.getBrand_no());
-//                            SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_PORTRAIT, user.getPortrait());
-                            SharedPreferencesUtil.save(LoginActivity.this, "USER_JSON", response);
+
+                            // 在本地存储登录状态
                             SharedPreferencesUtil.save(LoginActivity.this, APPConsts.SHARED_KEY_ISLOGIN, true);
+
+                            // 通过LitePal存储用户信息
+                            user.save();
+
                             long endTime = System.currentTimeMillis();
                             if (endTime - startTime < 1500) {
                                 try {

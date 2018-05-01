@@ -3,13 +3,11 @@ package com.jundger.work.web;
 import com.jundger.work.pojo.Customer;
 import com.jundger.work.pojo.FaultCode;
 import com.jundger.work.service.CustomerService;
+import net.sf.json.JSON;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +61,7 @@ public class CustomerController {
 			data.put("car_brand", customer.getCarBrand());
 			data.put("car_id", customer.getCarId());
 			data.put("email", customer.getCustEmail());
-			data.put("token", this.customerService.generalToken(customer, 60 * 60 * 1000));
+//			data.put("token", this.customerService.generalToken(customer, 60 * 60 * 1000));
 			returnMsg.put("data", data);
 
 			customer.setLoginIp(request.getRemoteAddr());
@@ -119,12 +117,24 @@ public class CustomerController {
 
 	@ResponseBody
 	@RequestMapping(value = "/querycode", method = RequestMethod.POST)
-	public Map<String, Object> queryFaultMsg(@RequestParam(value = "brand") String brand, @RequestParam(value = "code") String code) {
+	public Map<String, Object> queryFaultMsg(@RequestBody Map<String, Object> json) {
 
 		Map<String, Object> returnMsg = new HashMap<String, Object>();
 
+		String brand = (String) json.get("brand");
+		List<String> codes = (List<String>) json.get("code");
+		logger.info("brand-->" + brand);
+		for (String str : codes) {
+			logger.info("code-->" + str);
+		}
+
+		if (codes.isEmpty()) {
+			returnMsg.put("code", "0");
+			returnMsg.put("msg", "CODE_IS_EMPTY");
+		}
+
 		try {
-			FaultCode faultCode = customerService.queryFaultCode(code, brand);
+			List<FaultCode> faultCode = customerService.queryFaultCode(codes, brand);
 			if (null == faultCode) {
 				returnMsg.put("code", "0");
 				returnMsg.put("msg", "CODE_NOT_EXIST");

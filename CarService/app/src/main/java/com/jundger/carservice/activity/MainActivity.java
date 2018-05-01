@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         fragmentList.add(MainPageFragment.newInstance(user.getBrand(), user.getBrand_no()));
         fragmentList.add(new RepairFragment());
         fragmentList.add(new MaintainFragment());
-        fragmentList.add(new MineFragment());
+        fragmentList.add(MineFragment.newInstance(user.getPhone(), user.getNickname()));
         MyFragmentPagerAdapter myFragmentAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
         myViewPager.setAdapter(myFragmentAdapter);
         myViewPager.addOnPageChangeListener(this);

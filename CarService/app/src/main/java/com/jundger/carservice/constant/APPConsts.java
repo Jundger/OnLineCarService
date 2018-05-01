@@ -59,6 +59,7 @@ public class APPConsts {
     public static final int CONNECT_SUCCESS = 1;
     public static final int CONNECT_FAIL = 2;
     public static final int MESSAGE_READ = 3;
+    public static final int SHOW_RESULT = 4;
 
     /**
      * CircleProgressDialog环形进度条大小
