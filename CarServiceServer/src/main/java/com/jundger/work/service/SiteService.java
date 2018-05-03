@@ -17,7 +17,12 @@ import java.util.Map;
  */
 public interface SiteService {
 
-	List<Map<String, Object>> getShowList();
+	List<Map<String, Object>> getShowList(Float longitude, Float latitude, Double radius);
 
-	List<Comment> getCommentBySite(String site_id);
+	List<Map<String, Object>> getCommentBySite(String site_id);
+
+	List<Map<String, Object>> getLocationList();
+
+	Map<String, Object> getSiteByName(String name);
+
 }

@@ -30,8 +30,8 @@ import com.jundger.carservice.activity.MapActivity;
 import com.jundger.carservice.adapter.SiteAdapter;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
-import com.jundger.carservice.pojo.ResultArray;
-import com.jundger.carservice.pojo.ServicePoint;
+import com.jundger.carservice.bean.ResultArray;
+import com.jundger.carservice.bean.ServicePoint;
 import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.LocationUtil;
 import com.jundger.carservice.util.RecyclerViewDivider;
@@ -42,6 +42,8 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RepairFragment extends Fragment {
@@ -143,7 +145,15 @@ public class RepairFragment extends Fragment {
 
         String url = UrlConsts.getRequestURL(Actions.ACTION_GET_SITE);
 
-        HttpUtil.okHttpGet(url, new Callback() {
+        RequestBody requestBody = null;
+        if (location != null) {
+            requestBody = new FormBody.Builder()
+                    .add("longitude", String.valueOf(location.getLongitude()))
+                    .add("latitude", String.valueOf(location.getLatitude()))
+                    .build();
+        }
+
+        HttpUtil.okHttpPost(url, requestBody, new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 Log.d(TAG, "RepairFragment | okHttp success!");

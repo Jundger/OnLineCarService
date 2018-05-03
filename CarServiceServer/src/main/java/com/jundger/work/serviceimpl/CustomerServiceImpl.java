@@ -37,6 +37,11 @@ public class CustomerServiceImpl implements CustomerService {
         return this.customerDao.selectByPhoneNumber(phoneNumber);
     }
 
+    @Override
+    public Customer getByEmail(String email) {
+        return customerDao.selectByEmail(email);
+    }
+
     // 通过用户名和密码验证登录信息
     public Customer validateLogin(String phoneNumber, String password) {
         return this.customerDao.selectByPhonePsw(phoneNumber, password);

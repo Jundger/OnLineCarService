@@ -23,16 +23,15 @@
         android:orientation="vertical">
 
         <com.jundger.carservice.widget.ClearEditText
-            android:id="@+id/username_forget_et"
-            android:layout_width="250dp"
+            android:id="@+id/email_forget_et"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="80dp"
             android:singleLine="true"
-            android:inputType="number"
-            android:maxLength="11"
             android:textSize="25sp"
             android:hint="@string/forget_phone_hint"
+            android:text="1424600791@qq.com"
             android:textCursorDrawable="@drawable/edit_cursor"
             android:textColor="@color/input_editText"
             android:background="@drawable/et_bg"
@@ -42,16 +41,53 @@
             android:drawableRight="@drawable/et_delete_right"/>
 
         <com.jundger.carservice.widget.ClearEditText
+            android:id="@+id/new_psw_forget_et"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:ems="20"
+            android:textSize="25sp"
+            android:hint="@string/forget_new_psw_hint"
+            android:textCursorDrawable="@drawable/edit_cursor"
+            android:textColor="@color/input_editText"
+            android:background="@drawable/et_bg"
+            android:drawableStart="@drawable/password_et_left_icon"
+            android:drawableLeft="@drawable/password_et_left_icon"
+            android:drawableEnd="@drawable/et_delete_right"
+            android:drawableRight="@drawable/et_delete_right"/>
+
+        <com.jundger.carservice.widget.ClearEditText
+            android:id="@+id/repeat_psw_forget_et"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"
+            android:ems="20"
+            android:textSize="25sp"
+            android:inputType="textPassword"
+            android:hint="@string/forget_repeat_psw_hint"
+            android:textCursorDrawable="@drawable/edit_cursor"
+            android:textColor="@color/input_editText"
+            android:background="@drawable/et_bg"
+            android:drawableStart="@drawable/confirm_et_left_icon"
+            android:drawableLeft="@drawable/confirm_et_left_icon"
+            android:drawableEnd="@drawable/et_delete_right"
+            android:drawableRight="@drawable/et_delete_right"/>
+
+        <com.jundger.carservice.widget.ClearEditText
             android:id="@+id/code_forget_et"
-            android:layout_width="250dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             android:singleLine="true"
             android:inputType="number"
-            android:ems="20"
             android:textSize="25sp"
-            android:maxLength="12"
+            android:maxLength="6"
             android:hint="@string/forget_code_hint"
             android:textCursorDrawable="@drawable/edit_cursor"
             android:textColor="@color/input_editText"
@@ -75,7 +111,7 @@
 
         <Button
             android:id="@+id/forget_psw_btn"
-            android:layout_width="250dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_gravity="center_horizontal"

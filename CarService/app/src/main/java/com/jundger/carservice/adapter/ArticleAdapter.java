@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.MaintainShowActivity;
 import com.jundger.carservice.base.MyApplication;
-import com.jundger.carservice.pojo.Article;
+import com.jundger.carservice.bean.Article;
 
 import java.util.List;
 

@@ -23,8 +23,8 @@ import com.jundger.carservice.R;
 import com.jundger.carservice.adapter.ArticleAdapter;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
-import com.jundger.carservice.pojo.Article;
-import com.jundger.carservice.pojo.ResultArray;
+import com.jundger.carservice.bean.Article;
+import com.jundger.carservice.bean.ResultArray;
 import com.jundger.carservice.util.HttpUtil;
 
 import java.io.IOException;

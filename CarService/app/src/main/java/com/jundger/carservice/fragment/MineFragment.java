@@ -5,17 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +19,14 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.LoginActivity;
 import com.jundger.carservice.activity.SettingsActivity;
 import com.jundger.carservice.constant.APPConsts;
-import com.jundger.carservice.constant.UrlConsts;
-import com.jundger.carservice.pojo.User;
+import com.jundger.carservice.bean.User;
 import com.jundger.carservice.util.SharedPreferencesUtil;
+import com.jundger.carservice.widget.CircleImageView;
 
 import org.litepal.crud.DataSupport;
 
@@ -41,11 +36,9 @@ import java.util.List;
 import java.util.Map;
 
 public class MineFragment extends Fragment {
-    private static final String ARG_PARAM1 = "phone";
-    private static final String ARG_PARAM2 = "nickname";
+    private static final String ARG_PARAM1 = "user_info";
 
-    private String phone;
-    private String nickname;
+    private User user;
 
     private OnFragmentInteractionListener mListener;
 
@@ -55,6 +48,7 @@ public class MineFragment extends Fragment {
     private List<Map<String, Object>> list;
     private SimpleAdapter simpleAdapter;
     private TextView edit_person_data_tv;
+    private CircleImageView my_portrait_civ;
 
     private static final String TAG = "MineFragment";
 
@@ -76,6 +70,7 @@ public class MineFragment extends Fragment {
         toolbar = getActivity().findViewById(R.id.mine_activity_tb);
         gridView = getActivity().findViewById(R.id.mine_page_gview);
         edit_person_data_tv = getActivity().findViewById(R.id.edit_person_data_tv);
+        my_portrait_civ = getActivity().findViewById(R.id.my_portrait_civ);
     }
 
     private void init() {
@@ -104,7 +99,7 @@ public class MineFragment extends Fragment {
         getData();
         String[] from = {"image", "text"};
         int[] to = {R.id.item_grid_img_tv, R.id.item_grid_name_tv};
-        simpleAdapter = new SimpleAdapter(getView().getContext(), list, R.layout.item_mine_grid, from, to);
+        simpleAdapter = new SimpleAdapter(getActivity(), list, R.layout.item_mine_grid, from, to);
         gridView.setAdapter(simpleAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -131,7 +126,12 @@ public class MineFragment extends Fragment {
             }
         });
 
-        edit_person_data_tv.setOnClickListener(new View.OnClickListener() {
+        edit_person_data_tv.setText(user.getNickname());
+        Glide.with(getActivity())
+                .load(user.getPortrait())
+                .error(R.drawable.load_fail)
+                .into(my_portrait_civ);
+        my_portrait_civ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "抱歉，尚不能修改个人资料！", Toast.LENGTH_SHORT).show();
@@ -148,7 +148,7 @@ public class MineFragment extends Fragment {
         normalDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DataSupport.deleteAll(User.class, "phone = ?", phone);
+                DataSupport.deleteAll(User.class, "phone = ?", user.getPhone());
 
                 SharedPreferencesUtil.save(getActivity(), APPConsts.SHARED_KEY_ISLOGIN, false);
                 LoginActivity.launchActivity(getActivity());
@@ -160,11 +160,10 @@ public class MineFragment extends Fragment {
         normalDialog.show();
     }
 
-    public static MineFragment newInstance(String param1, String param2) {
+    public static MineFragment newInstance(User user) {
         MineFragment fragment = new MineFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PARAM1, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -173,8 +172,7 @@ public class MineFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            phone = getArguments().getString(ARG_PARAM1);
-            nickname = getArguments().getString(ARG_PARAM2);
+            user = (User) getArguments().getSerializable(ARG_PARAM1);
         }
         setHasOptionsMenu(true); // 加上这句话，Toolbar的menu才会显示出来
     }

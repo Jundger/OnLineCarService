@@ -176,4 +176,26 @@
   <select id="selectBySiteId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select * from comment where site_id = #{site_id,jdbcType=VARCHAR};
   </select>
+
+  <resultMap id="commentShowMap" type="map">
+    <id column="id" javaType="int" property="id"/>
+    <result column="name" javaType="string" property="username"/>
+    <result column="portrait" javaType="string" property="portrait"/>
+    <result column="score" javaType="float" property="score"/>
+    <result column="content" javaType="string" property="content"/>
+    <result column="time" javaType="date" property="time"/>
+  </resultMap>
+
+  <select id="selectShowComment" parameterType="java.lang.String" resultMap="commentShowMap">
+    SELECT
+    comment.id AS id,
+    customer.cust_name AS name,
+    customer.cust_portrait AS portrait,
+    comment.score AS score,
+    comment.content AS content,
+    comment.create_time AS time
+    FROM comment, customer
+    WHERE comment.cust_id = customer.cust_id
+    AND comment.site_id = #{site_id,jdbcType=VARCHAR}
+  </select>
 </mapper>

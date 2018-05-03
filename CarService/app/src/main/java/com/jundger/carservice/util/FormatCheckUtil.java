@@ -44,4 +44,11 @@ public class FormatCheckUtil {
         }
         return true;
     }
+
+    public static boolean checkEmail(String email) {
+        // 验证邮箱的正则表达式
+        String format = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+        return email.matches(format);
+    }
 }

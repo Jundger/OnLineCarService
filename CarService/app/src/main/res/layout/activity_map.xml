@@ -32,6 +32,6 @@
         android:layout_below="@id/map_activity_tb"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </com.amap.api.maps2d.MapView>
+
 </RelativeLayout>

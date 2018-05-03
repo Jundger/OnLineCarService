@@ -18,8 +18,8 @@ public class NetCheckUtil {
 
     /**
      * 检查是否有网络连接
-     * @param context
-     * @return
+     * @param context 上下文
+     * @return 检查结果
      */
     public static boolean isNetworkConnected(Context context) {
         if (context != null) {

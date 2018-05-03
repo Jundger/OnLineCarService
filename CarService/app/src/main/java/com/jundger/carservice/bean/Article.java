@@ -1,4 +1,4 @@
-package com.jundger.carservice.pojo;
+package com.jundger.carservice.bean;
 
 import com.google.gson.annotations.SerializedName;
 

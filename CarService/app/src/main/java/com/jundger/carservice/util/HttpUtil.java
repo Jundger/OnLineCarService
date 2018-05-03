@@ -38,10 +38,18 @@ public class HttpUtil {
 
     public static void okHttpPost(String url, RequestBody body, Callback callback) {
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
+        Request request = null;
+        if (body != null) {
+            request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+        } else {
+            request = new Request.Builder()
+                    .url(url)
+                    .build();
+        }
+
         client.newCall(request).enqueue(callback);
     }
 

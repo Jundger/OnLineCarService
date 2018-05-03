@@ -26,13 +26,30 @@ import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.base.BaseActivity;
+import com.jundger.carservice.bean.ResultArray;
+import com.jundger.carservice.bean.ResultObject;
+import com.jundger.carservice.bean.ServicePoint;
+import com.jundger.carservice.bean.SiteLocation;
 import com.jundger.carservice.constant.APPConsts;
+import com.jundger.carservice.constant.Actions;
+import com.jundger.carservice.constant.UrlConsts;
+import com.jundger.carservice.util.HttpUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MapActivity extends BaseActivity implements  LocationSource, AMapLocationListener {
 
@@ -50,6 +67,10 @@ public class MapActivity extends BaseActivity implements  LocationSource, AMapLo
 
     private Toolbar mToolbar;
     private TextView location_city_info_tv;
+
+    private List<SiteLocation> siteLocationList;
+
+    private static final String TAG = "MapActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +141,43 @@ public class MapActivity extends BaseActivity implements  LocationSource, AMapLo
             // 启动定位
             mLocationClient.startLocation();
         }
+
+        AMap.OnInfoWindowClickListener infoWindowClickListener = new AMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Log.i(TAG, "onInfoWindowClick: " + marker.getTitle());
+                for (SiteLocation site : siteLocationList) {
+                    if (site.getName().equals(marker.getTitle())) {
+                        RequestBody requestBody = new FormBody.Builder()
+                                .add("site_name", marker.getTitle())
+                                .build();
+                        HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_QUERY_SITE), requestBody, new Callback() {
+                            @Override
+                            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                Log.i(TAG, "onFailure: 查询维修点信息失败");
+                            }
+
+                            @Override
+                            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                                String res = response.body().string();
+                                ResultObject<ServicePoint> result = new Gson().fromJson(res, new TypeToken<ResultObject<ServicePoint>>(){}.getType());
+                                if (UrlConsts.CODE_SUCCESS.equals(result.getCode())) {
+                                    final ServicePoint servicePoint = result.getData();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ShopDetailActivity.launchActivity(MapActivity.this, servicePoint);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        return ;
+                    }
+                }
+            }
+        };
+        aMap.setOnInfoWindowClickListener(infoWindowClickListener);
     }
 
     /**
@@ -210,8 +268,12 @@ public class MapActivity extends BaseActivity implements  LocationSource, AMapLo
                     aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude())));
                     // 点击定位按钮 能够将地图的中心移动到定位点
                     mListener.onLocationChanged(aMapLocation);
-                    // 添加图钉
+                    // 添加当前位置图钉
                     aMap.addMarker(getMarkerOptions(aMapLocation));
+
+                    // 显示所有维修点的坐标图钉
+                    showSiteLocation();
+
                     // Toolbar右上角显示定位点城市
                     location_city_info_tv.setText(aMapLocation.getCity());
                     // 获取定位信息
@@ -236,6 +298,41 @@ public class MapActivity extends BaseActivity implements  LocationSource, AMapLo
         }
     }
 
+    private void showSiteLocation() {
+
+        HttpUtil.okHttpGet(UrlConsts.getRequestURL(Actions.ACTION_GET_SITE_LOCATION), new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MapActivity.this, "维修点坐标获取失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String res = response.body().string();
+
+                ResultArray<SiteLocation> result = new Gson().fromJson(res, new TypeToken<ResultArray<SiteLocation>>(){}.getType());
+
+                if (UrlConsts.CODE_SUCCESS.equals(result.getCode()) && !result.getData().isEmpty()) {
+                    siteLocationList = result.getData();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (SiteLocation site : siteLocationList) {
+                                aMap.addMarker(getOptions(site));
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
+    }
+
     // 自定义一个图钉，并且设置图标，当我们点击图钉时，显示设置的信息
     private MarkerOptions getMarkerOptions(AMapLocation amapLocation) {
         // 设置图钉选项
@@ -244,12 +341,28 @@ public class MapActivity extends BaseActivity implements  LocationSource, AMapLo
         options.icon(BitmapDescriptorFactory.fromResource(R.drawable.location_map_icon));
         // 位置
         options.position(new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude()));
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(amapLocation.getCountry() + "" + amapLocation.getProvince() + "" + amapLocation.getCity() +  "" + amapLocation.getDistrict() + "" + amapLocation.getStreet() + "" + amapLocation.getStreetNum());
         // 标题
-        options.title(buffer.toString());
-        // 子标题
-        options.snippet("定位点");
+        options.title("Location:");
+        // 内容
+        options.snippet((amapLocation.getCountry() + "" + amapLocation.getProvince() + "" + amapLocation.getCity() + "" + amapLocation.getDistrict() + "" + amapLocation.getStreet() + "" + amapLocation.getStreetNum()));
+        // 设置多少帧刷新一次图片资源
+        options.period(60);
+
+        return options;
+
+    }
+
+    private MarkerOptions getOptions(SiteLocation site) {
+        // 设置图钉选项
+        MarkerOptions options = new MarkerOptions();
+        // 图标
+        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_site_location));
+        // 位置
+        options.position(new LatLng(site.getLatitude(), site.getLongitude()));
+        // 标题
+        options.title(site.getName());
+        // 内容
+        options.snippet(site.getAddress());
         // 设置多少帧刷新一次图片资源
         options.period(60);
 

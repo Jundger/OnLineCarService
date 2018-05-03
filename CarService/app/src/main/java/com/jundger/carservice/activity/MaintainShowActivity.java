@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
-import com.jundger.carservice.pojo.Article;
+import com.jundger.carservice.bean.Article;
 import com.jundger.carservice.util.InjectUtil;
 
 public class MaintainShowActivity extends AppCompatActivity {

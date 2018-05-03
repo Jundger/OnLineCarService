@@ -22,17 +22,42 @@ public class Actions {
     public static final String ACTION_CUSTOMER_REGISTER = "customer/register.do";
 
     /**
-     * 获取所有服务点信息的action
+     * 获取附近服务点信息的action
      */
-    public static final String ACTION_GET_SITE = "site/getlist.do";
+    public static final String ACTION_GET_SITE = "site/getList.do";
+
+    /**
+     * 获取所有服务点位置信息的action
+     */
+    public static final String ACTION_GET_SITE_LOCATION = "site/getLocation.do";
+
+    /**
+     * 根据名称查找服务点信息的action
+     */
+    public static final String ACTION_QUERY_SITE = "site/query.do";
 
     /**
      * 获取所有文章的action
      */
-    public static final String ACTION_GET_ARTICLE = "article/getlist.do";
+    public static final String ACTION_GET_ARTICLE = "article/getList.do";
+
+    /**
+     * 获取目标用户所有评论的action
+     */
+    public static final String ACTION_GET_COMMENT = "site/getComment.do";
 
     /**
      * 查询故障码的action
      */
-    public static final String ACTION_QUERY_CODE = "customer/querycode.do";
+    public static final String ACTION_QUERY_CODE = "customer/queryCode.do";
+
+    /**
+     * 发送验证码的action
+     */
+    public static final String ACTION_SEND_VERFI_CODE = "customer/sendEmail.do";
+
+    /**
+     * 忘记密码的action
+     */
+    public static final String ACTION_FORGET_PASSWORD = "customer/forgetPsw.do";
 }

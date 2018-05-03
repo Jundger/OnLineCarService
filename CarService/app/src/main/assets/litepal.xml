@@ -4,6 +4,6 @@
     <version value="1"/>
 
     <list>
-        <mapping class="com.jundger.carservice.pojo.User"/>
+        <mapping class="com.jundger.carservice.bean.User"/>
     </list>
 </litepal>

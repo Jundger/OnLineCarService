@@ -1,4 +1,4 @@
-package com.jundger.carservice.pojo;
+package com.jundger.carservice.bean;
 
 public class FaultCode {
     /**

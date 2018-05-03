@@ -36,7 +36,7 @@ public class ArticleController {
 	private static Logger logger = Logger.getLogger(ArticleController.class);
 
 	@ResponseBody
-	@RequestMapping(value = "getlist", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "getList", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public Map<String, Object> getSiteList(HttpServletRequest request, Model model) {
 
 		Map<String, Object> returnMsg = new HashMap<String, Object>();

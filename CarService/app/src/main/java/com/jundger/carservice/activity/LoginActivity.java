@@ -19,11 +19,10 @@ import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
-import com.jundger.carservice.pojo.ResultObject;
-import com.jundger.carservice.pojo.User;
+import com.jundger.carservice.bean.ResultObject;
+import com.jundger.carservice.bean.User;
 import com.jundger.carservice.util.FormatCheckUtil;
 import com.jundger.carservice.util.InjectUtil;
-import com.jundger.carservice.util.JsonParser;
 import com.jundger.carservice.util.NetCheckUtil;
 import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.SharedPreferencesUtil;
@@ -31,7 +30,6 @@ import com.jundger.carservice.util.SharedPreferencesUtil;
 import org.litepal.LitePal;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 

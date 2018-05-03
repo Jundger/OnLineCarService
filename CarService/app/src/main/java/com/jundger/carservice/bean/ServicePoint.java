@@ -1,4 +1,4 @@
-package com.jundger.carservice.pojo;
+package com.jundger.carservice.bean;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 
 public class ServicePoint implements Serializable {
+
+    private String id;
 
     // 服务点名称
     private String name;
@@ -30,13 +32,22 @@ public class ServicePoint implements Serializable {
     // 距离
     private Float distance;
 
-    public ServicePoint(String name, Float score, Integer evaluationCount, String address, String image, Float distance) {
+    public ServicePoint(String id, String name, Float score, Integer evaluationCount, String address, String image, Float distance) {
+        this.id = id;
         this.name = name;
         this.score = score;
         this.evaluationCount = evaluationCount;
         this.address = address;
         this.image = image;
         this.distance = distance;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appThemeColor"
     android:orientation="vertical" >
 
 
-    <android.support.v7.widget.AppCompatImageView
+    <com.jundger.carservice.widget.CircleImageView
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginTop="55dp"
-        android:background="@mipmap/app_portrait"
+        android:src="@mipmap/app_portrait"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/white"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_gravity="center"/>
@@ -25,7 +28,7 @@
         android:inputType="number"
         android:maxLength="11"
         android:textSize="25sp"
-        android:text="13900000000"
+        android:text="18654895583"
         android:textCursorDrawable="@drawable/edit_cursor"
         android:textColor="@color/input_editText"
         android:background="@drawable/et_bg"

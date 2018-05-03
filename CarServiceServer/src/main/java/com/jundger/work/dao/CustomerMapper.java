@@ -55,4 +55,6 @@ public interface CustomerMapper {
     Customer selectByPhoneNumber(@Param("phone") String phoneNumber);
 
     Customer selectByPhonePsw(@Param("phone") String phoneNumber, @Param("password") String password);
+
+    Customer selectByEmail(@Param("email") String email);
 }

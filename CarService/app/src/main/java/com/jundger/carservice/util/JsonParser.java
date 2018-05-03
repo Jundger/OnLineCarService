@@ -59,4 +59,19 @@ public class JsonParser {
         }
         return msg;
     }
+
+    public static Map<String, String> parseForgetPsw(String jsonData) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            JSONObject obj = new JSONObject(jsonData);
+            map.put(UrlConsts.KEY_RETURN_CODE, obj.getString(UrlConsts.KEY_RETURN_CODE));
+            Log.i(TAG, "parseForgetPsw: code-->" + obj.getString(UrlConsts.KEY_RETURN_CODE));
+            map.put(UrlConsts.KEY_RETURN_MSG, obj.getString(UrlConsts.KEY_RETURN_MSG));
+            Log.i(TAG, "parseForgetPsw: msg-->" + obj.getString(UrlConsts.KEY_RETURN_MSG));
+        } catch (JSONException e) {
+            Log.e(TAG, "parseForgetPsw: error!");
+            e.printStackTrace();
+        }
+        return map;
+    }
 }

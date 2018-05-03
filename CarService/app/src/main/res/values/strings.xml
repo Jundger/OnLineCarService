@@ -17,6 +17,7 @@
     <string name="phone_length_not_specs">手机号码长度不符合大陆规范</string>
     <string name="password_not_null">密码不能为空</string>
     <string name="password_not_more_six">密码长度必须大于6位</string>
+    <string name="email_format_error">邮箱格式错误</string>
 
     <!--RegisterActivity-->
     <string name="register_phone_hint">请输入手机号</string>
@@ -25,10 +26,14 @@
     <string name="register_str_btn">注&#160;&#160;&#160;&#160;&#160;&#160;册</string>
 
     <!--ForgetPswActivity-->
-    <string name="forget_phone_hint">请输入手机号</string>
+    <string name="forget_phone_hint">请输入邮箱地址</string>
+    <string name="forget_new_psw_hint">请输入新密码</string>
+    <string name="forget_repeat_psw_hint">请再次输入新密码</string>
     <string name="forget_code_hint">请输入验证码</string>
     <string name="forget_get_code_hint">获取验证码</string>
-    <string name="forget_next_str_btn">下一步</string>
+    <string name="forget_next_str_btn">提&#160;&#160;&#160;&#160;&#160;&#160;交</string>
+    <string name="forget_send_email_fail">验证码发送失败，请稍后重试</string>
+    <string name="forget_send_email_success">验证码发送成功，请查收</string>
 
     <!--MapActivity-->
     <string name="default_location_city">重庆市</string>

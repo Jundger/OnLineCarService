@@ -5,15 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDelegate;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.jundger.carservice.R;
 import com.jundger.carservice.adapter.MyFragmentPagerAdapter;
@@ -23,11 +18,10 @@ import com.jundger.carservice.fragment.MainPageFragment;
 import com.jundger.carservice.fragment.MaintainFragment;
 import com.jundger.carservice.fragment.MineFragment;
 import com.jundger.carservice.fragment.RepairFragment;
-import com.jundger.carservice.pojo.User;
+import com.jundger.carservice.bean.User;
 import com.jundger.carservice.util.InjectUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener,
         MainPageFragment.OnFragmentInteractionListener,
@@ -78,7 +72,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         fragmentList.add(MainPageFragment.newInstance(user.getBrand(), user.getBrand_no()));
         fragmentList.add(new RepairFragment());
         fragmentList.add(new MaintainFragment());
-        fragmentList.add(MineFragment.newInstance(user.getPhone(), user.getNickname()));
+        fragmentList.add(MineFragment.newInstance(user));
         MyFragmentPagerAdapter myFragmentAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
         myViewPager.setAdapter(myFragmentAdapter);
         myViewPager.addOnPageChangeListener(this);

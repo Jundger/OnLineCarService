@@ -3,16 +3,10 @@ package com.jundger.carservice.activity;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.constant.APPConsts;
-import com.jundger.carservice.constant.UrlConsts;
-import com.jundger.carservice.pojo.ResultObject;
-import com.jundger.carservice.pojo.User;
+import com.jundger.carservice.bean.User;
 import com.jundger.carservice.util.SharedPreferencesUtil;
 
 import org.litepal.crud.DataSupport;

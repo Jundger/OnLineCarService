@@ -62,7 +62,6 @@
                     android:id="@+id/shop_detail_tv"
                     android:layout_width="match_parent"
                     android:layout_height="82dp"
-                    android:text="重庆长安铃木汽车销售服务有限公司"
                     android:textSize="25sp"
                     android:paddingRight="55dp"
                     android:paddingEnd="55dp"
@@ -82,14 +81,19 @@
                         android:layout_height="18dp"
                         android:src="@drawable/ic_shop_com_from"/>
                     <TextView
+                        android:id="@+id/shop_property_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="汽车销售"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginStart="5dp"
-                        android:text="汽车销售"/>
+                        android:layout_marginStart="5dp"/>
                 </LinearLayout>
             </LinearLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/comment_show_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
 
             <LinearLayout
@@ -98,6 +102,7 @@
                 android:layout_height="match_parent"
                 android:paddingTop="40dp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="vertical">
                 <ImageView
                     android:layout_width="80dp"
@@ -119,7 +124,7 @@
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/get_info_fab"
+        android:id="@+id/navigation_fab"
         android:layout_margin="16dp"
         android:src="@drawable/ic_navigation"
         app:layout_anchor="@id/appBar_layout"

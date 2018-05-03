@@ -1,6 +1,4 @@
-package com.jundger.carservice.pojo;
-
-import java.util.List;
+package com.jundger.carservice.bean;
 
 /**
  * Title: CarService

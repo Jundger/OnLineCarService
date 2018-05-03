@@ -2,7 +2,6 @@ package com.jundger.carservice.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,9 @@ import com.bumptech.glide.Glide;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.ShopDetailActivity;
 import com.jundger.carservice.base.MyApplication;
-import com.jundger.carservice.pojo.ServicePoint;
+import com.jundger.carservice.bean.ServicePoint;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -81,10 +81,9 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ServicePoint servicePoint = mServicePointList.get(position);
-//        holder.imageView.setImageResource(servicePoint.getImageId());
         holder.name_tv.setText(servicePoint.getName());
         holder.score_tv.setText(String.valueOf(servicePoint.getScore()));
-//        holder.distance_tv.setText(String.valueOf(servicePoint.getDistance()));
+        holder.distance_tv.setText(new DecimalFormat("0.00").format(servicePoint.getDistance()));
         holder.evaNum_tv.setText(String.valueOf(servicePoint.getEvaluationCount()));
         holder.address_tv.setText(servicePoint.getAddress());
         Glide.with(MyApplication.getContext())

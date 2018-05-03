@@ -15,6 +15,9 @@ public interface CustomerService {
     // 通过手机号查询用户信息
     Customer getByphoneNumber(String phoneNumber);
 
+    // 通过邮箱查询用户信息
+    Customer getByEmail(String email);
+
     // 通过手机号和密码验证登录信息
     Customer validateLogin(String phoneNumber, String password);
 

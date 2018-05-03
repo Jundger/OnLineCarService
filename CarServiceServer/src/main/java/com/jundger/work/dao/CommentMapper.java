@@ -3,6 +3,7 @@ package com.jundger.work.dao;
 import com.jundger.work.pojo.Comment;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CommentMapper {
     /**
@@ -54,4 +55,6 @@ public interface CommentMapper {
     int updateByPrimaryKey(Comment record);
 
     List<Comment> selectBySiteId(String site_id);
+
+    List<Map<String, Object>> selectShowComment(String site_id);
 }

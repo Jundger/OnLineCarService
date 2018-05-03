@@ -1,9 +1,10 @@
 package com.jundger.work.web;
 
+import com.jundger.common.util.MD5Util;
 import com.jundger.work.pojo.Customer;
 import com.jundger.work.pojo.FaultCode;
 import com.jundger.work.service.CustomerService;
-import net.sf.json.JSON;
+import com.jundger.work.util.JavaEmailSender;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Title: CarServiceServer
@@ -43,7 +41,7 @@ public class CustomerController {
 
 		Customer customer;
 		try {
-			customer = this.customerService.validateLogin(username, password);
+			customer = this.customerService.validateLogin(username, MD5Util.encode(password));
 		} catch (Exception e) {
 			returnMsg.put("code", "0");
 			returnMsg.put("msg", "QUERY_FAIL");
@@ -101,7 +99,7 @@ public class CustomerController {
 
 		customer = new Customer();
 		customer.setCustPhone(username);
-		customer.setCustPassword(password);
+		customer.setCustPassword(MD5Util.encode(password));
 		try {
 			this.customerService.register(customer);
 		} catch (Exception e) {
@@ -116,7 +114,7 @@ public class CustomerController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/querycode", method = RequestMethod.POST)
+	@RequestMapping(value = "/queryCode", method = RequestMethod.POST)
 	public Map<String, Object> queryFaultMsg(@RequestBody Map<String, Object> json) {
 
 		Map<String, Object> returnMsg = new HashMap<String, Object>();
@@ -148,6 +146,79 @@ public class CustomerController {
 			returnMsg.put("code", "0");
 			returnMsg.put("msg", "UNKNOWN_ERROR");
 			e.printStackTrace();
+		}
+
+		return returnMsg;
+	}
+
+	/**
+	 * 给目标用户发送验证码
+	 * @param email 电子邮箱
+	 * @return 操作结果
+	 */
+	@ResponseBody
+	@RequestMapping(value="/sendEmail", method = RequestMethod.POST)
+	public Object sendEmail(@RequestParam(value = "email") String email) {
+
+		logger.info("==================发送邮件-->" + email + "==================");
+
+		Map<String, Object> returnMsg = new HashMap<>();
+
+		try {
+			//随机生成六位0-9的正整数作为验证码
+			StringBuilder builder = new StringBuilder();
+			Random random = new Random();
+			for (int i = 0; i < 6; i++) {
+				builder.append(random.nextInt(10));
+			}
+			String verifCode = builder.toString();
+			Customer customer = customerService.getByEmail(email);
+			if (customer == null) {
+				returnMsg.put("code", "0");
+				returnMsg.put("msg", "EMAIL_IS_NOT_REGISTER");
+				return returnMsg;
+			}
+			logger.info("Before md5-->" + verifCode);
+			logger.info("After md5-->" + MD5Util.encode(verifCode));
+			customer.setVerification(MD5Util.encode(verifCode));
+			customerService.updateByPrimaryKeySelective(customer);
+
+			JavaEmailSender.sendEmail(email, verifCode);
+
+			returnMsg.put("code", "1");
+			returnMsg.put("msg", "SEND_SUCCESS");
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnMsg.put("code", "0");
+			returnMsg.put("msg", "SEND_FAIL");
+		}
+
+		return returnMsg;
+	}
+
+	@ResponseBody
+		@RequestMapping(value = "/forgetPsw", method = RequestMethod.POST)
+	public Object forgetPsw(@RequestParam(value = "email") String email,
+							@RequestParam(value = "code") String code,
+							@RequestParam(value = "newPassword") String newPsw) {
+
+		Map<String, Object> returnMsg = new HashMap<>();
+
+		try {
+			Customer customer = customerService.getByEmail(email);
+			if (MD5Util.encode(code).equals(customer.getVerification())) {
+				customer.setCustPassword(MD5Util.encode(newPsw));
+				customerService.updateByPrimaryKeySelective(customer);
+				returnMsg.put("code", "1");
+				returnMsg.put("msg", "FORGET_SUCCESS");
+			} else {
+				returnMsg.put("code", "0");
+				returnMsg.put("msg", "CODE_ERROR");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnMsg.put("code", "0");
+			returnMsg.put("msg", "FORGET_FAIL");
 		}
 
 		return returnMsg;
