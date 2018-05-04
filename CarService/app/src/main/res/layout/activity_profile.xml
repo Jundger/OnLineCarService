@@ -209,5 +209,15 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/exit_login_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg"
+        android:text="@string/exit_login_text"
+        android:textColor="@android:color/white"
+        android:onClick="onClick"
+        android:textSize="25sp"
+        android:layout_margin="5dp" />
 
 </LinearLayout>

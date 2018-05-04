@@ -59,7 +59,7 @@ public class CustomerServiceImpl implements CustomerService {
         return token;
     }
 
-    public int register(Customer customer) {
+    public int addCustomer(Customer customer) {
         return this.customerDao.insertSelective(customer);
     }
 }

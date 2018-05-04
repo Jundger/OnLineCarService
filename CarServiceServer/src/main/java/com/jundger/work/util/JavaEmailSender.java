@@ -12,6 +12,9 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
 
+import static com.jundger.work.constant.Consts.EMAIL_FORGET_PSW;
+import static com.jundger.work.constant.Consts.EMAIL_REGISTER;
+
 /**
  * Title: CarServiceServer
  * Date: Create in 2018/5/1 18:43
@@ -28,7 +31,7 @@ public class JavaEmailSender {
 
 	public static final String EMAIL_TITLE = "CarService verification Code";
 
-	public static void sendEmail(String toEmailAddress, String verifCode) throws Exception {
+	public static void sendEmail(String toEmailAddress, String verifCode, String type) throws Exception {
 
 		Properties props = new Properties();
 
@@ -54,10 +57,18 @@ public class JavaEmailSender {
 		Message msg = new MimeMessage(session);
 		msg.setSubject(EMAIL_TITLE);
 
-		String content = "您好，" + toEmailAddress + "！\n" +
-				"您正在申请忘记密码，如非您本人操作请忽略此邮件。\n" +
-				"验证码为：" + verifCode +
-				"\n时间：" + new Date();
+		String content;
+		if (EMAIL_REGISTER.equals(type)) {
+			content = "您好，" + toEmailAddress + "！\n" +
+					"您的验证码为：" + verifCode +
+					"\n感谢您的使用，祝您生活愉快！\n" +
+					"\n时间：" + new Date();
+		} else {
+			content = "您好，" + toEmailAddress + "！\n" +
+					"您正在申请忘记密码，如非您本人操作请忽略此邮件。\n" +
+					"验证码为：" + verifCode +
+					"\n时间：" + new Date();
+		}
 
 		msg.setText(content);
 		msg.setFrom(new InternetAddress(FROM_EMAIL));

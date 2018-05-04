@@ -21,6 +21,6 @@ public interface CustomerService {
     // 生成Token验证字符串
     String generalToken(Customer customer, long ttlMillis);
 
-    // 注册用户
-    int register(Customer customer);
+    // 增加新用户
+    int addCustomer(Customer customer);
 }

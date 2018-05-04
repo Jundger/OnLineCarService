@@ -306,16 +306,20 @@ public class MainPageFragment extends Fragment {
                 if (!isBluetoothConnect) {
                     openBlueTooth();
                 } else {
-                    connectedThread.write(APPConsts.BLUETOOTH_READ_COMMAND.getBytes());
+                    if (mBrand == null || mBrandNo == null || "".equals(mBrand) || "".equals(mBrandNo)) {
+                        Toast.makeText(getActivity(), "请先到个人中心设置车辆信息", Toast.LENGTH_SHORT).show();
+                    } else {
+                        connectedThread.write(APPConsts.BLUETOOTH_READ_COMMAND.getBytes());
 
-                    colorArcProgressBar.setCurrentValues(0);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            colorArcProgressBar.setCurrentValues(100);
-                            mHandler.obtainMessage(APPConsts.SHOW_RESULT).sendToTarget();
-                        }
-                    }, 1000);
+                        colorArcProgressBar.setCurrentValues(0);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                colorArcProgressBar.setCurrentValues(100);
+                                mHandler.obtainMessage(APPConsts.SHOW_RESULT).sendToTarget();
+                            }
+                        }, 1000);
+                    }
                 }
             }
         });
@@ -611,12 +615,12 @@ public class MainPageFragment extends Fragment {
                     @Override
                     public void run() {
                         User user = userList.get(0);
-                        if (user != null) {
+                        if (user != null && user.getBrand() != null && user.getBrand_no() != null) {
                             mBrand = user.getBrand();
                             mBrandNo = user.getBrand_no();
                             collapsingLayout.setTitle(mBrand + " " + mBrandNo);
                         } else {
-                            collapsingLayout.setTitle("---");
+                            collapsingLayout.setTitle("----");
                         }
                     }
                 });

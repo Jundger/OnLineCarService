@@ -29,4 +29,17 @@ public class Consts {
 	 * 手机客户端请求附近维修店默认半径
 	 */
 	public static final String DEFAULT_RADIUS = "20";
+
+	/**
+	 * 邮件发送的两种类型
+	 * 0-注册邮件
+	 * 1-忘记密码邮件
+	 */
+	public static final String EMAIL_REGISTER = "register";
+	public static final String EMAIL_FORGET_PSW = "forget";
+
+	/**
+	 * APP默认用户头像请求路径
+	 */
+	public static final String DEFAULT_USER_PORTRAIT = "http://39.108.160.249/images/head_portrait_test01.png";
 }

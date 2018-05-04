@@ -1,7 +1,5 @@
 package com.jundger.carservice.activity;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,9 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,16 +23,17 @@ import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.bean.User;
+import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.InjectUtil;
+import com.jundger.carservice.util.SharedPreferencesUtil;
 import com.jundger.carservice.widget.CircleImageView;
 
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -88,6 +87,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @InjectView(R.id.show_brand_no_tv)
     private TextView show_brand_no_tv;
 
+    @InjectView(R.id.exit_login_btn)
+    private Button exit_login_btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +119,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.set_brand_no_rl:
                 modifyInfo(MODIFY_BRAND_NO);
                 break;
+            case R.id.exit_login_btn:
+                showExitDialog();
+                break;
             default:
                 Log.i(TAG, "onClick: Error!");
                 break;
@@ -124,7 +129,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void modifyPortrait() {
-        String[] items = {"相册", "拍照", "随机"};
+        final String[] items = {"相册", "拍照", "随机"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
         builder.setTitle("请选择头像来源")
                 .setIcon(R.mipmap.app_log)
@@ -132,6 +137,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
+                        Toast.makeText(ProfileActivity.this, items[i], Toast.LENGTH_SHORT).show();
                     }
                 })
                 .show();
@@ -239,14 +245,35 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
         toolbar.setSubtitle("个人资料");
 
-        show_nickname_tv.setText(user.getNickname());
+        show_nickname_tv.setText(user.getNickname() == null ? "无" : user.getNickname());
         show_email_tv.setText(user.getEmail());
-        show_brand_tv.setText(user.getBrand());
-        show_brand_no_tv.setText(user.getBrand_no());
+        show_brand_tv.setText(user.getBrand() == null ? "无" : user.getBrand());
+        show_brand_no_tv.setText(user.getBrand_no() == null ? "无" : user.getBrand_no());
         Glide.with(ProfileActivity.this)
                 .load(user.getPortrait())
                 .error(R.drawable.load_fail)
                 .into(show_portrait_civ);
+    }
+
+    private void showExitDialog(){
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+        builder.setIcon(R.mipmap.app_log);
+        builder.setTitle("提示");
+        builder.setMessage("是否要退出账号?");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DataSupport.deleteAll(User.class, "phone = ?", user.getPhone());
+
+                SharedPreferencesUtil.save(ProfileActivity.this, APPConsts.SHARED_KEY_ISLOGIN, false);
+                LoginActivity.launchActivity(ProfileActivity.this);
+                ProfileActivity.this.finish();
+            }
+        });
+
+        builder.setNegativeButton("取消", null);
+        builder.show();
     }
 
     @Override
@@ -260,12 +287,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             ProfileActivity.this.finish();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.detail_menu_toolbar, menu);
-        return true;
     }
 
     @Override

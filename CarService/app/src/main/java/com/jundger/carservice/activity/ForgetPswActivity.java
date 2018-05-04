@@ -3,7 +3,6 @@ package com.jundger.carservice.activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -16,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.base.BaseActivity;
@@ -28,7 +29,6 @@ import com.jundger.carservice.util.JsonParser;
 import com.jundger.carservice.util.NetCheckUtil;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -165,6 +165,7 @@ public class ForgetPswActivity extends BaseActivity {
                 startDialog("正在发送，请稍等...");
                 RequestBody requestBody = new FormBody.Builder()
                         .add("email", email)
+                        .add("type", UrlConsts.EMAIL_FORGET_PSW)
                         .build();
                 HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_SEND_VERFI_CODE), requestBody, new Callback() {
                     @Override
@@ -173,20 +174,30 @@ public class ForgetPswActivity extends BaseActivity {
                             @Override
                             public void run() {
                                 endDialog();
-                                Toast.makeText(ForgetPswActivity.this, R.string.forget_send_email_fail, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ForgetPswActivity.this, R.string.send_email_fail, Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
 
                     @Override
                     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                endDialog();
-                                Toast.makeText(ForgetPswActivity.this, R.string.forget_send_email_success, Toast.LENGTH_SHORT).show();
+                        if (response.code() == 200) {
+                            String res = response.body().string();
+                            Map<String, String> result = new Gson().fromJson(res, new TypeToken<Map<String, String>>(){}.getType());
+                            final String prompt;
+                            if (UrlConsts.CODE_SUCCESS.equals(result.get(UrlConsts.KEY_RETURN_CODE))) {
+                                prompt = getResources().getString(R.string.send_email_success);
+                            } else {
+                                prompt = result.get(UrlConsts.KEY_RETURN_MSG);
                             }
-                        });
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    endDialog();
+                                    Toast.makeText(ForgetPswActivity.this, prompt, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                     }
                 });
             }

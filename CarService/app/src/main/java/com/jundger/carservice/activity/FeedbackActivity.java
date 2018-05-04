@@ -80,10 +80,4 @@ public class FeedbackActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.detail_menu_toolbar, menu);
-        return true;
-    }
 }

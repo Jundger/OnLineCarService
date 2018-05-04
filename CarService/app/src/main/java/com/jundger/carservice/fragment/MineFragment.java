@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.ProfileActivity;
 import com.jundger.carservice.activity.FeedbackActivity;
@@ -39,8 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.app.Activity.RESULT_OK;
-
 public class MineFragment extends Fragment {
     private static final String ARG_PARAM1 = "user_info";
 
@@ -53,13 +50,13 @@ public class MineFragment extends Fragment {
     private GridView gridView;
     private List<Map<String, Object>> list;
     private SimpleAdapter simpleAdapter;
-    private TextView edit_person_data_tv;
+    private TextView nickname_show_tv;
     private CircleImageView my_portrait_civ;
 
     private static final String TAG = "MineFragment";
 
-    private int[] icon = {R.drawable.order_icon, R.drawable.claim_icon, R.drawable.feedback_icon, R.drawable.evaluate_icon, R.drawable.collect_icon};
-    private String[] iconName = {"维修订单", "保险理赔", "反馈", "评价", "收藏"};
+    private int[] icon = {R.drawable.order_icon, R.drawable.evaluate_icon, R.drawable.collect_icon, R.drawable.feedback_icon};
+    private String[] iconName = {"维修订单", "评价", "收藏", "反馈"};
 
     public MineFragment() {
         // Required empty public constructor
@@ -75,7 +72,7 @@ public class MineFragment extends Fragment {
     private void bindView() {
         toolbar = getActivity().findViewById(R.id.mine_activity_tb);
         gridView = getActivity().findViewById(R.id.mine_page_gview);
-        edit_person_data_tv = getActivity().findViewById(R.id.edit_person_data_tv);
+        nickname_show_tv = getActivity().findViewById(R.id.edit_person_data_tv);
         my_portrait_civ = getActivity().findViewById(R.id.my_portrait_civ);
     }
 
@@ -116,26 +113,28 @@ public class MineFragment extends Fragment {
                         Toast.makeText(getActivity(), "抱歉，维修订单模块尚未完善！", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(getActivity(), "抱歉，保险理赔模块尚未完善！", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        FeedbackActivity.launchActivity(getActivity(), user.getNickname());
-                        break;
-                    case 3:
                         Toast.makeText(getActivity(), "抱歉，评价模块尚未完善！", Toast.LENGTH_SHORT).show();
                         break;
-                    case 4:
+                    case 2:
                         Toast.makeText(getActivity(), "抱歉，收藏模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        FeedbackActivity.launchActivity(getActivity(), user.getNickname());
                         break;
                     default: break;
                 }
             }
         });
 
-        edit_person_data_tv.setText(user.getNickname());
+        if (user.getNickname() != null && !"".equals(user.getNickname())) {
+            nickname_show_tv.setText(user.getNickname());
+        } else {
+            nickname_show_tv.setText("暂无昵称");
+        }
+
         Glide.with(getActivity())
                 .load(user.getPortrait())
-                .placeholder(R.drawable.portrait_place_holder)
+//                .placeholder(R.drawable.portrait_place_holder)
                 .error(R.drawable.load_fail)
                 .into(my_portrait_civ);
         my_portrait_civ.setOnClickListener(new View.OnClickListener() {
@@ -159,10 +158,10 @@ public class MineFragment extends Fragment {
             if (bundle != null) {
                 user = (User) bundle.getSerializable("user_info");
                 if (user != null) {
-                    edit_person_data_tv.setText(user.getNickname());
+                    nickname_show_tv.setText(user.getNickname() == null ? "暂无昵称" : user.getNickname());
                     Glide.with(getActivity())
                             .load(user.getPortrait())
-                            .placeholder(R.drawable.portrait_place_holder)
+//                            .placeholder(R.drawable.portrait_place_holder)
                             .error(R.drawable.load_fail)
                             .into(my_portrait_civ);
                 }

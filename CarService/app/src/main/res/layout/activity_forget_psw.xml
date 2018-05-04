@@ -34,8 +34,8 @@
             android:textCursorDrawable="@drawable/edit_cursor"
             android:textColor="@color/input_editText"
             android:background="@drawable/et_bg"
-            android:drawableLeft="@drawable/username_et_left_icon"
-            android:drawableStart="@drawable/username_et_left_icon"
+            android:drawableLeft="@drawable/email_et_left_icon"
+            android:drawableStart="@drawable/email_et_left_icon"
             android:drawableEnd="@drawable/et_delete_right"
             android:drawableRight="@drawable/et_delete_right"/>
 

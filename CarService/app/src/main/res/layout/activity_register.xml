@@ -24,10 +24,10 @@
 
         <com.jundger.carservice.widget.ClearEditText
             android:id="@+id/username_register_et"
-            android:layout_width="250dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="30dp"
             android:singleLine="true"
             android:inputType="number"
             android:maxLength="11"
@@ -42,8 +42,25 @@
             android:drawableRight="@drawable/et_delete_right"/>
 
         <com.jundger.carservice.widget.ClearEditText
+            android:id="@+id/email_register_et"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:textSize="25sp"
+            android:hint="@string/forget_phone_hint"
+            android:textCursorDrawable="@drawable/edit_cursor"
+            android:textColor="@color/input_editText"
+            android:background="@drawable/et_bg"
+            android:drawableLeft="@drawable/email_et_left_icon"
+            android:drawableStart="@drawable/email_et_left_icon"
+            android:drawableEnd="@drawable/et_delete_right"
+            android:drawableRight="@drawable/et_delete_right"/>
+
+        <com.jundger.carservice.widget.ClearEditText
             android:id="@+id/password_register_et"
-            android:layout_width="250dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
@@ -63,7 +80,7 @@
 
         <com.jundger.carservice.widget.ClearEditText
             android:id="@+id/re_password_register_et"
-            android:layout_width="250dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
@@ -80,6 +97,37 @@
             android:drawableLeft="@drawable/confirm_et_left_icon"
             android:drawableEnd="@drawable/et_delete_right"
             android:drawableRight="@drawable/et_delete_right"/>
+
+        <com.jundger.carservice.widget.ClearEditText
+            android:id="@+id/code_register_et"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"
+            android:inputType="number"
+            android:textSize="25sp"
+            android:maxLength="6"
+            android:hint="@string/forget_code_hint"
+            android:textCursorDrawable="@drawable/edit_cursor"
+            android:textColor="@color/input_editText"
+            android:background="@drawable/et_bg"
+            android:drawableStart="@drawable/verif_code_et_left_icon"
+            android:drawableLeft="@drawable/verif_code_et_left_icon"
+            android:drawableEnd="@drawable/et_delete_right"
+            android:drawableRight="@drawable/et_delete_right"/>
+
+        <TextView
+            android:id="@+id/get_code_register_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="18sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/forget_get_code_hint"/>
 
         <Button
             android:id="@+id/register_btn"

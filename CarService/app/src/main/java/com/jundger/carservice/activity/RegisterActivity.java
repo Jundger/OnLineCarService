@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.base.BaseActivity;
@@ -25,7 +28,15 @@ import com.jundger.carservice.util.InjectUtil;
 import com.jundger.carservice.util.JsonParser;
 import com.jundger.carservice.util.NetCheckUtil;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class RegisterActivity extends BaseActivity {
     private static final String TAG = "RegisterActivity";
@@ -41,6 +52,15 @@ public class RegisterActivity extends BaseActivity {
 
     @InjectView(R.id.re_password_register_et)
     private EditText re_password_register_et;
+
+    @InjectView(R.id.email_register_et)
+    private EditText email_register_et;
+
+    @InjectView(R.id.code_register_et)
+    private EditText code_register_et;
+
+    @InjectView(R.id.get_code_register_tv)
+    private TextView get_code_register_tv;
 
     @InjectView(R.id.register_btn)
     private Button register_btn;
@@ -61,12 +81,23 @@ public class RegisterActivity extends BaseActivity {
             actionBar.setHomeButtonEnabled(true); // 返回按钮可点击
         }
 
+        event();
+    }
+
+    private void event() {
         register_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String phoneNumber = username_register_et.getText().toString().trim();
+                final String email = email_register_et.getText().toString().trim();
                 final String password = password_register_et.getText().toString().trim();
                 final String rePassword = re_password_register_et.getText().toString().trim();
+                final String code = code_register_et.getText().toString().trim();
+
+                if (phoneNumber.length() <= 0 || email.length() <= 0 || password.length() <= 0 || rePassword.length() <= 0 || code.length() <= 0) {
+                    Toast.makeText(RegisterActivity.this, "请填写所有数据！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 if (!NetCheckUtil.isNetworkConnected(RegisterActivity.this)) {
                     Toast.makeText(RegisterActivity.this, "请打开网络连接！", Toast.LENGTH_SHORT).show();
@@ -83,7 +114,9 @@ public class RegisterActivity extends BaseActivity {
                         final long startTime = System.currentTimeMillis();
                         HashMap<String, String> params = new HashMap<>();
                         params.put(UrlConsts.KEY_USERNAME, phoneNumber);
+                        params.put(UrlConsts.KEY_EMAIL, email);
                         params.put(UrlConsts.KEY_PASSWORD, password);
+                        params.put(UrlConsts.KEY_CODE, code);
                         HttpUtil.sendHttpRequest(UrlConsts.getRequestURL(Actions.ACTION_CUSTOMER_REGISTER), params, new HttpUtil.HttpCallbackListener() {
                             @Override
                             public void onFinish(String response) {
@@ -107,12 +140,12 @@ public class RegisterActivity extends BaseActivity {
                                     });
                                     LoginActivity.launchActivity(RegisterActivity.this);
                                     RegisterActivity.this.finish();
-                                } else if (UrlConsts.REGISTER_USER_EXIT.equals(JsonParser.parseRegister(response))) {
-                                    Log.d(TAG, "Register: 账户已经存在！");
+                                } else if (UrlConsts.VERI_CODE_ERROR.equals(JsonParser.parseRegister(response))) {
+                                    Log.d(TAG, "Register: 验证码错误！");
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Toast.makeText(RegisterActivity.this, "账户已经存在！", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(RegisterActivity.this, "验证码错误，请重发！", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 } else {
@@ -135,6 +168,61 @@ public class RegisterActivity extends BaseActivity {
                         });
                     }
                 }
+            }
+        });
+
+        get_code_register_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = email_register_et.getText().toString().trim();
+                if (email.length() <= 0) {
+                    Toast.makeText(RegisterActivity.this, "请输入电子邮箱地址！", Toast.LENGTH_SHORT).show();
+                    return ;
+                } else if (!FormatCheckUtil.checkEmail(email)) {
+                    Toast.makeText(RegisterActivity.this, "邮箱格式错误！", Toast.LENGTH_SHORT).show();
+                    return ;
+                }
+                startDialog("正在发送，请稍等...");
+                RequestBody requestBody = new FormBody.Builder()
+                        .add("email", email)
+                        .add("type", UrlConsts.EMAIL_REGISTER)
+                        .build();
+                HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_SEND_VERFI_CODE), requestBody, new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                endDialog();
+                                Toast.makeText(RegisterActivity.this, R.string.send_email_fail, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        if (response.code() == 200) {
+                            String res = response.body().string();
+                            Map<String, String> result = new Gson().fromJson(res, new TypeToken<Map<String, String>>(){}.getType());
+                            final String prompt;
+                            if (UrlConsts.CODE_SUCCESS.equals(result.get(UrlConsts.KEY_RETURN_CODE))) {
+                                prompt = getResources().getString(R.string.send_email_success);
+                            } else if (UrlConsts.REGISTER_USER_EXIT.equals(result.get(UrlConsts.KEY_RETURN_MSG))) {
+                                prompt = getResources().getString(R.string.register_user_exist);
+                            } else {
+                                Log.i(TAG, "onResponse: 发送验证码失败：" + result.get(UrlConsts.KEY_RETURN_MSG));
+                                prompt = getResources().getString(R.string.send_email_fail);
+                            }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    endDialog();
+                                    Toast.makeText(RegisterActivity.this, prompt, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
     }
