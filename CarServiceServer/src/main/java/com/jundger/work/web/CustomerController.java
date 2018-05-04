@@ -1,5 +1,6 @@
 package com.jundger.work.web;
 
+import com.alibaba.fastjson.JSON;
 import com.jundger.common.util.MD5Util;
 import com.jundger.work.pojo.Customer;
 import com.jundger.work.pojo.FaultCode;
@@ -53,12 +54,13 @@ public class CustomerController {
 			returnMsg.put("code", "1");
 			returnMsg.put("msg", "USER_LOGIN_SUCCESS");
 			Map<String, String> data = new HashMap<>();
-			data.put("phone_number", customer.getCustPhone());
-			data.put("portrait", customer.getCustPortrait());
-			data.put("nickname", customer.getCustName());
-			data.put("car_brand", customer.getCarBrand());
-			data.put("car_id", customer.getCarId());
-			data.put("email", customer.getCustEmail());
+			data.put("custId", String.valueOf(customer.getCustId()));
+			data.put("custPhone", customer.getCustPhone());
+			data.put("custPortrait", customer.getCustPortrait());
+			data.put("custName", customer.getCustName());
+			data.put("carBrand", customer.getCarBrand());
+			data.put("carId", customer.getCarId());
+			data.put("custEmail", customer.getCustEmail());
 //			data.put("token", this.customerService.generalToken(customer, 60 * 60 * 1000));
 			returnMsg.put("data", data);
 
@@ -113,44 +115,6 @@ public class CustomerController {
 		return returnMsg;
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "/queryCode", method = RequestMethod.POST)
-	public Map<String, Object> queryFaultMsg(@RequestBody Map<String, Object> json) {
-
-		Map<String, Object> returnMsg = new HashMap<String, Object>();
-
-		String brand = (String) json.get("brand");
-		List<String> codes = (List<String>) json.get("code");
-		logger.info("brand-->" + brand);
-		for (String str : codes) {
-			logger.info("code-->" + str);
-		}
-
-		if (codes.isEmpty()) {
-			returnMsg.put("code", "0");
-			returnMsg.put("msg", "CODE_IS_EMPTY");
-		}
-
-		try {
-			List<FaultCode> faultCode = customerService.queryFaultCode(codes, brand);
-			if (null == faultCode) {
-				returnMsg.put("code", "0");
-				returnMsg.put("msg", "CODE_NOT_EXIST");
-				return returnMsg;
-			} else {
-				returnMsg.put("code", "1");
-				returnMsg.put("msg", "QUERY_SUCCESS");
-				returnMsg.put("data", faultCode);
-			}
-		} catch (Exception e) {
-			returnMsg.put("code", "0");
-			returnMsg.put("msg", "UNKNOWN_ERROR");
-			e.printStackTrace();
-		}
-
-		return returnMsg;
-	}
-
 	/**
 	 * 给目标用户发送验证码
 	 * @param email 电子邮箱
@@ -197,7 +161,7 @@ public class CustomerController {
 	}
 
 	@ResponseBody
-		@RequestMapping(value = "/forgetPsw", method = RequestMethod.POST)
+	@RequestMapping(value = "/forgetPsw", method = RequestMethod.POST)
 	public Object forgetPsw(@RequestParam(value = "email") String email,
 							@RequestParam(value = "code") String code,
 							@RequestParam(value = "newPassword") String newPsw) {
@@ -219,6 +183,39 @@ public class CustomerController {
 			e.printStackTrace();
 			returnMsg.put("code", "0");
 			returnMsg.put("msg", "FORGET_FAIL");
+		}
+
+		return returnMsg;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public Object modifyInfo(@RequestBody Customer customer) {
+
+		logger.info("======================修改资料接口调用=====================");
+		logger.info(JSON.toJSONString(customer));
+
+		Map<String, Object> returnMsg = new HashMap<>();
+
+		try {
+			if (customer != null) {
+				int i = customerService.updateByPrimaryKeySelective(customer);
+				logger.info("update return: " + i);
+				if (i == 1) {
+					returnMsg.put("code", "1");
+					returnMsg.put("msg", "MODIFY_SUCCESS");
+				} else {
+					returnMsg.put("code", "0");
+					returnMsg.put("msg", "MODIFY_FAIL");
+				}
+			} else {
+				returnMsg.put("code", "0");
+				returnMsg.put("msg", "NULL");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnMsg.put("code", "0");
+			returnMsg.put("msg", "UNKNOWN_ERROR");
 		}
 
 		return returnMsg;

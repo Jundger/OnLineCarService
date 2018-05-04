@@ -31,7 +31,6 @@
             android:singleLine="true"
             android:textSize="25sp"
             android:hint="@string/forget_phone_hint"
-            android:text="1424600791@qq.com"
             android:textCursorDrawable="@drawable/edit_cursor"
             android:textColor="@color/input_editText"
             android:background="@drawable/et_bg"

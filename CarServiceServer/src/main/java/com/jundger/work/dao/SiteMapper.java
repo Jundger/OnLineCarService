@@ -57,7 +57,8 @@ public interface SiteMapper {
 
     List<Map<String, Object>> selectLocation();
 
-    List<Map<String, Object>> selectNearList(@Param("longitude") Float longitude, @Param("latitude") Float latitude, @Param("radius") Double radius);
+    List<Map<String, Object>> selectNearList(@Param("longitude") Float longitude, @Param("latitude") Float latitude,
+                                             @Param("radius") Double radius, @Param("num") Integer count);
 
     Map<String, Object> selectSiteByName(@Param("name") String name);
 

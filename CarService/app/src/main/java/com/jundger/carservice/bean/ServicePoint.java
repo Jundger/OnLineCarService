@@ -29,16 +29,24 @@ public class ServicePoint implements Serializable {
     @SerializedName("picture")
     private String image;
 
-    // 距离
-    private Float distance;
+    // 经度
+    private Double longitude;
 
-    public ServicePoint(String id, String name, Float score, Integer evaluationCount, String address, String image, Float distance) {
+    // 纬度
+    private Double latitude;
+
+    // 距离
+    private Double distance;
+
+    public ServicePoint(String id, String name, Float score, Integer evaluationCount, String address, String image, Double longitude, Double latitude, Double distance) {
         this.id = id;
         this.name = name;
         this.score = score;
         this.evaluationCount = evaluationCount;
         this.address = address;
         this.image = image;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.distance = distance;
     }
 
@@ -82,19 +90,35 @@ public class ServicePoint implements Serializable {
         this.address = address;
     }
 
-    public Float getDistance() {
-        return distance;
-    }
-
-    public void setDistance(Float distance) {
-        this.distance = distance;
-    }
-
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 }

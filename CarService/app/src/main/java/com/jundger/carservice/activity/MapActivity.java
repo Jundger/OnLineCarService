@@ -145,7 +145,6 @@ public class MapActivity extends BaseActivity implements  LocationSource, AMapLo
         AMap.OnInfoWindowClickListener infoWindowClickListener = new AMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Log.i(TAG, "onInfoWindowClick: " + marker.getTitle());
                 for (SiteLocation site : siteLocationList) {
                     if (site.getName().equals(marker.getTitle())) {
                         RequestBody requestBody = new FormBody.Builder()

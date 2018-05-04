@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.MapActivity;
 import com.jundger.carservice.adapter.SiteAdapter;
+import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.bean.ResultArray;
@@ -35,6 +36,7 @@ import com.jundger.carservice.bean.ServicePoint;
 import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.LocationUtil;
 import com.jundger.carservice.util.RecyclerViewDivider;
+import com.jundger.carservice.util.SharedPreferencesUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -132,6 +134,9 @@ public class RepairFragment extends Fragment {
         location = LocationUtil.requestLocation(getActivity());
         if (location != null) {
             Log.d(TAG, "获取到当前经纬度: " + "longitude-->" + location.getLongitude() + " | latitude-->" + location.getLatitude());
+            // 在本地存储位置信息
+            SharedPreferencesUtil.save(getActivity(), APPConsts.SHARED_KEY_LONGITUDE, String.valueOf(location.getLongitude()));
+            SharedPreferencesUtil.save(getActivity(), APPConsts.SHARED_KEY_LATITUDE, String.valueOf(location.getLatitude()));
         } else {
             Log.d(TAG, "onActivityCreated: 获取经纬度失败！");
         }
@@ -156,7 +161,8 @@ public class RepairFragment extends Fragment {
         HttpUtil.okHttpPost(url, requestBody, new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                Log.d(TAG, "RepairFragment | okHttp success!");
+                Log.d(TAG, "RepairFragment | okHttp success!" + response.code());
+
                 String responseData = response.body().string();
 
                 // Gson解析json数据

@@ -29,25 +29,25 @@ public class SharedPreferencesUtil {
     public static void save(Context context, String key, int value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APPConsts.SHARED_SAVE_NAME, Context.MODE_PRIVATE).edit();
         editor.putInt(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void save(Context context, String key, boolean value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APPConsts.SHARED_SAVE_NAME, Context.MODE_PRIVATE).edit();
         editor.putBoolean(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void save(Context context, String key, long value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APPConsts.SHARED_SAVE_NAME, Context.MODE_PRIVATE).edit();
         editor.putLong(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void save(Context context, String key, float value) {
         SharedPreferences.Editor editor = context.getSharedPreferences(APPConsts.SHARED_SAVE_NAME, Context.MODE_PRIVATE).edit();
         editor.putFloat(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static Object query(Context context, String key, String type) {

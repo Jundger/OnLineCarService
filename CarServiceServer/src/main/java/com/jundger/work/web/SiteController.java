@@ -1,21 +1,14 @@
 package com.jundger.work.web;
 
-import com.jundger.common.util.ToMap;
-import com.jundger.work.pojo.Comment;
-import com.jundger.work.pojo.Customer;
-import com.jundger.work.pojo.Site;
-import com.jundger.work.service.CustomerService;
+import com.jundger.work.constant.Consts;
 import com.jundger.work.service.SiteService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,23 +28,21 @@ public class SiteController {
 	@Resource
 	private SiteService siteService;
 
-	@Resource
-	private CustomerService customerService;
-
 	private static Logger logger = Logger.getLogger(SiteController.class);
 
 	@ResponseBody
 	@RequestMapping(value = "/getList", produces = "application/json; charset=utf-8")
-	public Object getSiteList(@RequestParam(value = "longitude", required = false, defaultValue = "106.524505") Float longitude,
-										   @RequestParam(value = "latitude", required = false, defaultValue = "29.457349") Float latitude,
-										   @RequestParam(value = "radius", required = false, defaultValue = "20") Float radius) {
+	public Object getSiteList(@RequestParam(value = "longitude", required = false, defaultValue = Consts.DEFAULT_LONGITUDE) Float longitude,
+							  @RequestParam(value = "latitude", required = false, defaultValue = Consts.DEFAULT_LATITUDE) Float latitude,
+							  @RequestParam(value = "radius", required = false, defaultValue = Consts.DEFAULT_RADIUS) Float radius,
+							  @RequestParam(value = "limit", required = false, defaultValue = Consts.LIMIT_NUM) Integer limit) {
 
 		logger.info("=================获取附近维修点接口调用==================");
 
 		Map<String, Object> returnMsg = new HashMap<>();
 
 		try {
-			List<Map<String, Object>> list = siteService.getShowList(longitude, latitude, radius.doubleValue());
+			List<Map<String, Object>> list = siteService.getShowList(longitude, latitude, radius.doubleValue(), limit);
 			if (null != list && !list.isEmpty()) {
 				returnMsg.put("code", "1");
 				returnMsg.put("msg", "SUCCESS");

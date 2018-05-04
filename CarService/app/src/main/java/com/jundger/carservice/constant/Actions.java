@@ -22,6 +22,11 @@ public class Actions {
     public static final String ACTION_CUSTOMER_REGISTER = "customer/register.do";
 
     /**
+     * 修改用户资料的action
+     */
+    public static final String ACTION_MODIFY_PROFILE = "customer/modify.do";
+
+    /**
      * 获取附近服务点信息的action
      */
     public static final String ACTION_GET_SITE = "site/getList.do";
@@ -49,7 +54,7 @@ public class Actions {
     /**
      * 查询故障码的action
      */
-    public static final String ACTION_QUERY_CODE = "customer/queryCode.do";
+    public static final String ACTION_QUERY_CODE = "code/queryCode.do";
 
     /**
      * 发送验证码的action

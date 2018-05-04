@@ -1,8 +1,8 @@
 package com.jundger.work.serviceimpl;
 
+import com.jundger.work.constant.Consts;
 import com.jundger.work.dao.CommentMapper;
 import com.jundger.work.dao.SiteMapper;
-import com.jundger.work.pojo.Comment;
 import com.jundger.work.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +29,8 @@ public class SiteServiceImpl implements SiteService {
 	private CommentMapper commentMapper;
 
 	@Override
-	public List<Map<String, Object>> getShowList(Float longitude, Float latitude, Double radius) {
-		return siteMapper.selectNearList(longitude, latitude, radius);
+	public List<Map<String, Object>> getShowList(Float longitude, Float latitude, Double radius, Integer count) {
+		return siteMapper.selectNearList(longitude, latitude, radius, count);
 	}
 
 	@Override

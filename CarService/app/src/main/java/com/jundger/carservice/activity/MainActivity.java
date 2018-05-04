@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
 import com.jundger.carservice.R;
 import com.jundger.carservice.adapter.MyFragmentPagerAdapter;
 import com.jundger.carservice.annotation.InjectView;
@@ -64,12 +66,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
         user = (User) getIntent().getSerializableExtra(TRANSMIT_PARAM);
 
+        Log.i(TAG, "onFinish: user----->" + new Gson().toJson(user));
+
         initFragment();
     }
 
     private void initFragment() {
         ArrayList<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(MainPageFragment.newInstance(user.getBrand(), user.getBrand_no()));
+        fragmentList.add(MainPageFragment.newInstance());
         fragmentList.add(new RepairFragment());
         fragmentList.add(new MaintainFragment());
         fragmentList.add(MineFragment.newInstance(user));

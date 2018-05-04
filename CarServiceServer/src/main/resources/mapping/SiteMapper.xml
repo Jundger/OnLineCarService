@@ -215,12 +215,16 @@
         <result column="picture" javaType="string" property="picture"/>
         <result column="score" javaType="float" property="score"/>
         <result column="num" javaType="int" property="count"/>
+        <result column="longitude" javaType="float" property="longitude"/>
+        <result column="latitude" javaType="float" property="latitude"/>
         <result column="distance" javaType="double" property="distance"/>
     </resultMap>
 
     <select id="selectNearList" resultMap="servicePointMap">
         SELECT
-        site.id AS id, site.name AS name, site.address AS address, site.picture AS picture, TRUNCATE(AVG(comment.score),1) AS score, COUNT(*) AS num,(
+        site.id AS id, site.name AS name, site.address AS address,
+        site.picture AS picture, TRUNCATE(AVG(comment.score),1) AS score,
+        site.longitude AS longitude, site.latitude AS latitude, COUNT(*) AS num,(
         6371 * acos (
         cos ( radians(#{latitude,jdbcType=REAL}) )
         * cos( radians( latitude ) )
@@ -234,7 +238,7 @@
         GROUP BY site.id
         HAVING distance &lt; #{radius,jdbcType=REAL}
         ORDER BY distance
-        LIMIT 0 , 10;
+        LIMIT 0 , #{num,jdbcType=INTEGER};
     </select>
 
     <select id="selectSiteByName" parameterType="java.lang.String" resultMap="servicePointMap">

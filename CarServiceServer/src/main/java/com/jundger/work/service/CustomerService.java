@@ -1,9 +1,6 @@
 package com.jundger.work.service;
 
 import com.jundger.work.pojo.Customer;
-import com.jundger.work.pojo.FaultCode;
-
-import java.util.List;
 
 public interface CustomerService {
     // 通过ID查询用户信息
@@ -26,7 +23,4 @@ public interface CustomerService {
 
     // 注册用户
     int register(Customer customer);
-
-    // 根据故障码和汽车型号查询故障信息
-    List<FaultCode> queryFaultCode(List<String> codes, String brand);
 }

@@ -60,10 +60,12 @@
 
         <activity
             android:name=".activity.ShopDetailActivity"
-            android:theme="@style/MyActivityTheme"/>
+            android:theme="@style/MyActivityTheme" />
         <activity
             android:name=".activity.MaintainShowActivity"
-            android:theme="@style/MyActivityTheme"/>
+            android:theme="@style/MyActivityTheme" />
+        <activity android:name=".activity.FeedbackActivity" />
+        <activity android:name=".activity.ProfileActivity"></activity>
     </application>
 
 </manifest>

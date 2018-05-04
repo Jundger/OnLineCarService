@@ -17,19 +17,24 @@ import java.io.Serializable;
 
 public class User extends DataSupport implements Serializable {
 
-    @SerializedName("phone_number")
+    private int custId;
+
+    @SerializedName("custPhone")
     private String phone;
 
+    @SerializedName("custEmail")
     private String email;
 
+    @SerializedName("custName")
     private String nickname;
 
+    @SerializedName("custPortrait")
     private String portrait;
 
-    @SerializedName("car_brand")
+    @SerializedName("carBrand")
     private String brand;
 
-    @SerializedName("car_id")
+    @SerializedName("carId")
     private String brand_no;
 
     private String token;
@@ -37,7 +42,8 @@ public class User extends DataSupport implements Serializable {
     public User() {
     }
 
-    public User(String phone, String email, String nickname, String portrait, String brand, String brand_no, String token) {
+    public User(int custId, String phone, String email, String nickname, String portrait, String brand, String brand_no, String token) {
+        this.custId = custId;
         this.phone = phone;
         this.email = email;
         this.nickname = nickname;
@@ -45,6 +51,14 @@ public class User extends DataSupport implements Serializable {
         this.brand = brand;
         this.brand_no = brand_no;
         this.token = token;
+    }
+
+    public int getCustId() {
+        return custId;
+    }
+
+    public void setCustId(int custId) {
+        this.custId = custId;
     }
 
     public String getPhone() {

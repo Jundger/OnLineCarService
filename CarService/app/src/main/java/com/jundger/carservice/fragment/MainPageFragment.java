@@ -29,24 +29,32 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.maps2d.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.adapter.FaultInfoAdapter;
 import com.jundger.carservice.annotation.InjectView;
+import com.jundger.carservice.bean.ServicePoint;
+import com.jundger.carservice.bean.User;
 import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.bean.FaultCode;
 import com.jundger.carservice.bean.ResultArray;
 import com.jundger.carservice.util.HttpUtil;
+import com.jundger.carservice.util.NavigationUtil;
+import com.jundger.carservice.util.SharedPreferencesUtil;
 import com.shinelw.library.ColorArcProgressBar;
 import com.syd.oden.circleprogressdialog.core.CircleProgressDialog;
+
+import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +66,8 @@ import java.util.Map;
 import java.util.Set;
 
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -66,8 +76,6 @@ import static android.app.Activity.RESULT_CANCELED;
 import static com.jundger.carservice.service.BlueToothService.MY_UUID;
 
 public class MainPageFragment extends Fragment {
-    private static final String ARG_PARAM1 = "CAR_BRAND";
-    private static final String ARG_PARAM2 = "CAR_BRAND_NO";
 
     private String mBrand; // 汽车品牌
     private String mBrandNo; // 型号
@@ -75,26 +83,13 @@ public class MainPageFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ColorArcProgressBar colorArcProgressBar;
-
-    @InjectView(R.id.get_info_fab)
     private FloatingActionButton getInfoFab;
-
-    @InjectView(R.id.fault_info_recycler_view)
+    private Button request_service_btn;
     private RecyclerView recyclerView;
-
-    @InjectView(R.id.connect_state_iv)
     private ImageView connect_state_iv;
-
-    @InjectView(R.id.main_page_fragment_tb)
     private Toolbar toolbar;
-
-    @InjectView(R.id.fault_info_title_tv)
     private TextView fault_info_title_tv;
-
-    @InjectView(R.id.empty_layout_ll)
     private LinearLayout emptyView;
-
-    @InjectView(R.id.collapsing_toolbar)
     private CollapsingToolbarLayout collapsingLayout;
 
     private CircleProgressDialog circleProgressDialog;
@@ -127,7 +122,7 @@ public class MainPageFragment extends Fragment {
             switch (msg.what) {
                 case APPConsts.CONNECT_SUCCESS:
                     connectedThread = new ConnectedThread((BluetoothSocket) msg.obj);
-                    connectedThread.write("MiPhone".getBytes());
+                    connectedThread.write(APPConsts.BLUETOOTH_READ_COMMAND.getBytes());
                     connectedThread.start();
                     stopProgressDialog();
                     break;
@@ -149,13 +144,8 @@ public class MainPageFragment extends Fragment {
     public MainPageFragment() {
     }
 
-    public static MainPageFragment newInstance(String param1, String param2) {
-        MainPageFragment fragment = new MainPageFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static MainPageFragment newInstance() {
+        return new MainPageFragment();
     }
 
     @Override
@@ -210,13 +200,22 @@ public class MainPageFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(), "故障码解析失败！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "解析失败，请检查网络！", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
+                if (response.code() != 200) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), response.code() + "-请求失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return ;
+                }
                 String res = response.body().string();
                 Log.i(TAG, "onResponse: receive from server: " + res);
                 // Gson解析json数据
@@ -252,10 +251,12 @@ public class MainPageFragment extends Fragment {
                             emptyView.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
                             fault_info_title_tv.setVisibility(View.VISIBLE);
+                            request_service_btn.setVisibility(View.VISIBLE);
                         } else {
                             emptyView.setVisibility(View.VISIBLE);
                             recyclerView.setVisibility(View.GONE);
                             fault_info_title_tv.setVisibility(View.GONE);
+                            request_service_btn.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -271,12 +272,13 @@ public class MainPageFragment extends Fragment {
         emptyView = getActivity().findViewById(R.id.empty_layout_ll);
         fault_info_title_tv = getActivity().findViewById(R.id.fault_info_title_tv);
         collapsingLayout = getActivity().findViewById(R.id.collapsing_toolbar);
+        colorArcProgressBar = getActivity().findViewById(R.id.bar1);
+        request_service_btn = getActivity().findViewById(R.id.request_service_btn);
     }
 
     private void init() {
         isReceiverRegister = false;
 
-        colorArcProgressBar = getActivity().findViewById(R.id.bar1);
         colorArcProgressBar.setBackgroundResource(R.drawable.car_logo);
 
         if (connectDevice != null && connectDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
@@ -290,6 +292,7 @@ public class MainPageFragment extends Fragment {
         if (!infoList.isEmpty()) {
             emptyView.setVisibility(View.GONE);
             fault_info_title_tv.setVisibility(View.VISIBLE);
+            request_service_btn.setVisibility(View.VISIBLE);
         }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -303,7 +306,7 @@ public class MainPageFragment extends Fragment {
                 if (!isBluetoothConnect) {
                     openBlueTooth();
                 } else {
-                    connectedThread.write("MiPhone".getBytes());
+                    connectedThread.write(APPConsts.BLUETOOTH_READ_COMMAND.getBytes());
 
                     colorArcProgressBar.setCurrentValues(0);
                     new Handler().postDelayed(new Runnable() {
@@ -316,13 +319,78 @@ public class MainPageFragment extends Fragment {
                 }
             }
         });
-        if (getArguments() != null) {
-            mBrand = getArguments().getString(ARG_PARAM1);
-            mBrandNo = getArguments().getString(ARG_PARAM2);
-            collapsingLayout.setTitle(mBrand + " " + mBrandNo);
-        } else {
-            collapsingLayout.setTitle("---");
-        }
+
+        setBrandTitle();
+
+        request_service_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] items = new String[]{"A.等候接单", "B.分配最近"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("请选择：")
+                        .setIcon(R.mipmap.app_log)
+                        .setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                switch (i) {
+                                    case 0:
+                                        startProgressDialog("正在匹配，请稍候...");
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                try {
+                                                    Thread.sleep(5000);
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                stopProgressDialog();
+                                            }
+                                        }).start();
+                                        break;
+                                    case 1:
+                                        String longitude = (String) SharedPreferencesUtil.query(getActivity(), APPConsts.SHARED_KEY_LONGITUDE, "string");
+                                        String latitude = (String) SharedPreferencesUtil.query(getActivity(), APPConsts.SHARED_KEY_LATITUDE, "string");
+                                        if (longitude != null && latitude != null) {
+                                            RequestBody requestBody = new FormBody.Builder()
+                                                    .add("longitude", longitude)
+                                                    .add("latitude", latitude)
+                                                    .add("radius", "50")
+                                                    .add("limit", "1")
+                                                    .build();
+                                            HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_GET_SITE), requestBody, new Callback() {
+                                                @Override
+                                                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                                    getActivity().runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            Toast.makeText(getActivity(), "网络请求失败！", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                                                    if (response.code() == 200) {
+                                                        String res = response.body().string();
+                                                        ResultArray<ServicePoint> result = new Gson().fromJson(res, new TypeToken<ResultArray<ServicePoint>>(){}.getType());
+                                                        if (UrlConsts.CODE_SUCCESS.equals(result.getCode())) {
+                                                            ServicePoint servicePoint = result.getData().get(0);
+                                                            LatLng latLng = new LatLng(servicePoint.getLatitude(), servicePoint.getLongitude());
+                                                            NavigationUtil.toNavigation(getActivity(), latLng);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        break;
+                                    default: break;
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 
     @Override
@@ -532,6 +600,28 @@ public class MainPageFragment extends Fragment {
             }
         }
         return device.getName() + suffix + "\n" + device.getAddress();
+    }
+
+    private void setBrandTitle() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<User> userList = DataSupport.findAll(User.class);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        User user = userList.get(0);
+                        if (user != null) {
+                            mBrand = user.getBrand();
+                            mBrandNo = user.getBrand_no();
+                            collapsingLayout.setTitle(mBrand + " " + mBrandNo);
+                        } else {
+                            collapsingLayout.setTitle("---");
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
     @Override

@@ -124,6 +124,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             // 通过LitePal存储用户信息
                             user.save();
 
+
+                            Log.i(TAG, "onFinish: user----->" + new Gson().toJson(user));
+
                             long endTime = System.currentTimeMillis();
                             if (endTime - startTime < 1500) {
                                 try {

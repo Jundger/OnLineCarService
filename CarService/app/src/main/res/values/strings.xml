@@ -10,6 +10,7 @@
     <string name="bottom_tab_mine">我的</string>
     <string name="edit_info_str">编辑个人资料></string>
     <string name="no_data_show">没有相关数据</string>
+    <string name="default_null_str">---</string>
 
     <!--LoginActivity-->
     <string name="phone_not_null">手机号码不能为空</string>
@@ -35,6 +36,10 @@
     <string name="forget_send_email_fail">验证码发送失败，请稍后重试</string>
     <string name="forget_send_email_success">验证码发送成功，请查收</string>
 
+    <!--FeedbackActivity-->
+    <string name="feedback_submit_text">提&#160;&#160;&#160;&#160;&#160;&#160;交</string>
+    <string name="feedback_edit_hint">请输入您的反馈意见。对于您的意见，我们会第一时间处理（字数500以内）</string>
+
     <!--MapActivity-->
     <string name="default_location_city">重庆市</string>
 
@@ -49,6 +54,13 @@
     <string name="hint_scan_bluetooth">正在扫描蓝牙设备……</string>
     <string name="hint_request_open_bluetooth">请打开蓝牙</string>
     <string name="hint_not_support_bluetooth">该设备不支持蓝牙功能！</string>
+
+    <!--ProfileActivity-->
+    <string name="profile_portrait_str_tv">头像</string>
+    <string name="profile_nickname_str_tv">昵称</string>
+    <string name="profile_email_str_tv">Email</string>
+    <string name="profile_brand_str_tv">爱车品牌</string>
+    <string name="profile_brand_no_str_tv">爱车型号</string>
 
     <!-- Strings related to Settings -->
 

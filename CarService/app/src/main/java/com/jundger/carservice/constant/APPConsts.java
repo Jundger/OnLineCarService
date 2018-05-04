@@ -17,15 +17,16 @@ public class APPConsts {
     public static final String SHARED_SAVE_NAME = "OnLineCarService";
 
     /**
+     * 蓝牙故障码读取指令
+     */
+    public static final String BLUETOOTH_READ_COMMAND = "AT+GetFaultCode";
+
+    /**
      * 本地SharedPreferences存储key值
      */
-    public static final String SHARED_KEY_TOKEN = "token";
-    public static final String SHARED_KEY_PHONE = "phone_number";
     public static final String SHARED_KEY_ISLOGIN = "login_status";
-    public static final String SHARED_KEY_NICKNAME = "nickname";
-    public static final String SHARED_KEY_BRAND = "car_brand";
-    public static final String SHARED_KEY_BRAND_NO = "brand_no";
-    public static final String SHARED_KEY_PORTRAIT = "portrait";
+    public static final String SHARED_KEY_LONGITUDE = "longitude";
+    public static final String SHARED_KEY_LATITUDE = "latitude";
 
     /**
      * 本地SQLite数据库名称

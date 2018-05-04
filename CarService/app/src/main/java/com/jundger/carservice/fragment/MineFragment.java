@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.jundger.carservice.R;
+import com.jundger.carservice.activity.ProfileActivity;
+import com.jundger.carservice.activity.FeedbackActivity;
 import com.jundger.carservice.activity.LoginActivity;
 import com.jundger.carservice.activity.SettingsActivity;
 import com.jundger.carservice.constant.APPConsts;
@@ -34,6 +38,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 public class MineFragment extends Fragment {
     private static final String ARG_PARAM1 = "user_info";
@@ -113,7 +119,7 @@ public class MineFragment extends Fragment {
                         Toast.makeText(getActivity(), "抱歉，保险理赔模块尚未完善！", Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
-                        Toast.makeText(getActivity(), "抱歉，反馈模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        FeedbackActivity.launchActivity(getActivity(), user.getNickname());
                         break;
                     case 3:
                         Toast.makeText(getActivity(), "抱歉，评价模块尚未完善！", Toast.LENGTH_SHORT).show();
@@ -129,14 +135,39 @@ public class MineFragment extends Fragment {
         edit_person_data_tv.setText(user.getNickname());
         Glide.with(getActivity())
                 .load(user.getPortrait())
+                .placeholder(R.drawable.portrait_place_holder)
                 .error(R.drawable.load_fail)
                 .into(my_portrait_civ);
         my_portrait_civ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "抱歉，尚不能修改个人资料！", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user_info", user);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, 0);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "MineFragment | onActivityResult: requestCode-->" + requestCode + " | resultCode-->" + resultCode);
+        if (requestCode == 0 && resultCode == 1) {
+            Bundle bundle = data.getExtras();
+            if (bundle != null) {
+                user = (User) bundle.getSerializable("user_info");
+                if (user != null) {
+                    edit_person_data_tv.setText(user.getNickname());
+                    Glide.with(getActivity())
+                            .load(user.getPortrait())
+                            .placeholder(R.drawable.portrait_place_holder)
+                            .error(R.drawable.load_fail)
+                            .into(my_portrait_civ);
+                }
+            }
+        }
     }
 
     private void showNormalDialog(){

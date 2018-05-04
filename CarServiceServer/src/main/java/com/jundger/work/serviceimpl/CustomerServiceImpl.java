@@ -19,9 +19,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Resource
     private CustomerMapper customerDao;
 
-    @Resource
-    private FaultCodeMapper faultCodeMapper;
-
     // 通过ID查询用户信息
     public Customer getById(int userId) {
         return this.customerDao.selectByPrimaryKey(userId);
@@ -64,10 +61,5 @@ public class CustomerServiceImpl implements CustomerService {
 
     public int register(Customer customer) {
         return this.customerDao.insertSelective(customer);
-    }
-
-    @Override
-    public List<FaultCode> queryFaultCode(List<String> codes, String brand) {
-        return faultCodeMapper.selectByCode(codes, brand);
     }
 }
