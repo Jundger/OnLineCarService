@@ -176,7 +176,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void registerClickListener() {
-        RegisterActivity.launchActivity(LoginActivity.this);
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "MineFragment | onActivityResult: requestCode-->" + requestCode + " | resultCode-->" + resultCode);
+        if (requestCode == 1 && resultCode == 2 && data != null) {
+            String phone = data.getStringExtra("phone");
+            username_clear_et.setText(phone);
+        }
     }
 
     private void startDialog(String msg) {

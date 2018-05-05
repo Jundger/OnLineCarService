@@ -3,6 +3,7 @@ package com.jundger.work.web;
 import com.alibaba.fastjson.JSON;
 import com.jundger.common.util.MD5Util;
 import com.jundger.work.constant.Consts;
+import com.jundger.work.pojo.Collect;
 import com.jundger.work.pojo.Customer;
 import com.jundger.work.service.CustomerService;
 import com.jundger.work.util.JavaEmailSender;
@@ -226,6 +227,105 @@ public class CustomerController {
 			e.printStackTrace();
 			returnMsg.put("code", "0");
 			returnMsg.put("msg", "UNKNOWN_ERROR");
+		}
+
+		return returnMsg;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/getComment")
+	public Map<String, Object> getCommentByCust(@RequestParam(value = "user_id") String cust_id) {
+
+		logger.info("getCommentByCust request...");
+
+		Map<String, Object> returnMsg = new HashMap<>();
+
+		try {
+			List<Map<String, Object>> comments = customerService.getCommentByCust(cust_id);
+			if (null != comments && !comments.isEmpty()) {
+				returnMsg.put("code", "1");
+				returnMsg.put("msg", "SUCCESS");
+				returnMsg.put("data", comments);
+			} else {
+				returnMsg.put("code", "0");
+				returnMsg.put("msg", "EMPTY");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnMsg.put("code", "0");
+			returnMsg.put("msg", "FAIL");
+		}
+
+		return returnMsg;
+	}
+
+	/**
+	 * 用户收藏操作
+	 * TODO 在没有数据时添加数据，在已有数据时删除数据
+	 * @param cust_id 用户ID
+	 * @param type 收藏类型（文章/维修点）
+	 * @param article_id 文章ID
+	 * @param site_id 维修点ID
+	 * @return 操作结果
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/collect")
+	public Object setCollect(@RequestParam(value = "user_id") Integer cust_id,
+							 @RequestParam(value = "type") String type,
+							 @RequestParam(value = "article_id", required = false) Integer article_id,
+							 @RequestParam(value = "site_id", required = false) Integer site_id) {
+
+		logger.info("==============================addCollect request=======================================");
+
+		Map<String, Object> returnMsg = new HashMap<>();
+
+		try {
+			Collect collect = new Collect();
+			collect.setUserId(cust_id);
+			collect.setType(type);
+			switch (type) {
+				case "ARTICLE":
+					collect.setArticleId(article_id);
+					break;
+				case "SITE":
+					collect.setSiteId(site_id);
+					break;
+				default:
+					returnMsg.put("code", "0");
+					returnMsg.put("msg", "TYPE_ERROR");
+					return returnMsg;
+			}
+			customerService.addCollect(collect);
+			returnMsg.put("code", "1");
+			returnMsg.put("msg", "SUCCESS");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnMsg.put("code", "0");
+			returnMsg.put("msg", "FAIL");
+		}
+
+		return returnMsg;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/getCollect")
+	public Object getCollect(@RequestParam(value = "user_id") Integer cust_id) {
+
+		logger.info("==============================getCollect request=======================================");
+
+		Map<String, Object> returnMsg = new HashMap<>();
+
+		try {
+			List<Collect> list = customerService.getAllCollect(cust_id);
+			returnMsg.put("code", "1");
+			returnMsg.put("msg", "SUCCESS");
+			returnMsg.put("data", list);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnMsg.put("code", "0");
+			returnMsg.put("msg", "FAIL");
 		}
 
 		return returnMsg;

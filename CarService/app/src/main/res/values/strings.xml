@@ -9,7 +9,7 @@
     <string name="bottom_tab_maintain">保养</string>
     <string name="bottom_tab_mine">我的</string>
     <string name="edit_info_str">编辑个人资料></string>
-    <string name="no_data_show">没有相关数据</string>
+    <string name="no_data_show">暂无数据</string>
     <string name="default_null_str">---</string>
     <string name="register_user_exist">用户已经存在</string>
     <string name="send_email_fail">验证码发送失败，请稍后重试</string>

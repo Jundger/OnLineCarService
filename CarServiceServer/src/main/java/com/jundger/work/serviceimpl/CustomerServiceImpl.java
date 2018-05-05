@@ -1,7 +1,10 @@
 package com.jundger.work.serviceimpl;
 
+import com.jundger.work.dao.CollectMapper;
+import com.jundger.work.dao.CommentMapper;
 import com.jundger.work.dao.CustomerMapper;
 import com.jundger.work.dao.FaultCodeMapper;
+import com.jundger.work.pojo.Collect;
 import com.jundger.work.pojo.Customer;
 import com.jundger.work.pojo.FaultCode;
 import com.jundger.work.service.CustomerService;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.jundger.common.util.JwtUtil.createJWT;
 import static com.jundger.common.util.JwtUtil.generalSubject;
@@ -18,6 +22,12 @@ import static com.jundger.common.util.JwtUtil.generalSubject;
 public class CustomerServiceImpl implements CustomerService {
     @Resource
     private CustomerMapper customerDao;
+
+    @Resource
+    private CommentMapper commentMapper;
+
+    @Resource
+    private CollectMapper collectMapper;
 
     // 通过ID查询用户信息
     public Customer getById(int userId) {
@@ -61,5 +71,20 @@ public class CustomerServiceImpl implements CustomerService {
 
     public int addCustomer(Customer customer) {
         return this.customerDao.insertSelective(customer);
+    }
+
+    @Override
+    public List<Map<String, Object>> getCommentByCust(String id) {
+        return commentMapper.selectShowCommentByCust(Integer.parseInt(id));
+    }
+
+    @Override
+    public int addCollect(Collect record) {
+        return collectMapper.insertSelective(record);
+    }
+
+    @Override
+    public List<Collect> getAllCollect(Integer cust_id) {
+        return collectMapper.selectByCustId(cust_id);
     }
 }

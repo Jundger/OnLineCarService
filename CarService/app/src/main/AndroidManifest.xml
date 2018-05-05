@@ -65,7 +65,9 @@
             android:name=".activity.MaintainShowActivity"
             android:theme="@style/MyActivityTheme" />
         <activity android:name=".activity.FeedbackActivity" />
-        <activity android:name=".activity.ProfileActivity"></activity>
+        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.OrderActivity" />
+        <activity android:name=".activity.CommentActivity"></activity>
     </application>
 
 </manifest>

@@ -186,7 +186,7 @@
     <result column="time" javaType="date" property="time"/>
   </resultMap>
 
-  <select id="selectShowComment" parameterType="java.lang.String" resultMap="commentShowMap">
+  <select id="selectShowCommentBySite" parameterType="java.lang.Integer" resultMap="commentShowMap">
     SELECT
     comment.id AS id,
     customer.cust_name AS name,
@@ -196,6 +196,19 @@
     comment.create_time AS time
     FROM comment, customer
     WHERE comment.cust_id = customer.cust_id
-    AND comment.site_id = #{site_id,jdbcType=VARCHAR}
+    AND comment.site_id = #{site_id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectShowCommentByCust" parameterType="java.lang.Integer" resultMap="commentShowMap">
+    SELECT
+    comment.id AS id,
+    customer.cust_name AS name,
+    customer.cust_portrait AS portrait,
+    comment.score AS score,
+    comment.content AS content,
+    comment.create_time AS time
+    FROM comment, customer
+    WHERE comment.cust_id = customer.cust_id
+    AND comment.cust_id = #{id,jdbcType=INTEGER}
   </select>
 </mapper>

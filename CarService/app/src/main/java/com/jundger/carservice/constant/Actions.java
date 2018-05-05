@@ -47,9 +47,14 @@ public class Actions {
     public static final String ACTION_GET_ARTICLE = "article/getList.do";
 
     /**
-     * 获取目标用户所有评论的action
+     * 获取目标维修点所有评论的action
      */
     public static final String ACTION_GET_COMMENT = "site/getComment.do";
+
+    /**
+     * 获取目标用户所有评论的action
+     */
+    public static final String ACTION_GET_COMMENT_USER = "customer/getComment.do";
 
     /**
      * 查询故障码的action

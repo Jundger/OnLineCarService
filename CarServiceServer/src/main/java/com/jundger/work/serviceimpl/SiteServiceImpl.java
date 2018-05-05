@@ -35,7 +35,7 @@ public class SiteServiceImpl implements SiteService {
 
 	@Override
 	public List<Map<String, Object>> getCommentBySite(String site_id) {
-		return commentMapper.selectShowComment(site_id);
+		return commentMapper.selectShowCommentBySite(Integer.parseInt(site_id));
 	}
 
 	@Override

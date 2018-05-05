@@ -1,6 +1,10 @@
 package com.jundger.work.service;
 
+import com.jundger.work.pojo.Collect;
 import com.jundger.work.pojo.Customer;
+
+import java.util.List;
+import java.util.Map;
 
 public interface CustomerService {
     // 通过ID查询用户信息
@@ -23,4 +27,13 @@ public interface CustomerService {
 
     // 增加新用户
     int addCustomer(Customer customer);
+
+    // 拉取用户评论
+    List<Map<String, Object>> getCommentByCust(String id);
+
+    // 增加新收藏
+    int addCollect(Collect record);
+
+    // 获取用户所有收藏
+    List<Collect> getAllCollect(Integer cust_id);
 }

@@ -56,5 +56,7 @@ public interface CommentMapper {
 
     List<Comment> selectBySiteId(String site_id);
 
-    List<Map<String, Object>> selectShowComment(String site_id);
+    List<Map<String, Object>> selectShowCommentBySite(Integer site_id);
+
+    List<Map<String, Object>> selectShowCommentByCust(Integer site_id);
 }

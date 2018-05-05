@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -102,6 +103,27 @@ public class MaintainShowActivity extends AppCompatActivity {
                 liked_count_tv.setText(String.valueOf(article.getLiked() + 1));
             }
         });
+
+        maintain_show_tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.collection_item:
+                        Log.i(TAG, "onMenuItemClick: 收藏按钮被点击");
+                        modifyCollect();
+                        break;
+                    case R.id.share_item:
+                        Log.i(TAG, "onMenuItemClick: 分享按钮被点击");
+                        break;
+                    default: break;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void modifyCollect() {
+
     }
 
     public static void launchActivity(Context context, Article article) {

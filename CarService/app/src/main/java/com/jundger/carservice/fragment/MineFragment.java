@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jundger.carservice.R;
+import com.jundger.carservice.activity.CommentActivity;
+import com.jundger.carservice.activity.OrderActivity;
 import com.jundger.carservice.activity.ProfileActivity;
 import com.jundger.carservice.activity.FeedbackActivity;
 import com.jundger.carservice.activity.LoginActivity;
@@ -45,8 +47,6 @@ public class MineFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private Toolbar toolbar;
-
     private GridView gridView;
     private List<Map<String, Object>> list;
     private SimpleAdapter simpleAdapter;
@@ -55,8 +55,9 @@ public class MineFragment extends Fragment {
 
     private static final String TAG = "MineFragment";
 
-    private int[] icon = {R.drawable.order_icon, R.drawable.evaluate_icon, R.drawable.collect_icon, R.drawable.feedback_icon};
-    private String[] iconName = {"维修订单", "评价", "收藏", "反馈"};
+    private int[] icon = {R.drawable.order_icon, R.drawable.evaluate_icon, R.drawable.collect_icon,
+            R.drawable.feedback_icon, R.drawable.notice_icon, R.drawable.setting_icon};
+    private String[] iconName = {"维修订单", "评价", "收藏", "反馈", "通知", "设置"};
 
     public MineFragment() {
         // Required empty public constructor
@@ -70,34 +71,12 @@ public class MineFragment extends Fragment {
     }
 
     private void bindView() {
-        toolbar = getActivity().findViewById(R.id.mine_activity_tb);
         gridView = getActivity().findViewById(R.id.mine_page_gview);
         nickname_show_tv = getActivity().findViewById(R.id.edit_person_data_tv);
         my_portrait_civ = getActivity().findViewById(R.id.my_portrait_civ);
     }
 
     private void init() {
-        setHasOptionsMenu(true);
-        toolbar.inflateMenu(R.menu.mine_toolbar);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.setting_item:
-                        Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.message_item:
-                        Toast.makeText(getActivity(), "Message button click!", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.exit_login_item:
-                        showNormalDialog();
-                    default: break;
-                }
-                return true;
-            }
-        });
-
         list = new ArrayList<>();
         getData();
         String[] from = {"image", "text"};
@@ -110,16 +89,23 @@ public class MineFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0:
-                        Toast.makeText(getActivity(), "抱歉，维修订单模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        OrderActivity.launchActivity(getActivity(), user.getCustId());
                         break;
                     case 1:
-                        Toast.makeText(getActivity(), "抱歉，评价模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        CommentActivity.launchActivity(getActivity(), user.getCustId());
                         break;
                     case 2:
                         Toast.makeText(getActivity(), "抱歉，收藏模块尚未完善！", Toast.LENGTH_SHORT).show();
                         break;
                     case 3:
                         FeedbackActivity.launchActivity(getActivity(), user.getNickname());
+                        break;
+                    case 4:
+                        Toast.makeText(getActivity(), "抱歉，通知模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 5:
+                        Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                        startActivity(intent);
                         break;
                     default: break;
                 }
@@ -169,27 +155,6 @@ public class MineFragment extends Fragment {
         }
     }
 
-    private void showNormalDialog(){
-
-        final AlertDialog.Builder normalDialog = new AlertDialog.Builder(getActivity());
-        normalDialog.setIcon(R.mipmap.app_log);
-        normalDialog.setTitle("提示");
-        normalDialog.setMessage("是否要退出账号?");
-        normalDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                DataSupport.deleteAll(User.class, "phone = ?", user.getPhone());
-
-                SharedPreferencesUtil.save(getActivity(), APPConsts.SHARED_KEY_ISLOGIN, false);
-                LoginActivity.launchActivity(getActivity());
-                getActivity().finish();
-            }
-        });
-
-        normalDialog.setNegativeButton("取消", null);
-        normalDialog.show();
-    }
-
     public static MineFragment newInstance(User user) {
         MineFragment fragment = new MineFragment();
         Bundle args = new Bundle();
@@ -204,7 +169,6 @@ public class MineFragment extends Fragment {
         if (getArguments() != null) {
             user = (User) getArguments().getSerializable(ARG_PARAM1);
         }
-        setHasOptionsMenu(true); // 加上这句话，Toolbar的menu才会显示出来
     }
 
     @Override

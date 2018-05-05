@@ -138,7 +138,9 @@ public class RegisterActivity extends BaseActivity {
                                             Toast.makeText(RegisterActivity.this, "注册成功,请登录！", Toast.LENGTH_SHORT).show();
                                         }
                                     });
-                                    LoginActivity.launchActivity(RegisterActivity.this);
+                                    Intent intent = new Intent();
+                                    intent.putExtra("phone", phoneNumber);
+                                    setResult(2, intent);
                                     RegisterActivity.this.finish();
                                 } else if (UrlConsts.VERI_CODE_ERROR.equals(JsonParser.parseRegister(response))) {
                                     Log.d(TAG, "Register: 验证码错误！");
@@ -233,11 +235,6 @@ public class RegisterActivity extends BaseActivity {
             RegisterActivity.this.finish();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public static void launchActivity(Context context) {
-        Intent intent = new Intent(context, RegisterActivity.class);
-        context.startActivity(intent);
     }
 
     private void startDialog(String msg) {
