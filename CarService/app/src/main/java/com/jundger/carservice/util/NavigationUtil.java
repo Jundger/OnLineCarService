@@ -39,6 +39,7 @@ public class NavigationUtil {
                 stringBuilder.append("&dev=1&style=2");
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(context, "高德地图启调失败", Toast.LENGTH_SHORT).show();
             }
             //调用高德地图APP
             Intent intent = new Intent();
@@ -48,6 +49,16 @@ public class NavigationUtil {
             //传递组装的数据
             intent.setData(Uri.parse(stringBuilder.toString()));
             context.startActivity(intent);
+        } else if (isPkgInstalled("com.baidu.BaiduMap", context)) {
+            try {
+//                Intent intent = Intent.getIntent("intent://map/direction?origin=latlng:"+"29.457349,106.524505"+"|name:"+"重庆理工大学"+"&destination=latlng:"+"29.458122,106.531815"+"|name:"+"维修点"+"&mode=driving&src=重庆快易科技|CC房车-车主#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
+                Intent intent = new Intent();
+                intent.setData(Uri.parse("baidumap://map/navi?location=" + latLng.latitude + "," + latLng.longitude));
+                context.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(context, "百度地图启调失败", Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(context, "本机没有可使用的地图软件", Toast.LENGTH_SHORT).show();
         }
