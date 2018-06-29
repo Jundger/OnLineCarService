@@ -18,13 +18,13 @@
 
 #### 项目整体流程图：
 
-![项目整体流程图](http://39.108.160.249/images/overall_project_flow_chart.png)
+![项目整体流程图](http://120.79.183.78/images/overall_project_flow_chart.png)
 
 ---
 
 #### APP功能模块图：
 
-![功能模块图](http://39.108.160.249/images/functional_module_diagram.png)
+![功能模块图](http://120.79.183.78/images/functional_module_diagram.png)
 
 ---
 
