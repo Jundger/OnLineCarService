@@ -1,6 +1,8 @@
 package com.jundger.work.web;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jundger.common.util.MD5Util;
 import com.jundger.work.constant.Consts;
 import com.jundger.work.pojo.Collect;
@@ -11,9 +13,16 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import sun.misc.BASE64Encoder;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.*;
 
 
@@ -330,4 +339,122 @@ public class CustomerController {
 
 		return returnMsg;
 	}
+
+	public static void main(String[] args) {
+		Map<String, Object> returnMsg = new HashMap<>();
+		Map<String, Object> extras = new HashMap<>();
+		Map<String, Object> notify = new HashMap<>();
+		Map<String, Object> android = new HashMap<>();
+		Map<String, Object> audiences = new HashMap<>();
+		extras.put("custPhone", "13900000000");
+		extras.put("custName", "Jundger");
+		android.put("alert", "恭喜你服务器API测试成功！");
+		android.put("extras", extras);
+		notify.put("android", android);
+
+		List<String> alias = new ArrayList<>();
+		alias.add("13900000000");
+		audiences.put("alias", alias);
+
+		returnMsg.put("platform", "all");
+		returnMsg.put("audience", audiences);
+		returnMsg.put("notification", notify);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			String mapJakcson = mapper.writeValueAsString(returnMsg);
+			System.out.println("JSON===》" + mapJakcson);
+
+			URL httpUrl = new URL("https://api.jpush.cn/v3/push");
+			HttpURLConnection httpURLConnection = (HttpURLConnection)httpUrl.openConnection();
+			httpURLConnection.setDoOutput(true);
+			httpURLConnection.setRequestMethod("POST");
+			httpURLConnection.setConnectTimeout(8000);
+			httpURLConnection.setReadTimeout(8000);
+
+			String authString = "4b806c384e519434c62dde31:f3cb514d970caddc52007411";
+//			Base64.encodeBase64(authString.getBytes());
+			String authStringEnc = new BASE64Encoder().encode(authString.getBytes("UTF-8"));
+
+			httpURLConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+			httpURLConnection.setRequestProperty("content-Type", "application/json");
+
+			httpURLConnection.connect();
+			OutputStream outputStream = httpURLConnection.getOutputStream();
+			outputStream.write(mapJakcson.getBytes("UTF-8"));
+			if (httpURLConnection.getResponseCode() == 200) {
+				System.out.println("请求成功！");
+			} else {
+				System.out.println("请求失败！");
+			}
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+//	public static void main(String[] args) {
+//
+//		Map<String, Object> params = new HashMap<>();
+//		params.put("phone", "13900000000");
+//		params.put("password", "123456");
+//
+//		// 构建请求参数  
+//		StringBuffer sbParams = new StringBuffer();
+//		if (params != null && params.size() > 0) {
+//			for (Map.Entry< String, Object > e:params.entrySet()){
+//				sbParams.append(e.getKey());
+//				sbParams.append("=");
+//				sbParams.append(e.getValue());
+//				sbParams.append("&");
+//			}
+//			sbParams.deleteCharAt(sbParams.length() - 1);
+//		}
+//
+//		try {
+//			byte[] entity = sbParams.toString().getBytes("UTF-8");
+//			URL httpUrl = new URL("http://120.79.183.78/CarServiceServer/customer/login.do");
+//			HttpURLConnection httpURLConnection = (HttpURLConnection)httpUrl.openConnection();
+//			httpURLConnection.setDoOutput(true);
+//			httpURLConnection.setRequestMethod("POST");
+//			httpURLConnection.setConnectTimeout(8000);
+//			httpURLConnection.setReadTimeout(8000);
+//			httpURLConnection.setRequestProperty("content-Type", "application/x-www-form-urlencoded");
+////			httpURLConnection.connect();
+//			OutputStream outputStream = httpURLConnection.getOutputStream();
+//			outputStream.write(entity);
+//			if (httpURLConnection.getResponseCode() == 200) {
+//				System.out.println("请求成功！");
+//				InputStream is = httpURLConnection.getInputStream();
+//				// 封装输入流is，并指定字符集
+//				BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+//				// 存放数据
+//				StringBuffer sbf = new StringBuffer();
+//				String temp = null;
+//				while ((temp = br.readLine()) != null) {
+//					sbf.append(temp);
+//					sbf.append("\r\n");
+//				}
+//				String result = sbf.toString();
+//
+//				System.out.println(result);
+//			} else {
+//				System.out.println("请求失败！");
+//			}
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		} catch (MalformedURLException e) {
+//			e.printStackTrace();
+//		} catch (ProtocolException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
 }

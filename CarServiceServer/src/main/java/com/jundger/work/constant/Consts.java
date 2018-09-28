@@ -41,5 +41,5 @@ public class Consts {
 	/**
 	 * APP默认用户头像请求路径
 	 */
-	public static final String DEFAULT_USER_PORTRAIT = "http://39.108.160.249/images/head_portrait_test01.png";
+	public static final String DEFAULT_USER_PORTRAIT = "http://120.79.183.78/images/head_portrait_test01.png";
 }
