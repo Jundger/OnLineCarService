@@ -30,6 +30,10 @@ import com.jundger.carservice.util.SharedPreferencesUtil;
 import org.litepal.LitePal;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -124,6 +128,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             // 通过LitePal存储用户信息
                             user.save();
 
+                            // 极光推送直接将用户电话设置为别名
+                            JPushInterface.setAlias(LoginActivity.this,  1, user.getPhone());
+                            Set<String> tags = new LinkedHashSet<>();
+                            tags.add(APPConsts.CUSTOMER_TAG);
+                            JPushInterface.setTags(LoginActivity.this, 1, tags);
 
                             Log.i(TAG, "onFinish: user----->" + new Gson().toJson(user));
 

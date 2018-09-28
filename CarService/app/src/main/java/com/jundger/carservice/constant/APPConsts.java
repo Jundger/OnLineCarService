@@ -29,6 +29,13 @@ public class APPConsts {
     public static final String SHARED_KEY_LATITUDE = "latitude";
 
     /**
+     * 极光推送设置
+     */
+    public static final String SHARED_KEY_REGISTRATION_ID = "Registration_ID";
+    public static final String CUSTOMER_TAG = "CUSTOMER";
+    public static final String REPAIRMAN_TAG = "REPAIRMAN";
+
+    /**
      * 本地SQLite数据库名称
      */
     public static final String DATABASE_NAME = "OnLineCarService.db";

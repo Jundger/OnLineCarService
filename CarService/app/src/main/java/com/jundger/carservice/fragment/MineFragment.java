@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.jundger.carservice.R;
 import com.jundger.carservice.activity.CommentActivity;
+import com.jundger.carservice.activity.NotifyActivity;
 import com.jundger.carservice.activity.OrderActivity;
 import com.jundger.carservice.activity.ProfileActivity;
 import com.jundger.carservice.activity.FeedbackActivity;
@@ -101,7 +102,7 @@ public class MineFragment extends Fragment {
                         FeedbackActivity.launchActivity(getActivity(), user.getNickname());
                         break;
                     case 4:
-                        Toast.makeText(getActivity(), "抱歉，通知模块尚未完善！", Toast.LENGTH_SHORT).show();
+                        NotifyActivity.launchActivity(getActivity());
                         break;
                     case 5:
                         Intent intent = new Intent(getActivity(), SettingsActivity.class);

@@ -68,7 +68,7 @@ public class HttpUtil {
                         }
                         data.deleteCharAt(data.length() - 1);
                     }
-                    byte[] entity = data.toString().getBytes();
+                    byte[] entity = data.toString().getBytes("UTF-8");
 
                     URL url = new URL(address);
                     connection = (HttpURLConnection) url.openConnection();
