@@ -27,6 +27,11 @@ public class Actions {
     public static final String ACTION_MODIFY_PROFILE = "customer/modify.do";
 
     /**
+     * 创建订单的action
+     */
+    public static final String ACTION_CREATE_ORDER = "order/create.do";
+
+    /**
      * 获取附近服务点信息的action
      */
     public static final String ACTION_GET_SITE = "site/getList.do";

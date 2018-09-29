@@ -217,4 +217,16 @@ public class FaultCode {
     public void setOther(String other) {
         this.other = other == null ? null : other.trim();
     }
+
+    @Override
+    public String toString() {
+        return "FaultCode{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", system='" + system + '\'' +
+                ", scope='" + scope + '\'' +
+                ", describe='" + describe + '\'' +
+                ", other='" + other + '\'' +
+                '}';
+    }
 }

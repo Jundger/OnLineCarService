@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jundger.carservice.R;
-import com.jundger.carservice.bean.FaultCode;
+import com.jundger.carservice.bean.json.FaultCode;
 
 import java.util.List;
 

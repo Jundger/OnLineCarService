@@ -34,15 +34,14 @@ public class SiteController {
 	@RequestMapping(value = "/getList", produces = "application/json; charset=utf-8")
 	public Object getSiteList(@RequestParam(value = "longitude", required = false, defaultValue = Consts.DEFAULT_LONGITUDE) Float longitude,
 							  @RequestParam(value = "latitude", required = false, defaultValue = Consts.DEFAULT_LATITUDE) Float latitude,
-							  @RequestParam(value = "radius", required = false, defaultValue = Consts.DEFAULT_RADIUS) Float radius,
-							  @RequestParam(value = "limit", required = false, defaultValue = Consts.LIMIT_NUM) Integer limit) {
+							  @RequestParam(value = "radius", required = false, defaultValue = Consts.DEFAULT_RADIUS) Float radius) {
 
 		logger.info("=================获取附近维修点接口调用==================");
 
 		Map<String, Object> returnMsg = new HashMap<>();
 
 		try {
-			List<Map<String, Object>> list = siteService.getShowList(longitude, latitude, radius.doubleValue(), limit);
+			List<Map<String, Object>> list = siteService.getShowList(longitude, latitude, radius.doubleValue());
 			if (null != list && !list.isEmpty()) {
 				returnMsg.put("code", "1");
 				returnMsg.put("msg", "SUCCESS");

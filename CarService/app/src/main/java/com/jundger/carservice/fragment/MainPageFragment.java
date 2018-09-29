@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,15 +41,17 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.adapter.FaultInfoAdapter;
-import com.jundger.carservice.annotation.InjectView;
 import com.jundger.carservice.bean.ServicePoint;
 import com.jundger.carservice.bean.User;
+import com.jundger.carservice.bean.json.Customer;
+import com.jundger.carservice.bean.json.OrderJson;
 import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
-import com.jundger.carservice.bean.FaultCode;
+import com.jundger.carservice.bean.json.FaultCode;
 import com.jundger.carservice.bean.ResultArray;
 import com.jundger.carservice.util.HttpUtil;
+import com.jundger.carservice.util.LocationUtil;
 import com.jundger.carservice.util.NavigationUtil;
 import com.jundger.carservice.util.SharedPreferencesUtil;
 import com.shinelw.library.ColorArcProgressBar;
@@ -60,6 +63,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +83,7 @@ public class MainPageFragment extends Fragment {
 
     private String mBrand; // 汽车品牌
     private String mBrandNo; // 型号
+    private User user;
 
     private OnFragmentInteractionListener mListener;
 
@@ -339,18 +344,19 @@ public class MainPageFragment extends Fragment {
                                 dialogInterface.dismiss();
                                 switch (i) {
                                     case 0:
-                                        startProgressDialog("正在匹配，请稍候...");
-                                        new Thread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                try {
-                                                    Thread.sleep(5000);
-                                                } catch (InterruptedException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                stopProgressDialog();
-                                            }
-                                        }).start();
+                                        createOrder();
+//                                        startProgressDialog("正在匹配，请稍候...");
+//                                        new Thread(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                try {
+//                                                    Thread.sleep(5000);
+//                                                } catch (InterruptedException e) {
+//                                                    e.printStackTrace();
+//                                                }
+//                                                stopProgressDialog();
+//                                            }
+//                                        }).start();
                                         break;
                                     case 1:
                                         String longitude = (String) SharedPreferencesUtil.query(getActivity(), APPConsts.SHARED_KEY_LONGITUDE, "string");
@@ -395,6 +401,36 @@ public class MainPageFragment extends Fragment {
                         .show();
             }
         });
+    }
+
+    private void createOrder() {
+        String url = UrlConsts.getRequestURL(Actions.ACTION_CREATE_ORDER);
+
+        List<FaultCode> codeList = new ArrayList<>();
+        FaultCode faultCode1 = new FaultCode(1, "P107801", "动力总成系统", "尼桑（日产）、英菲尼迪", "排气阀门正时控制位置传感器-电路故障", null);
+        FaultCode faultCode2 = new FaultCode(1, "B009A", "车身系统", "所有汽车制造商", "一般由安全带传感器，其电路或接头故障所致", null);
+        codeList.add(faultCode1);
+        codeList.add(faultCode2);
+
+        Location location = LocationUtil.requestLocation(getActivity());
+        Customer customer = new Customer(user);
+        OrderJson orderJson = new OrderJson(null, codeList, null, customer, null, location.getLongitude(), location.getLatitude(), new Date());
+
+        String json = new Gson().toJson(orderJson);
+        Log.i(TAG, "json==========》\n" +  json);
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+
+//        HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_QUERY_CODE), requestBody, new Callback() {
+//            @Override
+//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+//
+//            }
+//        }
     }
 
     @Override
@@ -614,7 +650,7 @@ public class MainPageFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        User user = userList.get(0);
+                        user = userList.get(0);
                         if (user != null && user.getBrand() != null && user.getBrand_no() != null) {
                             mBrand = user.getBrand();
                             mBrandNo = user.getBrand_no();

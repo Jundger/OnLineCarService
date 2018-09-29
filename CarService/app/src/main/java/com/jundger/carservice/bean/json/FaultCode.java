@@ -1,4 +1,4 @@
-package com.jundger.carservice.bean;
+package com.jundger.carservice.bean.json;
 
 public class FaultCode {
     /**

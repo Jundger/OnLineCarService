@@ -237,8 +237,23 @@
         WHERE comment.site_id = site.id
         GROUP BY site.id
         HAVING distance &lt; #{radius,jdbcType=REAL}
-        ORDER BY distance
-        LIMIT 0 , #{num,jdbcType=INTEGER};
+        ORDER BY distance;
+    </select>
+
+
+    <select id="selectNearSiteOwnerId" resultType="java.lang.String">
+        SELECT
+        repairman.nickname AS REPAIRMANNO
+        FROM comment, site, repairman
+        WHERE comment.site_id = site.id AND site.owner_id = repairman.id
+        AND (6371 * acos (
+        cos ( radians(#{latitude,jdbcType=REAL}) )
+        * cos( radians( latitude ) )
+        * cos( radians( longitude ) - radians(#{longitude,jdbcType=REAL}) )
+        + sin ( radians(#{latitude,jdbcType=REAL}) )
+        * sin( radians( latitude ) )
+        )) &lt; #{radius,jdbcType=REAL}
+        GROUP BY site.id
     </select>
 
     <select id="selectSiteByName" parameterType="java.lang.String" resultMap="servicePointMap">

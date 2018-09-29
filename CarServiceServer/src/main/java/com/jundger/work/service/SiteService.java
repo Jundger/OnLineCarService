@@ -17,7 +17,9 @@ import java.util.Map;
  */
 public interface SiteService {
 
-	List<Map<String, Object>> getShowList(Float longitude, Float latitude, Double radius, Integer count);
+	List<Map<String, Object>> getShowList(Float longitude, Float latitude, Double radius);
+
+	List<String> getRepairmanId(Float longitude, Float latitude, Double radius);
 
 	List<Map<String, Object>> getCommentBySite(String site_id);
 

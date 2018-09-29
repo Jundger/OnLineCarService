@@ -1,4 +1,4 @@
-package com.jundger.work.pojo;
+package com.jundger.carservice.bean.json;
 
 import java.util.Date;
 
@@ -416,23 +416,5 @@ public class Repairman {
      */
     public void setDetail(String detail) {
         this.detail = detail == null ? null : detail.trim();
-    }
-
-    @Override
-    public String toString() {
-        return "Repairman{" +
-                "id=" + id +
-                ", nickname='" + nickname + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", registTime=" + registTime +
-                ", portrait='" + portrait + '\'' +
-                ", sex='" + sex + '\'' +
-                ", age=" + age +
-                ", loginIp='" + loginIp + '\'' +
-                ", taken='" + taken + '\'' +
-                ", detail='" + detail + '\'' +
-                '}';
     }
 }

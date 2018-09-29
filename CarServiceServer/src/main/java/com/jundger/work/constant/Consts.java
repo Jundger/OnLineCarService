@@ -42,4 +42,12 @@ public class Consts {
 	 * APP默认用户头像请求路径
 	 */
 	public static final String DEFAULT_USER_PORTRAIT = "http://120.79.183.78/images/head_portrait_test01.png";
+
+	/**
+	 * JPush消息推送
+	 */
+	public static final String JPUSH_REQUEST_ADDRESS = "https://api.jpush.cn/v3/push";
+	public static final String JPUSH_APP_KEY = "4b806c384e519434c62dde31";
+	public static final String JPUSH_MASTER_SECRET = "f3cb514d970caddc52007411";
+	public static final String ORDER_NOTIFICATION_ALERT = "您有一个订单待接收";
 }

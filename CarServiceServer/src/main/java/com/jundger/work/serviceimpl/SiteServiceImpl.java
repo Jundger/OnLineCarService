@@ -29,8 +29,13 @@ public class SiteServiceImpl implements SiteService {
 	private CommentMapper commentMapper;
 
 	@Override
-	public List<Map<String, Object>> getShowList(Float longitude, Float latitude, Double radius, Integer count) {
-		return siteMapper.selectNearList(longitude, latitude, radius, count);
+	public List<Map<String, Object>> getShowList(Float longitude, Float latitude, Double radius) {
+		return siteMapper.selectNearList(longitude, latitude, radius);
+	}
+
+	@Override
+	public List<String> getRepairmanId(Float longitude, Float latitude, Double radius) {
+		return siteMapper.selectNearSiteOwnerId(longitude, latitude, radius);
 	}
 
 	@Override

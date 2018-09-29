@@ -1,6 +1,6 @@
-package com.jundger.work.pojo;
+package com.jundger.carservice.bean.json;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.jundger.carservice.bean.User;
 
 import java.util.Date;
 
@@ -138,6 +138,18 @@ public class Customer {
         this.taken = taken;
         this.verification = verification;
         this.other = other;
+    }
+
+    public Customer(User user) {
+
+        this.custId = user.getCustId();
+        this.custPhone = user.getPhone();
+        this.custEmail = user.getEmail();
+        this.custName = user.getNickname();
+        this.carBrand = user.getBrand();
+        this.carId = user.getBrand_no();
+        this.custPortrait = user.getPortrait();
+        this.taken = user.getToken();
     }
 
     /**
@@ -484,25 +496,5 @@ public class Customer {
      */
     public void setOther(String other) {
         this.other = other == null ? null : other.trim();
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "custId=" + custId +
-                ", custPhone='" + custPhone + '\'' +
-                ", custPassword='" + custPassword + '\'' +
-                ", custEmail='" + custEmail + '\'' +
-                ", custName='" + custName + '\'' +
-                ", carBrand='" + carBrand + '\'' +
-                ", carId='" + carId + '\'' +
-                ", custPortrait='" + custPortrait + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", loginIp='" + loginIp + '\'' +
-                ", taken='" + taken + '\'' +
-                ", verification='" + verification + '\'' +
-                ", other='" + other + '\'' +
-                '}';
     }
 }

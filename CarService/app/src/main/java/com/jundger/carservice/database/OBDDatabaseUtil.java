@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jundger.carservice.constant.APPConsts;
-import com.jundger.carservice.bean.FaultCode;
+import com.jundger.carservice.bean.json.FaultCode;
 
 /**
  * Created by Jundger on 2018/1/6.
