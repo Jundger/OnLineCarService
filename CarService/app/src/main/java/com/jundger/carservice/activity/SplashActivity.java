@@ -1,12 +1,15 @@
 package com.jundger.carservice.activity;
 
+import android.location.Location;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.jundger.carservice.R;
 import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.bean.User;
+import com.jundger.carservice.util.LocationUtil;
 import com.jundger.carservice.util.SharedPreferencesUtil;
 
 import org.litepal.crud.DataSupport;
