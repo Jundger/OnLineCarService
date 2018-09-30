@@ -59,4 +59,6 @@ public interface CommentMapper {
     List<Map<String, Object>> selectShowCommentBySite(Integer site_id);
 
     List<Map<String, Object>> selectShowCommentByCust(Integer site_id);
+
+    List<Map<String, Object>> selectShowCommentByRepairman(Integer site_id);
 }

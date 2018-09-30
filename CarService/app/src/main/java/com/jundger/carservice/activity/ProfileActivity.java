@@ -181,6 +181,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void sendModifyRequest(final String type, final String input, final User user) {
 
         String json = new Gson().toJson(user);
+        Log.i(TAG, "sendModifyRequest: " + json);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
         HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_MODIFY_PROFILE), requestBody, new Callback() {
             @Override

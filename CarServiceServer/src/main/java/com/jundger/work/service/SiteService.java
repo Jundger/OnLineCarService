@@ -21,10 +21,14 @@ public interface SiteService {
 
 	List<String> getRepairmanId(Float longitude, Float latitude, Double radius);
 
-	List<Map<String, Object>> getCommentBySite(String site_id);
-
 	List<Map<String, Object>> getLocationList();
 
 	Map<String, Object> getSiteByName(String name);
+
+	// 根据维修店id拉取用户评论
+	List<Map<String, Object>> getCommentBySite(Integer id);
+
+	// 根据维修人员id拉取用户评论
+	List<Map<String, Object>> getCommentByRepairman(Integer id);
 
 }

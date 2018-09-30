@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.jundger.carservice"
+        applicationId "com.jundger.carservice1"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
@@ -62,6 +62,6 @@ dependencies {
     implementation 'com.amap.api:search:5.7.0'
 
     // 极光推送SDK
-    compile 'cn.jiguang.sdk:jpush:3.1.6'
-    compile 'cn.jiguang.sdk:jcore:1.2.5'
+    implementation 'cn.jiguang.sdk:jpush:3.1.6'
+    implementation 'cn.jiguang.sdk:jcore:1.2.5'
 }

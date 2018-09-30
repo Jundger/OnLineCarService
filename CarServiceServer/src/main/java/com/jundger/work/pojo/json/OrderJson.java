@@ -1,5 +1,6 @@
 package com.jundger.work.pojo.json;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jundger.work.pojo.Customer;
 import com.jundger.work.pojo.FaultCode;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author Jundger
  * @version 1.0
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderJson {
 
     private String orderNo;

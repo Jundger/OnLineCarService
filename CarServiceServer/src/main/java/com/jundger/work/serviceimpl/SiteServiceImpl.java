@@ -39,11 +39,6 @@ public class SiteServiceImpl implements SiteService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getCommentBySite(String site_id) {
-		return commentMapper.selectShowCommentBySite(Integer.parseInt(site_id));
-	}
-
-	@Override
 	public List<Map<String, Object>> getLocationList() {
 		return siteMapper.selectLocation();
 	}
@@ -51,5 +46,15 @@ public class SiteServiceImpl implements SiteService {
 	@Override
 	public Map<String, Object> getSiteByName(String name) {
 		return siteMapper.selectSiteByName(name);
+	}
+
+	@Override
+	public List<Map<String, Object>> getCommentBySite(Integer id) {
+		return this.commentMapper.selectShowCommentBySite(id);
+	}
+
+	@Override
+	public List<Map<String, Object>> getCommentByRepairman(Integer id) {
+		return this.commentMapper.selectShowCommentByRepairman(id);
 	}
 }

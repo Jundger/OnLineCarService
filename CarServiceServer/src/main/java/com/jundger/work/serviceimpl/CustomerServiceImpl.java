@@ -3,10 +3,8 @@ package com.jundger.work.serviceimpl;
 import com.jundger.work.dao.CollectMapper;
 import com.jundger.work.dao.CommentMapper;
 import com.jundger.work.dao.CustomerMapper;
-import com.jundger.work.dao.FaultCodeMapper;
 import com.jundger.work.pojo.Collect;
 import com.jundger.work.pojo.Customer;
-import com.jundger.work.pojo.FaultCode;
 import com.jundger.work.service.CustomerService;
 import org.springframework.stereotype.Service;
 

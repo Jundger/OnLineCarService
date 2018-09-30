@@ -243,7 +243,7 @@
 
     <select id="selectNearSiteOwnerId" resultType="java.lang.String">
         SELECT
-        repairman.nickname AS REPAIRMANNO
+        repairman.phone AS REPAIRMANNO
         FROM comment, site, repairman
         WHERE comment.site_id = site.id AND site.owner_id = repairman.id
         AND (6371 * acos (

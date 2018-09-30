@@ -60,24 +60,24 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <mvc:annotation-driven>
-        <mvc:message-converters register-defaults="true">
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="objectMapper">
-                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">
-                        <property name="dateFormat">
-                            <bean class="java.text.SimpleDateFormat">
-                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
-                            </bean>
-                        </property>
-                        <property name="serializationInclusion">
-                            <util:constant static-field="com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL" />
-                        </property>
-                    </bean>
-                </property>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
+    <!--<mvc:annotation-driven>-->
+        <!--<mvc:message-converters register-defaults="true">-->
+            <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+                <!--<property name="objectMapper">-->
+                    <!--<bean class="com.fasterxml.jackson.databind.ObjectMapper">-->
+                        <!--<property name="dateFormat">-->
+                            <!--<bean class="java.text.SimpleDateFormat">-->
+                                <!--<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />-->
+                            <!--</bean>-->
+                        <!--</property>-->
+                        <!--<property name="serializationInclusion">-->
+                            <!--<util:constant static-field="com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL" />-->
+                        <!--</property>-->
+                    <!--</bean>-->
+                <!--</property>-->
+            <!--</bean>-->
+        <!--</mvc:message-converters>-->
+    <!--</mvc:annotation-driven>-->
 
 
     <!--定义跳转的文件的前后缀 ，视图模式配置-->

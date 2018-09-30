@@ -211,4 +211,17 @@
     WHERE comment.cust_id = customer.cust_id
     AND comment.cust_id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectShowCommentByRepairman" parameterType="java.lang.Integer" resultMap="commentShowMap">
+    SELECT
+    comment.id AS id,
+    customer.cust_name AS name,
+    customer.cust_portrait AS portrait,
+    comment.score AS score,
+    comment.content AS content,
+    comment.create_time AS time
+    FROM comment, customer, site
+    WHERE comment.cust_id = customer.cust_id AND comment.site_id = site.id
+    AND site.owner_id = #{id,jdbcType=INTEGER}
+  </select>
 </mapper>

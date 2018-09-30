@@ -5,6 +5,7 @@ import com.jundger.common.util.CreateRandomCharacter;
 import com.jundger.work.constant.Consts;
 import com.jundger.work.pojo.Customer;
 import com.jundger.work.pojo.JPush.*;
+import com.jundger.work.pojo.Order;
 import com.jundger.work.pojo.json.OrderJson;
 import com.jundger.work.service.OrderService;
 import com.jundger.work.service.SiteService;
@@ -50,46 +51,58 @@ public class OrderController {
 
         logger.info("Info from client=============================================》\n" + orderJson);
 
+        Order order = new Order();
         String orderNo = CreateRandomCharacter.getOrderno();
         Date currentTime = new Date();
+
+        order.setOrderNo(orderNo);
+        order.setCustId(orderJson.getCustomer().getCustId());
+        order.setLongitude(Float.valueOf(String.valueOf(orderJson.getLongitude())));
+        order.setLatitude(Float.valueOf(String.valueOf(orderJson.getLatitude())));
+        logger.info("订单数据插入之前====》" + JSON.toJSONString(order));
+//        orderService.addOrder(order);
+
+//        List<Integer> codeIdList = new ArrayList<>();
+//        codeIdList.isEmpty();
 
         orderJson.setCreateTime(currentTime);
         orderJson.setOrderNo(orderNo);
 
-//        List<String> alias = siteService.getRepairmanId(orderJson.getLongitude(), orderJson.getLatitude(), 1.0);
-//        logger.info("订单推送目标====》" + JSON.toJSONString(alias));
-//        Audience audience = new Audience(null, alias, null);
-//        Platform<OrderJson> android = new Platform<>(Consts.ORDER_NOTIFICATION_ALERT, null, null, orderJson);
-//        Notification<OrderJson> notification = new Notification<>(android);
-//        Options options = new Options(60);
-//        JPushJson<OrderJson> jPushJson = new JPushJson(null, "all", audience, notification, null, options);
-//
-//        String json = JSON.toJSONString(jPushJson);
-//        System.out.println("JSON===》" + json);
-//
-//        try {
-//            URL httpUrl = new URL(Consts.JPUSH_REQUEST_ADDRESS);
-//            HttpURLConnection httpURLConnection = (HttpURLConnection)httpUrl.openConnection();
-//            httpURLConnection.setDoOutput(true);
-//            httpURLConnection.setRequestMethod("POST");
-//
-//            String authString = Consts.JPUSH_APP_KEY + ":" + Consts.JPUSH_MASTER_SECRET;
-//            String authStringEnc = new BASE64Encoder().encode(authString.getBytes("UTF-8"));
-//
-//            httpURLConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
-//            httpURLConnection.setRequestProperty("content-Type", "application/json");
-//
-//            httpURLConnection.connect();
-//            OutputStream outputStream = httpURLConnection.getOutputStream();
-//            outputStream.write(json.getBytes("UTF-8"));
-//            if (httpURLConnection.getResponseCode() == 200) {
-//                System.out.println("请求成功！");
-//            } else {
-//                System.out.println("请求失败！");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        List<String> alias = siteService.getRepairmanId(Float.valueOf(String.valueOf(orderJson.getLongitude())),
+                Float.valueOf(String.valueOf(orderJson.getLatitude())), 1.0);
+        logger.info("订单推送目标====》" + JSON.toJSONString(alias));
+        Audience audience = new Audience(null, alias, null);
+        Platform<OrderJson> android = new Platform<>(Consts.ORDER_NOTIFICATION_ALERT, null, null, orderJson);
+        Notification<OrderJson> notification = new Notification<>(android);
+        Options options = new Options(60);
+        JPushJson<OrderJson> jPushJson = new JPushJson(null, "all", audience, notification, null, options);
+
+        String json = JSON.toJSONString(jPushJson);
+        System.out.println("JSON===》" + json);
+
+        try {
+            URL httpUrl = new URL(Consts.JPUSH_REQUEST_ADDRESS);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)httpUrl.openConnection();
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setRequestMethod("POST");
+
+            String authString = Consts.JPUSH_APP_KEY + ":" + Consts.JPUSH_MASTER_SECRET;
+            String authStringEnc = new BASE64Encoder().encode(authString.getBytes("UTF-8"));
+
+            httpURLConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+            httpURLConnection.setRequestProperty("content-Type", "application/json");
+
+            httpURLConnection.connect();
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            outputStream.write(json.getBytes("UTF-8"));
+            if (httpURLConnection.getResponseCode() == 200) {
+                System.out.println("请求成功！");
+            } else {
+                System.out.println("请求失败！");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return orderJson;
     }

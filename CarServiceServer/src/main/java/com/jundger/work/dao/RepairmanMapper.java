@@ -1,6 +1,7 @@
 package com.jundger.work.dao;
 
 import com.jundger.work.pojo.Repairman;
+import org.apache.ibatis.annotations.Param;
 
 public interface RepairmanMapper {
     /**
@@ -50,4 +51,10 @@ public interface RepairmanMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(Repairman record);
+
+    Repairman selectByPhoneNumber(@Param("phone") String phoneNumber);
+
+    Repairman selectByPhonePsw(@Param("phone") String phoneNumber, @Param("password") String password);
+
+    Repairman selectByEmail(@Param("email") String email);
 }

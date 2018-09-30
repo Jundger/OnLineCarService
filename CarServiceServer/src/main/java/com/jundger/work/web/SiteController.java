@@ -115,14 +115,28 @@ public class SiteController {
 
 	@ResponseBody
 	@RequestMapping(value = "/getComment")
-	public Map<String, Object> getCommentBySite(@RequestParam(value = "site_id") String site_id) {
+	public Map<String, Object> getCommentBySite(@RequestParam(value = "site_id", required = false) Integer site_id,
+												@RequestParam(value = "repairman_id", required = false) Integer repairman_id) {
 
 		logger.info("getCommentBySite request...");
 
 		Map<String, Object> returnMsg = new HashMap<>();
 
 		try {
-			List<Map<String, Object>> comments = siteService.getCommentBySite(site_id);
+
+			if (null == site_id && null == repairman_id) {
+				returnMsg.put("code", "0");
+				returnMsg.put("msg", "NULL_PARAMETER");
+				return returnMsg;
+			}
+
+			List<Map<String, Object>> comments;
+			if (null != site_id ) {
+				comments = siteService.getCommentBySite(site_id);
+			} else {
+				comments = siteService.getCommentByRepairman(repairman_id);
+			}
+
 			if (null != comments && !comments.isEmpty()) {
 				returnMsg.put("code", "1");
 				returnMsg.put("msg", "SUCCESS");
