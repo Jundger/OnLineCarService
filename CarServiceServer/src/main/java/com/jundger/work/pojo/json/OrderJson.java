@@ -1,5 +1,6 @@
 package com.jundger.work.pojo.json;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jundger.work.pojo.Customer;
@@ -27,6 +28,8 @@ public class OrderJson {
     private Repairman repairman;
     private Double longitude;
     private Double latitude;
+
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     public OrderJson() {

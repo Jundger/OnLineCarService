@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.jundger.carservice1"
+        applicationId "com.jundger.carservice"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1

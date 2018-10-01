@@ -67,12 +67,7 @@
                <!--enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"/>-->
 
-        <!--<table tableName="comment" domainObjectName="Comment"-->
-               <!--enableCountByExample="false" enableUpdateByExample="false"-->
-               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"/>-->
-
-        <table tableName="repairman" domainObjectName="Repairman"
+        <table tableName="order_notify" domainObjectName="OrderNotify"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>

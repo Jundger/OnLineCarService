@@ -50,4 +50,10 @@ public class Consts {
 	public static final String JPUSH_APP_KEY = "4b806c384e519434c62dde31";
 	public static final String JPUSH_MASTER_SECRET = "f3cb514d970caddc52007411";
 	public static final String ORDER_NOTIFICATION_ALERT = "您有一个订单待接收";
+
+	/**
+	 * 订单接收与否标志
+	 */
+	public static final String FLAG_ACCEPT_ORDER = "ACCEPT";
+	public static final String FLAG_UNACCEPTED_ORDER = "UNACCEPTED";
 }

@@ -102,4 +102,17 @@
       code_id = #{codeId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <insert id="insertList" parameterType="java.util.List" >
+
+    insert into order_code (order_id, code_id)
+    values
+
+    <!--item就是List里每一项的对象名，要用","分割每一条数据，最后要";"结尾-->
+    <foreach collection="list" item="item" index="index" separator="," close=";">
+      (#{item.orderId,jdbcType=INTEGER}, #{item.codeId,jdbcType=INTEGER})
+    </foreach>
+
+  </insert>
 </mapper>

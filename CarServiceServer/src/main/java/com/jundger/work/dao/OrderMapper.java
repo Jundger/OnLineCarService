@@ -50,4 +50,6 @@ public interface OrderMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(Order record);
+
+    int updateByOrderNoSelective(Order record);
 }

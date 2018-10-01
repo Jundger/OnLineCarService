@@ -3,20 +3,18 @@ package com.jundger.work.web;
 import com.alibaba.fastjson.JSON;
 import com.jundger.common.util.CreateRandomCharacter;
 import com.jundger.work.constant.Consts;
-import com.jundger.work.pojo.Customer;
+import com.jundger.work.constant.OrderStatusEnum;
+import com.jundger.work.pojo.*;
 import com.jundger.work.pojo.JPush.*;
-import com.jundger.work.pojo.Order;
 import com.jundger.work.pojo.json.OrderJson;
 import com.jundger.work.service.OrderService;
 import com.jundger.work.service.SiteService;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Encoder;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -45,25 +43,44 @@ public class OrderController {
 
     private static Logger logger = Logger.getLogger(CustomerController.class);
 
+    /**
+     * 订单创建接口
+     * @param orderJson 订单基本信息
+     */
     @ResponseBody
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public OrderJson createOrder(@RequestBody OrderJson orderJson) {
+    public Map<String, Object> createOrder(@RequestBody OrderJson orderJson) {
 
-        logger.info("Info from client=============================================》\n" + orderJson);
+        logger.info("======================= 订单创建接口调用 ======================");
+        logger.info("接收到数据==> " + orderJson);
+
+        Map<String, Object> returnMsg = new HashMap<>();
 
         Order order = new Order();
         String orderNo = CreateRandomCharacter.getOrderno();
         Date currentTime = new Date();
 
         order.setOrderNo(orderNo);
+        order.setCreateTime(currentTime);
+        order.setPayStatus("NO");
+        order.setCommentStatus("NO");
+        order.setResolveStatus(OrderStatusEnum.WAITTING.toString());
         order.setCustId(orderJson.getCustomer().getCustId());
         order.setLongitude(Float.valueOf(String.valueOf(orderJson.getLongitude())));
         order.setLatitude(Float.valueOf(String.valueOf(orderJson.getLatitude())));
         logger.info("订单数据插入之前====》" + JSON.toJSONString(order));
-//        orderService.addOrder(order);
+        orderService.addOrder(order);
 
-//        List<Integer> codeIdList = new ArrayList<>();
-//        codeIdList.isEmpty();
+        List<OrderCode> orderCodeList = new ArrayList<>();
+        for (FaultCode faultCode : orderJson.getFaultCodeList()) {
+            OrderCode orderCode = new OrderCode();
+            orderCode.setOrderId(order.getId());
+            orderCode.setCodeId(faultCode.getId());
+            orderCodeList.add(orderCode);
+        }
+        logger.info("订单与故障码对应List===》" + JSON.toJSONString(orderCodeList));
+        orderService.addOrderCode(orderCodeList);
+
 
         orderJson.setCreateTime(currentTime);
         orderJson.setOrderNo(orderNo);
@@ -71,98 +88,74 @@ public class OrderController {
         List<String> alias = siteService.getRepairmanId(Float.valueOf(String.valueOf(orderJson.getLongitude())),
                 Float.valueOf(String.valueOf(orderJson.getLatitude())), 1.0);
         logger.info("订单推送目标====》" + JSON.toJSONString(alias));
-        Audience audience = new Audience(null, alias, null);
-        Platform<OrderJson> android = new Platform<>(Consts.ORDER_NOTIFICATION_ALERT, null, null, orderJson);
-        Notification<OrderJson> notification = new Notification<>(android);
-        Options options = new Options(60);
-        JPushJson<OrderJson> jPushJson = new JPushJson(null, "all", audience, notification, null, options);
 
-        String json = JSON.toJSONString(jPushJson);
-        System.out.println("JSON===》" + json);
-
-        try {
-            URL httpUrl = new URL(Consts.JPUSH_REQUEST_ADDRESS);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)httpUrl.openConnection();
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setRequestMethod("POST");
-
-            String authString = Consts.JPUSH_APP_KEY + ":" + Consts.JPUSH_MASTER_SECRET;
-            String authStringEnc = new BASE64Encoder().encode(authString.getBytes("UTF-8"));
-
-            httpURLConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
-            httpURLConnection.setRequestProperty("content-Type", "application/json");
-
-            httpURLConnection.connect();
-            OutputStream outputStream = httpURLConnection.getOutputStream();
-            outputStream.write(json.getBytes("UTF-8"));
-            if (httpURLConnection.getResponseCode() == 200) {
-                System.out.println("请求成功！");
-            } else {
-                System.out.println("请求失败！");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<OrderNotify> orderNotifyList = new ArrayList<>();
+        for (String phone : alias) {
+            OrderNotify orderNotify = new OrderNotify();
+            orderNotify.setOrderId(order.getId());
+            orderNotify.setOrderNo(orderNo);
+            orderNotify.setRepaiamanPhone(phone);
+            orderNotify.setFlag(Consts.FLAG_UNACCEPTED_ORDER);
+            orderNotifyList.add(orderNotify);
         }
+        logger.info("订单与维修人员对应List===》" + JSON.toJSONString(orderNotifyList));
+        orderService.addOrderNotify(orderNotifyList);
 
-        return orderJson;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/test", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-    public Map<String, Object> test(@RequestParam(value = "temp") String temp) {
-
-        logger.info("Info from client========================================》");
-
-        Map<String, Object> returnMsg = new HashMap<>();
-        returnMsg.put("phone", "31425");
-        returnMsg.put("name", "Jundger");
+        if (orderService.pushNotify(alias, orderJson)) {
+            returnMsg.put("code", "1");
+            returnMsg.put("msg", "SUCCESS");
+        } else {
+            returnMsg.put("code", "0");
+            returnMsg.put("msg", "FAIL");
+        }
 
         return returnMsg;
     }
 
-//    public static void main(String[] args) {
-//
-//        Customer customer = new Customer();
-//        customer.setCustPhone("13900000000");
-//        customer.setCustName("Jundger");
-//        List<String> alias = new ArrayList<>();
-//        alias.add("18875198367");
-//        alias.add("13900000000");
-//        alias.add("13800000000");
-//        Audience audience = new Audience(null, alias, null);
-//        Platform<Customer> android = new Platform<>("服务器JPush推送服务测试...", null, null, customer);
-//        Notification<Customer> notification = new Notification<>(android);
-//        Options options = new Options(60);
-//        JPushJson<Customer> jPushJson = new JPushJson(null, "all", audience, notification, null, options);
-//
-//        String json = JSON.toJSONString(jPushJson);
-//        System.out.println("JSON===》" + json);
-//
-//        try {
-//            URL httpUrl = new URL(Consts.JPUSH_REQUEST_ADDRESS);
-//            HttpURLConnection httpURLConnection = (HttpURLConnection)httpUrl.openConnection();
-//            httpURLConnection.setDoOutput(true);
-//            httpURLConnection.setRequestMethod("POST");
-//
-//            String authString = Consts.JPUSH_APP_KEY + ":" + Consts.JPUSH_MASTER_SECRET;
-////			Base64.encodeBase64(authString.getBytes());
-//            String authStringEnc = new BASE64Encoder().encode(authString.getBytes("UTF-8"));
-//
-//            httpURLConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
-//            httpURLConnection.setRequestProperty("content-Type", "application/json");
-//
-//            httpURLConnection.connect();
-//            OutputStream outputStream = httpURLConnection.getOutputStream();
-//            outputStream.write(json.getBytes("UTF-8"));
-//            if (httpURLConnection.getResponseCode() == 200) {
-//                System.out.println("请求成功！");
-//            } else {
-//                System.out.println("请求失败！");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    /**
+     * 订单接受接口
+     * @param orderJson 订单基本信息
+     */
+    @ResponseBody
+    @RequestMapping(value = "/accept", method = RequestMethod.POST)
+    public Map<String, Object> acceptOrder(@RequestBody OrderJson orderJson) {
+        logger.info("======================= 订单接受接口调用 ======================");
+        logger.info("接收到数据==> " + orderJson);
+
+        Map<String, Object> returnMsg = new HashMap<>();
+
+        try {
+            // 更新order_code表
+            Order order = new Order();
+            order.setOrderNo(orderJson.getOrderNo());
+            order.setResolverId(orderJson.getRepairman().getId());
+            order.setResolveStatus(OrderStatusEnum.RUNNING.toString());
+            order.setResolverName(orderJson.getRepairman().getNickname());
+            orderService.updateOrder(order);
+
+            // 更新order_notify表
+            OrderNotify orderNotify = new OrderNotify();
+            orderNotify.setFlag(Consts.FLAG_ACCEPT_ORDER);
+            orderNotify.setOrderNo(orderJson.getOrderNo());
+            orderService.updateOrderNotify(orderNotify);
+
+            List<String> alias = new ArrayList<>();
+            alias.add(orderJson.getCustomer().getCustPhone());
+            if (orderService.pushNotify(alias, orderJson)) {
+                returnMsg.put("code", "1");
+                returnMsg.put("msg", "SUCCESS");
+            } else {
+                returnMsg.put("code", "0");
+                returnMsg.put("msg", "FAIL");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnMsg.put("code", "0");
+            returnMsg.put("msg", "FAIL");
+        }
+
+        return returnMsg;
+    }
 
 //	public static void main(String[] args) {
 //
