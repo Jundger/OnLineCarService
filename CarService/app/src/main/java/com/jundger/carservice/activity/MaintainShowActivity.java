@@ -17,10 +17,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
+import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.bean.Article;
 import com.jundger.carservice.util.InjectUtil;
 
-public class MaintainShowActivity extends AppCompatActivity {
+public class MaintainShowActivity extends BaseActivity {
 
     private Article article;
 

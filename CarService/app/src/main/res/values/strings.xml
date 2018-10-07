@@ -46,7 +46,7 @@
 
     <!--MainPageFragment-->
     <string name="fault_info_str">----故障信息----</string>
-    <string name="fault_code_str">故障码：</string>
+    <string name="fault_code_str">故障码：&#160;&#160;&#160;&#160;&#160;</string>
     <string name="component_system_str">部件系统：</string>
     <string name="use_scope_str">适用范围：</string>
     <string name="describe_str">故障描述：</string>

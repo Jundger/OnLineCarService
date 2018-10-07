@@ -68,7 +68,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.comment_content_tv.setText(comment.getContent());
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String time = sdf.format(new Date(Long.valueOf(comment.getTime())));
+        String time = sdf.format(comment.getTime());
         holder.comment_time_tv.setText(time);
 
         Glide.with(MyApplication.getContext())

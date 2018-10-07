@@ -1,5 +1,6 @@
 package com.jundger.carservice.bean.json;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author Jundger
  * @version 1.0
  */
-public class OrderJson {
+public class OrderJson implements Serializable {
 
     private String orderNo;
     private List<FaultCode> faultCodeList;
@@ -21,6 +22,8 @@ public class OrderJson {
     private Double longitude;
     private Double latitude;
     private Date createTime;
+    private String siteName;
+    private String resolveStatus;
 
     public OrderJson(String orderNo, List<FaultCode> faultCodeList, String describe, Customer customer, Repairman repairman, Double longitude, Double latitude, Date createTime) {
         this.orderNo = orderNo;
@@ -95,5 +98,21 @@ public class OrderJson {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getSiteName() {
+        return siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
+
+    public String getResolveStatus() {
+        return resolveStatus;
+    }
+
+    public void setResolveStatus(String resolveStatus) {
+        this.resolveStatus = resolveStatus;
     }
 }

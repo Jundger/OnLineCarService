@@ -19,7 +19,12 @@ public class APPConsts {
     /**
      * 蓝牙故障码读取指令
      */
-    public static final String BLUETOOTH_READ_COMMAND = "AT+GetFaultCode";
+    public static final String BLUETOOTH_READ_COMMAND = "AT+DTC?\r\n";
+
+    /**
+     * 下位机蓝牙模块名称
+     */
+    public static final String BLUETOOTH_NAME = "OBD_BT";
 
     /**
      * 本地SharedPreferences存储key值
@@ -75,4 +80,37 @@ public class APPConsts {
     public static final int CIRCLE_PROGRESS_SIZE = 200;
 
     public static final int TURN_ON_BT_REQUEST_CODE = 1;
+
+    /**
+     * 接单等待时间
+     */
+    public static final int WAIT_ORDER_TIME = 5 * 60 * 1000;
+
+    /**
+     * 极光推送相关
+     */
+    public static final String MESSAGE_RECEIVED_ACTION = "com.jpush.MESSAGE_RECEIVED_ACTION";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_EXTRAS = "extras";
+
+    /**
+     * 订单相关
+     */
+    public static final String CONTENT_ORDER_ACCEPT = "ORDER_ACCEPT";
+    public static final String ORDER_FINISH_REQUEST = "FINISH_REQUEST";
+    public static final String ORDER_FINISH_RESPONSE = "FINISH_RESPONSE";
+
+    public static final String ORDER_KEY_CODE = "code";
+    public static final String ORDER_KEY_MESSAGE = "msg";
+    public static final String ORDER_KEY_ORDERNO = "orderNo";
+    public static final String ORDER_KEY_NAME = "name";
+
+    /**
+     * 订单结束相关操作标志位
+     */
+    public static final String REPAIRMAN_TO_CUSTOMER_REQUEST = "RPRM_TO_CUST_REQ";
+    public static final String CUSTOMER_TO_REPAIRMAN_REQUEST = "CUST_TO_RPRM_REQ";
+    public static final String REPAIRMAN_TO_CUSTOMER_RESPONSE = "RPRM_TO_CUST_RES";
+    public static final String CUSTOMER_TO_REPAIRMAN_RESPONSE = "CUST_TO_RPRM_RES";
+
 }

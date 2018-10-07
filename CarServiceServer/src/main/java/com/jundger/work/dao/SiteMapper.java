@@ -65,4 +65,5 @@ public interface SiteMapper {
     List<String> selectNearSiteOwnerId(@Param("longitude") Float longitude, @Param("latitude") Float latitude,
                                              @Param("radius") Double radius);
 
+    Site selectByOwnerId(Integer id);
 }

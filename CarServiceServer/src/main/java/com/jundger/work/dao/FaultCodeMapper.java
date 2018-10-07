@@ -54,5 +54,7 @@ public interface FaultCodeMapper {
      */
     int updateByPrimaryKey(FaultCode record);
 
+    List<FaultCode> selectByOrderId(Integer id);
+
     List<FaultCode> selectByCode(@Param("codes") List<String> codes, @Param("brand") String brand);
 }

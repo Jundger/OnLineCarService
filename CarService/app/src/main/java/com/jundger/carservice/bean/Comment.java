@@ -1,5 +1,7 @@
 package com.jundger.carservice.bean;
 
+import java.util.Date;
+
 /**
  * Title: CarService
  * Date: Create in 2018/5/2 15:59
@@ -21,9 +23,9 @@ public class Comment {
 
     private String content;
 
-    private String time;
+    private Date time;
 
-    public Comment(String id, String username, String portrait, Float score, String content, String time) {
+    public Comment(String id, String username, String portrait, Float score, String content, Date time) {
         this.id = id;
         this.username = username;
         this.portrait = portrait;
@@ -72,11 +74,11 @@ public class Comment {
         this.content = content;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 }

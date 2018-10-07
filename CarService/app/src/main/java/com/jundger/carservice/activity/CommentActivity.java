@@ -16,10 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.adapter.CommentAdapter;
 import com.jundger.carservice.annotation.InjectView;
+import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.bean.Comment;
 import com.jundger.carservice.bean.ResultArray;
 import com.jundger.carservice.constant.Actions;
@@ -37,7 +39,7 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class CommentActivity extends AppCompatActivity {
+public class CommentActivity extends BaseActivity {
     public static final String PARAM_USER_ID = "user_id";
     private static final String TAG = "CommentActivity";
 
@@ -113,7 +115,8 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String res = response.body().string();
-                final ResultArray<Comment> result = new Gson().fromJson(res, new TypeToken<ResultArray<Comment>>(){}.getType());
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                final ResultArray<Comment> result = gson.fromJson(res, new TypeToken<ResultArray<Comment>>(){}.getType());
                 if (UrlConsts.CODE_SUCCESS.equals(result.getCode())) {
                     commentList.clear();
                     commentList.addAll(result.getData());

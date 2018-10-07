@@ -1,5 +1,7 @@
 package com.jundger.work.pojo;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 public class Repairman {
@@ -57,6 +59,7 @@ public class Repairman {
      *
      * @mbggenerated
      */
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date registTime;
 
     /**
@@ -416,5 +419,23 @@ public class Repairman {
      */
     public void setOther(String other) {
         this.other = other == null ? null : other.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "Repairman{" +
+                "id=" + id +
+                ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", portrait='" + portrait + '\'' +
+                ", registTime=" + registTime +
+                ", updateTime=" + updateTime +
+                ", verification='" + verification + '\'' +
+                ", loginIp='" + loginIp + '\'' +
+                ", token='" + token + '\'' +
+                ", other='" + other + '\'' +
+                '}';
     }
 }

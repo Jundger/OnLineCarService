@@ -1,5 +1,6 @@
 package com.jundger.work.dao;
 
+import com.jundger.work.pojo.FaultCode;
 import com.jundger.work.pojo.OrderCode;
 
 import java.util.List;

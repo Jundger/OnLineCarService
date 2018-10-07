@@ -15,10 +15,11 @@ import android.widget.Toast;
 
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
+import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.bean.User;
 import com.jundger.carservice.util.InjectUtil;
 
-public class FeedbackActivity extends AppCompatActivity {
+public class FeedbackActivity extends BaseActivity {
 
     private static final String PARAM_USER_NAME = "user_name";
 

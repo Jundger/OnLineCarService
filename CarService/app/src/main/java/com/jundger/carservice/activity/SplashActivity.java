@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.jundger.carservice.R;
+import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.bean.User;
 import com.jundger.carservice.util.LocationUtil;
@@ -16,7 +17,7 @@ import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
     private static final String TAG = "SplashActivity";
 
     @Override

@@ -31,4 +31,7 @@ public interface SiteService {
 	// 根据维修人员id拉取用户评论
 	List<Map<String, Object>> getCommentByRepairman(Integer id);
 
+	// 根据维修人员id获取维修店数据
+	Site getSiteByRepairmanId(Integer id);
+
 }

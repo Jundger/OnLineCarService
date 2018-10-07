@@ -382,4 +382,21 @@ public class Site {
     public void setDetail(String detail) {
         this.detail = detail == null ? null : detail.trim();
     }
+
+    @Override
+    public String toString() {
+        return "Site{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", ownerId=" + ownerId +
+                ", address='" + address + '\'' +
+                ", describe='" + describe + '\'' +
+                ", liked=" + liked +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", picture='" + picture + '\'' +
+                ", property='" + property + '\'' +
+                ", detail='" + detail + '\'' +
+                '}';
+    }
 }

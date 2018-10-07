@@ -8,8 +8,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.jundger.carservice.activity.MainActivity;
 import com.jundger.carservice.activity.MapActivity;
-import com.jundger.carservice.activity.NotifyActivity;
 import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.util.FormatCheckUtil;
 import com.jundger.carservice.util.SharedPreferencesUtil;
@@ -54,20 +54,20 @@ public class JPushReceiver extends BroadcastReceiver {
                 Intent i = new Intent(context, MapActivity.class);
                 i.putExtras(bundle);
                 //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(i);
 
             } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
                 Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
                 //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
 
-            } else if(JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
+            } else if (JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
                 boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
-                Log.w(TAG, "[MyReceiver]" + intent.getAction() +" connected state change to "+connected);
+                Log.w(TAG, "[MyReceiver]" + intent.getAction() + " connected state change to " + connected);
             } else {
                 Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -80,26 +80,25 @@ public class JPushReceiver extends BroadcastReceiver {
 //            Log.i(TAG, "printBundle: key-->" + key);
             if (key.equals(JPushInterface.EXTRA_NOTIFICATION_ID)) {
                 sb.append("\nkey:" + key + ", value:" + bundle.getInt(key));
-            }else if(key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)){
+            } else if (key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)) {
                 sb.append("\nkey:" + key + ", value:" + bundle.getBoolean(key));
             } else if (key.equals(JPushInterface.EXTRA_EXTRA)) {
                 if (TextUtils.isEmpty(bundle.getString(JPushInterface.EXTRA_EXTRA))) {
                     Log.i(TAG, "This message has no Extra data");
                     continue;
                 }
-
-                try {
-                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-                    Iterator<String> it =  json.keys();
-
-                    while (it.hasNext()) {
-                        String myKey = it.next();
-                        sb.append("\nkey:" + key + ", value: [" +
-                                myKey + " - " +json.optString(myKey) + "]");
-                    }
-                } catch (JSONException e) {
-                    Log.e(TAG, "Get message extra JSON error!");
-                }
+//                try {
+//                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+//                    Iterator<String> it =  json.keys();
+//
+//                    while (it.hasNext()) {
+//                        String myKey = it.next();
+//                        sb.append("\nkey:" + key + ", value: [" +
+//                                myKey + " - " +json.optString(myKey) + "]");
+//                    }
+//                } catch (JSONException e) {
+//                    Log.e(TAG, "Get message extra JSON error!");
+//                }
 
             } else {
                 sb.append("\nkey:" + key + ", value:" + bundle.get(key));
@@ -108,25 +107,26 @@ public class JPushReceiver extends BroadcastReceiver {
         return sb.toString();
     }
 
-    //send msg to NotifyActivity
     private void processCustomMessage(Context context, Bundle bundle) {
-        if (NotifyActivity.isForeground) {
-            String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-            String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            Intent msgIntent = new Intent(NotifyActivity.MESSAGE_RECEIVED_ACTION);
-            msgIntent.putExtra(NotifyActivity.KEY_MESSAGE, message);
-            if (!FormatCheckUtil.isEmpty(extras)) {
-                try {
-                    JSONObject extraJson = new JSONObject(extras);
-                    if (extraJson.length() > 0) {
-                        msgIntent.putExtra(NotifyActivity.KEY_EXTRAS, extras);
-                    }
-                } catch (JSONException e) {
-
+//        String msgType = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
+//        String title = bundle.getString(JPushInterface.EXTRA_TITLE);
+        String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+        String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+        Log.i(TAG, "processCustomMessage: msg-->" + message);
+        Log.i(TAG, "processCustomMessage: extras-->" + extras);
+        Intent msgIntent = new Intent(APPConsts.MESSAGE_RECEIVED_ACTION);
+        msgIntent.putExtra(APPConsts.KEY_MESSAGE, message);
+        if (!FormatCheckUtil.isEmpty(extras)) {
+            try {
+                JSONObject extraJson = new JSONObject(extras);
+                if (extraJson.length() > 0) {
+                    msgIntent.putExtra(APPConsts.KEY_EXTRAS, extras);
                 }
-
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);
+
         }
+        LocalBroadcastManager.getInstance(context).sendBroadcast(msgIntent);
     }
 }

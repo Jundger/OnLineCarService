@@ -2,7 +2,6 @@ package com.jundger.work.pojo.json;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jundger.work.pojo.Customer;
 import com.jundger.work.pojo.FaultCode;
 import com.jundger.work.pojo.Repairman;
@@ -26,8 +25,10 @@ public class OrderJson {
     private String describe;
     private Customer customer;
     private Repairman repairman;
+    private String siteName;
     private Double longitude;
     private Double latitude;
+    private String resolveStatus;
 
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
@@ -35,14 +36,16 @@ public class OrderJson {
     public OrderJson() {
     }
 
-    public OrderJson(String orderNo, List<FaultCode> faultCodeList, String describe, Customer customer, Repairman repairman, Double longitude, Double latitude, Date createTime) {
+    public OrderJson(String orderNo, List<FaultCode> faultCodeList, String describe, Customer customer, Repairman repairman, String siteName, Double longitude, Double latitude, String resolveStatus, Date createTime) {
         this.orderNo = orderNo;
         this.faultCodeList = faultCodeList;
         this.describe = describe;
         this.customer = customer;
         this.repairman = repairman;
+        this.siteName = siteName;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.resolveStatus = resolveStatus;
         this.createTime = createTime;
     }
 
@@ -110,17 +113,19 @@ public class OrderJson {
         this.createTime = createTime;
     }
 
-    @Override
-    public String toString() {
-        return "OrderJson{" +
-                "orderNo='" + orderNo + '\'' +
-                ", faultCodeList=" + faultCodeList +
-                ", describe='" + describe + '\'' +
-                ", customer=" + customer +
-                ", repairman=" + repairman +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                ", createTime=" + createTime +
-                '}';
+    public String getSiteName() {
+        return siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
+
+    public String getResolveStatus() {
+        return resolveStatus;
+    }
+
+    public void setResolveStatus(String resolveStatus) {
+        this.resolveStatus = resolveStatus;
     }
 }

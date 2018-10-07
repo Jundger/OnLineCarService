@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.annotation.InjectView;
+import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.bean.User;
 import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.constant.Actions;
@@ -42,7 +43,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
+public class ProfileActivity extends BaseActivity implements View.OnClickListener{
 
     private static final String PARAM_USER = "user_info";
     private static final String TAG = "ProfileActivity";

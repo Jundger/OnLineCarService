@@ -162,29 +162,57 @@ public class RepairFragment extends Fragment {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 Log.d(TAG, "RepairFragment | okHttp success!" + response.code());
+                if (response.code() == 200) {
+                    String responseData = response.body().string();
 
-                String responseData = response.body().string();
+                    // Gson解析json数据
+                    ResultArray<ServicePoint> result = new Gson().fromJson(responseData, new TypeToken<ResultArray<ServicePoint>>() {
+                    }.getType());
 
-                // Gson解析json数据
-                ResultArray<ServicePoint> result = new Gson().fromJson(responseData, new TypeToken<ResultArray<ServicePoint>>(){}.getType());
+                    if (UrlConsts.SITE_EMPTY.equals(result.getMsg())) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.i(TAG, "run: 当前坐标附近20公里没有维修店存在");
+                                Toast.makeText(getActivity(), "当前坐标附近20公里没有维修店存在", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else if (UrlConsts.CODE_SUCCESS.equals(result.getCode())) {
+                        /**
+                         * 易错点！！！！！！！！！！
+                         * 错误示范：siteList = result.getData();
+                         *         siteAdapter.notifyDataSetChanged();
+                         * 原因：数据源虽更新了，但是却指向了新的引用，而不是已和Adapter绑定的那个list
+                         *      所以解决办法应该是将原有list清空并重装数据
+                         */
+                        siteList.clear();
+                        siteList.addAll(result.getData());
 
-                /**
-                 * 易错点！！！！！！！！！！
-                 * 错误示范：siteList = result.getData();
-                 *         siteAdapter.notifyDataSetChanged();
-                 * 原因：数据源虽更新了，但是却指向了新的引用，而不是已和Adapter绑定的那个list
-                 *      所以解决办法应该是将原有list清空并重装数据
-                 */
-                siteList.clear();
-                siteList.addAll(result.getData());
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
 //                        endDialog();
-                        siteAdapter.notifyDataSetChanged();
+                                siteAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    } else if (UrlConsts.CODE_FAIL.equals(result.getCode())) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.i(TAG, "run: 请求失败");
+                                Toast.makeText(getActivity(), "请求失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
-                });
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.i(TAG, "run: 网络请求失败");
+                            Toast.makeText(getActivity(), "网络请求失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
 
             @Override

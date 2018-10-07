@@ -38,9 +38,12 @@ import android.widget.Toast;
 
 import com.amap.api.maps2d.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
+import com.jundger.carservice.activity.OrderActivity;
 import com.jundger.carservice.adapter.FaultInfoAdapter;
+import com.jundger.carservice.base.MyApplication;
 import com.jundger.carservice.bean.ServicePoint;
 import com.jundger.carservice.bean.User;
 import com.jundger.carservice.bean.json.Customer;
@@ -177,6 +180,12 @@ public class MainPageFragment extends Fragment {
         Log.i(TAG, "onActivityCreated: ");
         bindView();
         init();
+
+        // 从Android 6.0开始，必须先申请定位权限才能发现蓝牙设备
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Log.i(TAG, "startDiscovery: enter checkPermission");
+            checkBTPermissions();
+        }
     }
 
     private void queryCodeAndShowResult(String fault_code) {
@@ -309,8 +318,10 @@ public class MainPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (!isBluetoothConnect) {
+                    Log.i(TAG, "onClick: 打开蓝牙");
                     openBlueTooth();
                 } else {
+                    Log.i(TAG, "onClick: 蓝牙已经处于打开状态");
                     if (mBrand == null || mBrandNo == null || "".equals(mBrand) || "".equals(mBrandNo)) {
                         Toast.makeText(getActivity(), "请先到个人中心设置车辆信息", Toast.LENGTH_SHORT).show();
                     } else {
@@ -344,19 +355,8 @@ public class MainPageFragment extends Fragment {
                                 dialogInterface.dismiss();
                                 switch (i) {
                                     case 0:
+                                        startProgressDialog("请稍候...");
                                         createOrder();
-//                                        startProgressDialog("正在匹配，请稍候...");
-//                                        new Thread(new Runnable() {
-//                                            @Override
-//                                            public void run() {
-//                                                try {
-//                                                    Thread.sleep(5000);
-//                                                } catch (InterruptedException e) {
-//                                                    e.printStackTrace();
-//                                                }
-//                                                stopProgressDialog();
-//                                            }
-//                                        }).start();
                                         break;
                                     case 1:
                                         String longitude = (String) SharedPreferencesUtil.query(getActivity(), APPConsts.SHARED_KEY_LONGITUDE, "string");
@@ -376,7 +376,7 @@ public class MainPageFragment extends Fragment {
                                                         public void run() {
                                                             Toast.makeText(getActivity(), "网络请求失败！", Toast.LENGTH_SHORT).show();
                                                         }
-                                                    });
+                                                });
                                                 }
 
                                                 @Override
@@ -405,32 +405,89 @@ public class MainPageFragment extends Fragment {
 
     private void createOrder() {
         String url = UrlConsts.getRequestURL(Actions.ACTION_CREATE_ORDER);
+        final long startTime = System.currentTimeMillis();
 
-        List<FaultCode> codeList = new ArrayList<>();
-        FaultCode faultCode1 = new FaultCode(1, "P107801", "动力总成系统", "尼桑（日产）、英菲尼迪", "排气阀门正时控制位置传感器-电路故障", null);
-        FaultCode faultCode2 = new FaultCode(1, "B009A", "车身系统", "所有汽车制造商", "一般由安全带传感器，其电路或接头故障所致", null);
-        codeList.add(faultCode1);
-        codeList.add(faultCode2);
+//        List<FaultCode> codeList = new ArrayList<>();
+//        FaultCode faultCode1 = new FaultCode(1, "P107801", "动力总成系统", "尼桑（日产）、英菲尼迪", "排气阀门正时控制位置传感器-电路故障", null);
+//        FaultCode faultCode2 = new FaultCode(1, "B009A", "车身系统", "所有汽车制造商", "一般由安全带传感器，其电路或接头故障所致", null);
+//        codeList.add(faultCode1);
+//        codeList.add(faultCode2);
 
-        Location location = LocationUtil.requestLocation(getActivity());
         Customer customer = new Customer(user);
-        OrderJson orderJson = new OrderJson(null, codeList, null, customer, null, location.getLongitude(), location.getLatitude(), new Date());
+        OrderJson orderJson = null;
+        Location location = LocationUtil.requestLocation(getActivity());
+        if (null != location) {
+            Log.i(TAG, "当前经纬度: " + "longitude-->" + location.getLongitude() + " | latitude-->" + location.getLatitude());
+            orderJson = new OrderJson(null, infoList, null, customer, null, location.getLongitude(), location.getLatitude(), new Date());
+        } else {
+            Log.i(TAG, "createOrder: 获取地理位置失败");
+            Toast.makeText(getActivity(), "获取地理位置失败", Toast.LENGTH_SHORT).show();
+            orderJson = new OrderJson(null, infoList, null, customer, null, APPConsts.DEFAULT_LONGITUDE, APPConsts.DEFAULT_LATITUDE, new Date());
+        }
 
-        String json = new Gson().toJson(orderJson);
-        Log.i(TAG, "json==========》\n" +  json);
-//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+        String json = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().toJson(orderJson);
+        Log.i(TAG, "订单创建发送数据==========》\n" +  json);
 
-//        HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_QUERY_CODE), requestBody, new Callback() {
-//            @Override
-//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-//
-//            }
-//        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+        HttpUtil.okHttpPost(url, requestBody, new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i(TAG, "run: 网络请求失败");
+                        Toast.makeText(getActivity(), "网络请求失败", Toast.LENGTH_SHORT).show();
+                        stopProgressDialog();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String prompt;
+                if (response.code() == 200) {
+                    String res = response.body().string();
+                    Log.i(TAG, "onResponse: 创建订单请求返回数据===>" + res);
+                    Map<String, String> result = new Gson().fromJson(res, new TypeToken<Map<String, String>>() {}.getType());
+                    if (UrlConsts.CODE_SUCCESS.equals(result.get(UrlConsts.KEY_RETURN_CODE))) {
+                        Log.i(TAG, "onResponse: 订单创建成功，正在等待维修师傅接单...");
+                        prompt = "订单创建成功，正在等待维修师傅接单...";
+                        Log.i("MainActivity", "onResponse: 订单号>>>>>>>>>>>>>>>>>>>>>>>>>" + result.get(UrlConsts.KEY_RETURN_DATA));
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                circleProgressDialog.changeText(prompt);
+                            }
+                        });
+
+                        long endTime = System.currentTimeMillis();
+                        if (endTime - startTime < APPConsts.WAIT_ORDER_TIME) {
+                            try {
+                                Thread.sleep(APPConsts.WAIT_ORDER_TIME - (endTime - startTime));
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        stopProgressDialog();
+
+                    } else {
+                        Log.i(TAG, "onResponse: 订单创建失败，请稍后再试");
+                        prompt = "订单创建失败，请稍后再试";
+                    }
+                } else {
+                    Log.i(TAG, "未知错误");
+                    prompt = "未知错误";
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), prompt, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                stopProgressDialog();
+            }
+        });
     }
 
     @Override
@@ -472,6 +529,15 @@ public class MainPageFragment extends Fragment {
         if (null != circleProgressDialog && circleProgressDialog.isShowing()) {
             circleProgressDialog.dismiss();
         }
+    }
+
+    public static Boolean processAcceptOrder() {
+
+//        Log.i(TAG, "processAcceptOrder: 接受订单后进来了");
+//
+//        OrderActivity.launchActivity(MyApplication.getContext(), 1);
+
+        return null;
     }
 
     private void showListDialog(String[] items) {
@@ -532,7 +598,7 @@ public class MainPageFragment extends Fragment {
                             scanHint += device.getName() + "\n";
                             circleProgressDialog.changeText("已扫描到 " + deviceList.size() + "个蓝牙设备:\n" + scanHint);
 
-                            if ("H-C-2010-06-01".equals(device.getName())) {
+                            if (APPConsts.BLUETOOTH_NAME.equals(device.getName())) {
                                 bluetoothAdapter.cancelDiscovery();
                                 connectDevice = device;
                             }
@@ -603,10 +669,12 @@ public class MainPageFragment extends Fragment {
 
         pairedDevices = bluetoothAdapter.getBondedDevices();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Log.i(TAG, "startDiscovery: enter checkPermission");
-            checkBTPermissions();
-        }
+
+//        // 从Android 6.0开始，必须先申请定位权限才能发现蓝牙设备
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            Log.i(TAG, "startDiscovery: enter checkPermission");
+//            checkBTPermissions();
+//        }
 
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
@@ -678,6 +746,13 @@ public class MainPageFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        stopProgressDialog();
     }
 
     @Override

@@ -90,7 +90,7 @@ public class MineFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0:
-                        OrderActivity.launchActivity(getActivity(), user.getCustId());
+                        OrderActivity.launchActivity(getActivity(), user);
                         break;
                     case 1:
                         CommentActivity.launchActivity(getActivity(), user.getCustId());

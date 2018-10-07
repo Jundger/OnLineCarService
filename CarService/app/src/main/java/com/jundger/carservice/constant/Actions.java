@@ -32,6 +32,16 @@ public class Actions {
     public static final String ACTION_CREATE_ORDER = "order/create.do";
 
     /**
+     * 查询订单的action
+     */
+    public static final String ACTION_QUERY_ORDER = "order/queryAll.do";
+
+    /**
+     * 结束订单的action
+     */
+    public static final String ACTION_FINISH_ORDER = "order/finish.do";
+
+    /**
      * 获取附近服务点信息的action
      */
     public static final String ACTION_GET_SITE = "site/getList.do";

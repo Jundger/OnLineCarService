@@ -29,6 +29,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.adapter.CommentAdapter;
 import com.jundger.carservice.annotation.InjectView;
+import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.constant.Actions;
 import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.bean.Comment;
@@ -49,7 +50,7 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ShopDetailActivity extends AppCompatActivity {
+public class ShopDetailActivity extends BaseActivity {
 
     ServicePoint mServicePoint;
 

@@ -13,7 +13,7 @@ public class UrlConsts {
 
     // 服务器路径
 //    private static final String SERVER_URL = "http://120.79.183.78/CarServiceServer";
-    private static final String SERVER_URL = "http://192.168.1.104:8080";
+    private static final String SERVER_URL = "http://192.168.1.101:8080";
 
     // 请求参数键
     public static final String KEY_TOKEN = "token";
@@ -25,6 +25,7 @@ public class UrlConsts {
     // 返回参数键
     public static final String KEY_RETURN_MSG = "msg";
     public static final String KEY_RETURN_CODE = "code";
+    public static final String KEY_RETURN_DATA = "data";
     public static final String KEY_RETURN_PHONE = "phone_number";
     public static final String KEY_RETURN_TOKEN = "token";
 
@@ -37,6 +38,7 @@ public class UrlConsts {
     public static final String VERI_CODE_ERROR = "CODE_ERROR";
     public static final String CODE_SUCCESS = "1";
     public static final String CODE_FAIL = "0";
+    public static final String SITE_EMPTY = "EMPTY";
 
     /**
      * 邮件发送的两种类型

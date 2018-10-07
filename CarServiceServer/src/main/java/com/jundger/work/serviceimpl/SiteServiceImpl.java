@@ -3,6 +3,7 @@ package com.jundger.work.serviceimpl;
 import com.jundger.work.constant.Consts;
 import com.jundger.work.dao.CommentMapper;
 import com.jundger.work.dao.SiteMapper;
+import com.jundger.work.pojo.Site;
 import com.jundger.work.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class SiteServiceImpl implements SiteService {
 	@Override
 	public List<Map<String, Object>> getCommentByRepairman(Integer id) {
 		return this.commentMapper.selectShowCommentByRepairman(id);
+	}
+
+	@Override
+	public Site getSiteByRepairmanId(Integer id) {
+		return this.siteMapper.selectByOwnerId(id);
 	}
 }

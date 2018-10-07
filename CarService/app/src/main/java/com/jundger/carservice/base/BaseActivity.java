@@ -13,13 +13,14 @@ public class BaseActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d(TAG, getClass().getSimpleName());
-        ActivityCollector.addActivity(this);
+        Log.d(TAG, "Add a activity ======> " +getClass().getSimpleName());
+        ActivityCollector.addActivity(this, getClass());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "Remove a activity ==> " +getClass().getSimpleName());
         ActivityCollector.removeActivity(this);
     }
 }
