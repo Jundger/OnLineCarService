@@ -53,6 +53,7 @@
     <include refid="Base_Column_List" />
     from `order`
     where cust_id = #{id,jdbcType=INTEGER}
+    ORDER BY id DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--
@@ -369,4 +370,29 @@
     AND `order`.resolve_status = 'FINISH'
   </select>
 
+  <resultMap id="orderStatisticsMap" type="map">
+    <result column="todayCount" javaType="string" property="todayCount"/>
+    <result column="monthCount" javaType="string" property="monthCount"/>
+    <result column="totalCount" javaType="string" property="totalCount"/>
+  </resultMap>
+
+  <select id="getStatisticsByResolverId" parameterType="java.lang.Integer" resultMap="orderStatisticsMap">
+    SELECT *
+    FROM
+    (SELECT COUNT(*) todayCount
+    FROM `order`
+    WHERE
+    resolver_id = #{id,jdbcType=INTEGER}
+    AND TO_DAYS(create_time) = TO_DAYS(now())) A
+    ,
+    (SELECT COUNT(*) monthCount
+    FROM `order`
+    WHERE
+    resolver_id = #{id,jdbcType=INTEGER}
+    AND DATE_FORMAT( create_time, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )) B
+    ,
+    (SELECT COUNT(*) totalCount
+    FROM `order`
+    WHERE resolver_id = #{id,jdbcType=INTEGER} ) C
+  </select>
 </mapper>

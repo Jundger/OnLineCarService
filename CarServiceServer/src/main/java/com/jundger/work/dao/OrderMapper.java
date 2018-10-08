@@ -63,4 +63,6 @@ public interface OrderMapper {
     List<Map<String, Object>> selectFinishOrderByRepairManId(Integer id);
 
     List<Order> selectOrderByCustomerId(Integer id);
+
+    Map<String, Object> getStatisticsByResolverId(Integer id);
 }

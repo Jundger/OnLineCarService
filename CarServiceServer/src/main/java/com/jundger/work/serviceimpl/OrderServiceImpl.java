@@ -291,4 +291,9 @@ public class OrderServiceImpl implements OrderService {
     public List<FaultCode> getCodeOrderByOrderId(Integer id) {
         return this.faultCodeMapper.selectByOrderId(id);
     }
+
+    @Override
+    public Map<String, Object> getStatisticsByResolverId(Integer id) {
+        return this.orderMapper.getStatisticsByResolverId(id);
+    }
 }

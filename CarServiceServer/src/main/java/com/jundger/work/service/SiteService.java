@@ -25,6 +25,8 @@ public interface SiteService {
 
 	Map<String, Object> getSiteByName(String name);
 
+	Map<String, Object> getSiteByOwnerId(Integer id);
+
 	// 根据维修店id拉取用户评论
 	List<Map<String, Object>> getCommentBySite(Integer id);
 

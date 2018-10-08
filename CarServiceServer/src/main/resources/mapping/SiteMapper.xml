@@ -260,6 +260,10 @@
       SELECT * from site WHERE name = #{name,jdbcType=VARCHAR}
     </select>
 
+    <select id="selectSiteByOwnerId" parameterType="java.lang.Integer" resultMap="servicePointMap">
+      SELECT * from site WHERE owner_id = #{id,jdbcType=INTEGER}
+    </select>
+
     <select id="selectByOwnerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

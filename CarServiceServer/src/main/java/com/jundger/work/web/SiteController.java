@@ -88,14 +88,19 @@ public class SiteController {
 
 	@ResponseBody
 	@RequestMapping(value = "/query", produces = "application/json; charset=utf-8")
-	public Object querySite(@RequestParam(value = "site_name") String name) {
+	public Object querySite(@RequestParam(value = "owner_id", required = false) Integer owner_id,
+							@RequestParam(value = "site_name", required = false) String name) {
 
 		logger.info("=================查询维修点信息接口调用==================");
 
 		Map<String, Object> returnMsg = new HashMap<>();
-
+		Map<String, Object> site = null;
 		try {
-			Map<String, Object> site = siteService.getSiteByName(name);
+			if (null != owner_id) {
+				site = siteService.getSiteByOwnerId(owner_id);
+			} else if (null != name){
+				site = siteService.getSiteByName(name);
+			}
 			if (null != site && !site.isEmpty()) {
 				returnMsg.put("code", "1");
 				returnMsg.put("msg", "SUCCESS");

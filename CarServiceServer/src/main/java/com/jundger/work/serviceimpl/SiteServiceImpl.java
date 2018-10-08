@@ -50,6 +50,11 @@ public class SiteServiceImpl implements SiteService {
 	}
 
 	@Override
+	public Map<String, Object> getSiteByOwnerId(Integer id) {
+		return this.siteMapper.selectSiteByOwnerId(id);
+	}
+
+	@Override
 	public List<Map<String, Object>> getCommentBySite(Integer id) {
 		return this.commentMapper.selectShowCommentBySite(id);
 	}

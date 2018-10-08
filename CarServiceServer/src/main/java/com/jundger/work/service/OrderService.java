@@ -66,4 +66,7 @@ public interface OrderService {
 
     // 根据订单id查询其所包含的故障信息
     List<FaultCode> getCodeOrderByOrderId(Integer id);
+
+    // 根据维修人员id获取订单统计数据
+    Map<String, Object> getStatisticsByResolverId(Integer id);
 }

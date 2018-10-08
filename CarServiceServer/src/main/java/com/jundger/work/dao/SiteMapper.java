@@ -62,6 +62,8 @@ public interface SiteMapper {
 
     Map<String, Object> selectSiteByName(@Param("name") String name);
 
+    Map<String, Object> selectSiteByOwnerId(@Param("id") Integer id);
+
     List<String> selectNearSiteOwnerId(@Param("longitude") Float longitude, @Param("latitude") Float latitude,
                                              @Param("radius") Double radius);
 

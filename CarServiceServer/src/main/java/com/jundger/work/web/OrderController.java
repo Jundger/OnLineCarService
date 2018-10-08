@@ -380,63 +380,53 @@ public class OrderController {
         return returnMsg;
     }
 
-//	public static void main(String[] args) {
+    @ResponseBody
+    @RequestMapping(value = "/statistics", produces = "application/json; charset=utf-8")
+    public Object statistics(@RequestParam(value = "repairman_id", required = false) Integer repairman_id) {
+
+        logger.info("=================获取统计数据接口调用==================");
+
+        Map<String, Object> returnMsg = new HashMap<>();
+        Map<String, Object> result;
+        try {
+            if (null == repairman_id) {
+                returnMsg.put("code", "0");
+                returnMsg.put("msg", "PARAMS_ERROR");
+                return returnMsg;
+            }
+            result = orderService.getStatisticsByResolverId(repairman_id);
+            if (null != result && !result.isEmpty()) {
+                returnMsg.put("code", "1");
+                returnMsg.put("msg", "SUCCESS");
+                returnMsg.put("data", result);
+            } else {
+                returnMsg.put("code", "0");
+                returnMsg.put("msg", "FAIL");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnMsg.put("code", "0");
+            returnMsg.put("msg", "FAIL");
+        }
+
+        return returnMsg;
+    }
+
+
+//    if (httpURLConnection.getResponseCode() == 200) {
+//        System.out.println("请求成功！");
+//        InputStream is = httpURLConnection.getInputStream();
+//        // 封装输入流is，并指定字符集
+//        BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+//        // 存放数据
+//        StringBuffer sbf = new StringBuffer();
+//        String temp = null;
+//        while ((temp = br.readLine()) != null) {
+//            sbf.append(temp);
+//            sbf.append("\r\n");
+//        }
+//        String result = sbf.toString();
 //
-//		Map<String, Object> params = new HashMap<>();
-//		params.put("phone", "13900000000");
-//		params.put("password", "123456");
-//
-//		// 构建请求参数  
-//		StringBuffer sbParams = new StringBuffer();
-//		if (params != null && params.size() > 0) {
-//			for (Map.Entry< String, Object > e:params.entrySet()){
-//				sbParams.append(e.getKey());
-//				sbParams.append("=");
-//				sbParams.append(e.getValue());
-//				sbParams.append("&");
-//			}
-//			sbParams.deleteCharAt(sbParams.length() - 1);
-//		}
-//
-//		try {
-//			byte[] entity = sbParams.toString().getBytes("UTF-8");
-//			URL httpUrl = new URL("http://120.79.183.78/CarServiceServer/customer/login.do");
-//			HttpURLConnection httpURLConnection = (HttpURLConnection)httpUrl.openConnection();
-//			httpURLConnection.setDoOutput(true);
-//			httpURLConnection.setRequestMethod("POST");
-//			httpURLConnection.setConnectTimeout(8000);
-//			httpURLConnection.setReadTimeout(8000);
-//			httpURLConnection.setRequestProperty("content-Type", "application/x-www-form-urlencoded");
-////			httpURLConnection.connect();
-//			OutputStream outputStream = httpURLConnection.getOutputStream();
-//			outputStream.write(entity);
-//			if (httpURLConnection.getResponseCode() == 200) {
-//				System.out.println("请求成功！");
-//				InputStream is = httpURLConnection.getInputStream();
-//				// 封装输入流is，并指定字符集
-//				BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-//				// 存放数据
-//				StringBuffer sbf = new StringBuffer();
-//				String temp = null;
-//				while ((temp = br.readLine()) != null) {
-//					sbf.append(temp);
-//					sbf.append("\r\n");
-//				}
-//				String result = sbf.toString();
-//
-//				System.out.println(result);
-//			} else {
-//				System.out.println("请求失败！");
-//			}
-//		} catch (JsonProcessingException e) {
-//			e.printStackTrace();
-//		} catch (MalformedURLException e) {
-//			e.printStackTrace();
-//		} catch (ProtocolException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
+//        System.out.println(result);
+//    }
 }
