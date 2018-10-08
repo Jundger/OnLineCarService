@@ -37,14 +37,17 @@ public interface OrderService {
     // 通知订单号查询订单
     Order selectByOrderNo(String orderNo);
 
+    // 通过别名（即用户电话号码）向客户端推送通知（OrderJson格式）
+    Map<String, Object> pushNotifyOrder(List<String> alias, OrderJson extras, String title, String alert);
+
     // 通过别名（即用户电话号码）向客户端推送通知
-    Boolean pushNotifyOrder(List<String> alias, OrderJson extras);
+    Map<String, Object> pushNotify(List<String> alias, Map<String, Object> extras, String title, String alert);
 
     // 通过别名（即用户电话号码）向客户端推送自定义消息（OrderJson格式）
-    Boolean pushCustomMsgOrder(List<String> alias, OrderJson extras);
+    Map<String, Object> pushCustomMsgOrder(List<String> alias, OrderJson extras, String title);
 
     // 通过别名（即用户电话号码）向客户端推送自定义消息
-    Boolean pushCustomMsg(List<String> alias, Map<String, Object> extras, String type);
+    Map<String, Object> pushCustomMsg(List<String> alias, Map<String, Object> extras, String title);
 
     // 提取故障码集合中的描述信息组合成一个字符串
     String FormDescribeStr(List<FaultCode> list);

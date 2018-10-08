@@ -34,6 +34,7 @@ import com.jundger.carservice.util.LocationUtil;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import okhttp3.Call;
@@ -119,11 +120,21 @@ public class OrderActivity extends BaseActivity {
                         orderJsonList.clear();
 
                         // 将正在进行的订单置顶
-                        for (OrderJson orderJson : result.getData()) {
-                            if ("RUNNING".equals(orderJson.getResolveStatus())) {
-                                orderJsonList.add(orderJson);
-                                result.getData().remove(orderJson);
+//                        for (OrderJson orderJson : result.getData()) {
+//                            if ("RUNNING".equals(orderJson.getResolveStatus())) {
+//                                orderJsonList.add(orderJson);
+//                                result.getData().remove(orderJson);
+//                            }
+//                        }
+                        Iterator<OrderJson> iterator = result.getData().iterator();
+                        while (iterator.hasNext()) {
+                            OrderJson item = iterator.next();
+                            if ("RUNNING".equals(item.getResolveStatus())) {
+                                //list.remove(temp);// 出现java.util.ConcurrentModificationException
+                                orderJsonList.add(item);
+                                iterator.remove();// 推荐使用
                             }
+
                         }
                         orderJsonList.addAll(result.getData());
 

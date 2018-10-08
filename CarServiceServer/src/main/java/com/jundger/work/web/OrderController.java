@@ -91,7 +91,6 @@ public class OrderController {
 
         List<String> alias = siteService.getRepairmanId(Float.valueOf(String.valueOf(orderJson.getLongitude())),
                 Float.valueOf(String.valueOf(orderJson.getLatitude())), 1.0);
-        logger.info("订单推送目标====》" + JSON.toJSONString(alias));
 
         List<OrderNotify> orderNotifyList = new ArrayList<>();
         for (String phone : alias) {
@@ -102,18 +101,10 @@ public class OrderController {
             orderNotify.setFlag(Consts.FLAG_UNACCEPTED_ORDER);
             orderNotifyList.add(orderNotify);
         }
-//        logger.info("订单与维修人员对应List===》" + JSON.toJSONString(orderNotifyList));
         orderService.addOrderNotify(orderNotifyList);
 
-        logger.info("发送给维修人员的json数据===>\n" + JSON.toJSONString(orderJson));
-        if (orderService.pushNotifyOrder(alias, orderJson)) {
-            returnMsg.put("code", "1");
-            returnMsg.put("msg", "SUCCESS");
-            returnMsg.put("data", orderNo);
-        } else {
-            returnMsg.put("code", "0");
-            returnMsg.put("msg", "FAIL");
-        }
+        returnMsg = orderService.pushNotifyOrder(alias, orderJson,
+                Consts.ORDER_NOTIFICATION_ACCEPT_TITLE, Consts.ORDER_NOTIFICATION_ACCEPT_ALERT);
 
         return returnMsg;
     }
@@ -180,14 +171,7 @@ public class OrderController {
             List<String> alias = new ArrayList<>();
             alias.add(phone);
 
-            logger.info("发送给用户 " + JSON.toJSONString(alias) + " 的json数据===>\n" + JSON.toJSONString(orderJson));
-            if (orderService.pushCustomMsgOrder(alias, orderJson)) {
-                returnMsg.put("code", "1");
-                returnMsg.put("msg", "SUCCESS");
-            } else {
-                returnMsg.put("code", "0");
-                returnMsg.put("msg", "SEND_MSG_ERROR");
-            }
+            returnMsg = orderService.pushCustomMsgOrder(alias, orderJson, Consts.CONTENT_ORDER_ACCEPT);
         } catch (Exception e) {
             e.printStackTrace();
             returnMsg.put("code", "0");
@@ -229,15 +213,15 @@ public class OrderController {
             Customer customer = customerService.getById(order.getCustId());
             Repairman repairman = repairmanService.getById(order.getResolverId());
 
-            String type;
-
             switch (operate) {
                 case Consts.REPAIRMAN_TO_CUSTOMER_REQUEST:
+                    sendMsg.put("msg", Consts.ORDER_FINISH_REQUEST);
                     sendMsg.put("orderNo", orderNo);
                     sendMsg.put("name", order.getResolverName());
                     alias.add(customer.getCustPhone());
 
-                    type = Consts.ORDER_FINISH_REQUEST;
+                    returnMsg = orderService.pushNotify(alias, sendMsg,
+                            Consts.ORDER_NOTIFICATION_FINISH_TITLE, Consts.ORDER_NOTIFICATION_FINISH_ALERT);
                     break;
                 case Consts.CUSTOMER_TO_REPAIRMAN_RESPONSE:
                     if (answer == 1) {
@@ -252,14 +236,16 @@ public class OrderController {
                         sendMsg.put("msg", "REFUSE");
                     }
                     alias.add(repairman.getPhone());
-                    type = Consts.ORDER_FINISH_RESPONSE;
+                    returnMsg = orderService.pushCustomMsg(alias, sendMsg, Consts.ORDER_FINISH_RESPONSE);
                     break;
                 case Consts.CUSTOMER_TO_REPAIRMAN_REQUEST:
+                    sendMsg.put("msg", Consts.ORDER_FINISH_REQUEST);
                     sendMsg.put("orderNo", orderNo);
                     sendMsg.put("name", customer.getCustName());
 
                     alias.add(repairman.getPhone());
-                    type = Consts.ORDER_FINISH_REQUEST;
+                    returnMsg = orderService.pushNotify(alias, sendMsg,
+                            Consts.ORDER_NOTIFICATION_FINISH_TITLE, Consts.ORDER_NOTIFICATION_FINISH_ALERT);
                     break;
                 case Consts.REPAIRMAN_TO_CUSTOMER_RESPONSE:
                     if (answer == 1) {
@@ -274,7 +260,7 @@ public class OrderController {
                         sendMsg.put("msg", "REFUSE");
                     }
                     alias.add(customer.getCustPhone());
-                    type = Consts.ORDER_FINISH_RESPONSE;
+                    returnMsg = orderService.pushCustomMsg(alias, sendMsg, Consts.ORDER_FINISH_RESPONSE);
                     break;
                 default:
                     returnMsg.put("code", "0");
@@ -282,15 +268,6 @@ public class OrderController {
                     return returnMsg;
             }
 
-            logger.info("发送给用户的json数据===>\n" + JSON.toJSONString(sendMsg));
-
-            if (orderService.pushCustomMsg(alias, sendMsg, type)) {
-                returnMsg.put("code", "1");
-                returnMsg.put("msg", "SUCCESS");
-            } else {
-                returnMsg.put("code", "0");
-                returnMsg.put("msg", "SEND_MSG_FAIL");
-            }
         } catch (Exception e) {
             e.printStackTrace();
             returnMsg.put("code", "0");

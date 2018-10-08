@@ -19,7 +19,7 @@ public class APPConsts {
     /**
      * 蓝牙故障码读取指令
      */
-    public static final String BLUETOOTH_READ_COMMAND = "AT+DTC?\r\n";
+    public static final String BLUETOOTH_READ_COMMAND = "AT+DTC?";
 
     /**
      * 下位机蓝牙模块名称
@@ -90,13 +90,21 @@ public class APPConsts {
      * 极光推送相关
      */
     public static final String MESSAGE_RECEIVED_ACTION = "com.jpush.MESSAGE_RECEIVED_ACTION";
+    public static final String KEY_TITLE = "title";
     public static final String KEY_MESSAGE = "message";
     public static final String KEY_EXTRAS = "extras";
+    public static final String KEY_TYPE = "type";
+
+    public static final String PUSH_TYPE_MESSAGE = "MESSAGE";
+    public static final String PUSH_TYPE_NOTIFY = "NOTIFICATION";
+
+    public static final String ORDER_NOTIFICATION_ACCEPT_TITLE = "订单接收请求";
+    public static final String ORDER_NOTIFICATION_FINISH_TITLE = "订单结束请求";
 
     /**
      * 订单相关
      */
-    public static final String CONTENT_ORDER_ACCEPT = "ORDER_ACCEPT";
+    public static final String MESSAGE_ORDER_ACCEPT = "ORDER_ACCEPT";
     public static final String ORDER_FINISH_REQUEST = "FINISH_REQUEST";
     public static final String ORDER_FINISH_RESPONSE = "FINISH_RESPONSE";
 

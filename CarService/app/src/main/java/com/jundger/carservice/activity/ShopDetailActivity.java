@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.amap.api.maps2d.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.R;
 import com.jundger.carservice.adapter.CommentAdapter;
@@ -164,7 +165,8 @@ public class ShopDetailActivity extends BaseActivity {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String res = response.body().string();
-                final ResultArray<Comment> result = new Gson().fromJson(res, new TypeToken<ResultArray<Comment>>(){}.getType());
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                final ResultArray<Comment> result = gson.fromJson(res, new TypeToken<ResultArray<Comment>>(){}.getType());
                 if (UrlConsts.CODE_SUCCESS.equals(result.getCode())) {
                     commentList.clear();
                     commentList.addAll(result.getData());

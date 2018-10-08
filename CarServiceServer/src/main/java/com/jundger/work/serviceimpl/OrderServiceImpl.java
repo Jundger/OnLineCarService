@@ -10,6 +10,7 @@ import com.jundger.work.pojo.OrderCode;
 import com.jundger.work.pojo.OrderNotify;
 import com.jundger.work.pojo.json.OrderJson;
 import com.jundger.work.service.OrderService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
@@ -48,6 +49,8 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private FaultCodeMapper faultCodeMapper;
 
+    private static Logger logger = Logger.getLogger(OrderServiceImpl.class);
+
     @Override
     public int addOrder(Order order) {
         return this.orderMapper.insertSelective(order);
@@ -79,15 +82,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Boolean pushNotifyOrder(List<String> alias, OrderJson extras) {
-
+    public Map<String, Object> pushNotifyOrder(List<String> alias, OrderJson extras, String title, String alert) {
+        Map<String, Object> returnMsg = new HashMap<>();
         Audience audience = new Audience(null, alias, null);
-        Platform<OrderJson> android = new Platform<>(Consts.ORDER_NOTIFICATION_ALERT, null, null, extras);
+        Platform<OrderJson> android = new Platform<>(alert, title, null, extras);
         Notification<OrderJson> notification = new Notification<>(android);
         Options options = new Options(60);
         JPushJson<OrderJson> jPushJson = new JPushJson(null, "all", audience, notification, null, options);
 
         String json = JSON.toJSONString(jPushJson);
+        logger.info("推送给目标 " + JSON.toJSONString(alias) + " 的json数据===>\n" + json);
 
         try {
             URL httpUrl = new URL(Consts.JPUSH_REQUEST_ADDRESS);
@@ -104,22 +108,76 @@ public class OrderServiceImpl implements OrderService {
             httpURLConnection.connect();
             OutputStream outputStream = httpURLConnection.getOutputStream();
             outputStream.write(json.getBytes("UTF-8"));
-            return httpURLConnection.getResponseCode() == 200;
+            if (httpURLConnection.getResponseCode() == 200) {
+                returnMsg.put("code", "1");
+                returnMsg.put("msg", "SUCCESS");
+            } else {
+                returnMsg.put("code", "0");
+                returnMsg.put("msg", "SEND_MSG_FAIL");
+            }
+            return returnMsg;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            returnMsg.put("code", "0");
+            returnMsg.put("msg", "SEND_MSG_FAIL");
+            return returnMsg;
         }
     }
 
     @Override
-    public Boolean pushCustomMsgOrder(List<String> alias, OrderJson extras) {
+    public Map<String, Object> pushNotify(List<String> alias, Map<String, Object> extras, String title, String alert) {
+        Map<String, Object> returnMsg = new HashMap<>();
         Audience audience = new Audience(null, alias, null);
-        Message<OrderJson> message = new Message<>(Consts.CONTENT_ORDER_ACCEPT, null, null, extras);
+        Platform<Map<String, Object>> android = new Platform<>(alert, title, null, extras);
+        Notification<Map<String, Object>> notification = new Notification<>(android);
+        Options options = new Options(60);
+        JPushJson<Map<String, Object>> jPushJson = new JPushJson(null, "all", audience, notification, null, options);
+
+        String json = JSON.toJSONString(jPushJson);
+        logger.info("推送给目标 " + JSON.toJSONString(alias) + " 的json数据===>\n" + json);
+
+        try {
+            URL httpUrl = new URL(Consts.JPUSH_REQUEST_ADDRESS);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)httpUrl.openConnection();
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setRequestMethod("POST");
+
+            // Basic Auth 认证方式 --> "Basic AppKey:masterSecret"
+            String authString = Consts.JPUSH_APP_KEY + ":" + Consts.JPUSH_MASTER_SECRET;
+            String authStringEnc = new BASE64Encoder().encode(authString.getBytes("UTF-8"));
+            httpURLConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+
+            httpURLConnection.setRequestProperty("content-Type", "application/json");
+            httpURLConnection.connect();
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            outputStream.write(json.getBytes("UTF-8"));
+            if (httpURLConnection.getResponseCode() == 200) {
+                returnMsg.put("code", "1");
+                returnMsg.put("msg", "SUCCESS");
+            } else {
+                returnMsg.put("code", "0");
+                returnMsg.put("msg", "SEND_MSG_FAIL");
+            }
+            return returnMsg;
+        } catch (IOException e) {
+            e.printStackTrace();
+            returnMsg.put("code", "0");
+            returnMsg.put("msg", "SEND_MSG_FAIL");
+            return returnMsg;
+        }
+    }
+
+    @Override
+    public Map<String, Object> pushCustomMsgOrder(List<String> alias, OrderJson extras, String title) {
+        Map<String, Object> returnMsg = new HashMap<>();
+        Audience audience = new Audience(null, alias, null);
+        Message<OrderJson> message = new Message<>(title, title, null, extras);
 
         Options options = new Options(60);
         JPushJson<OrderJson> jPushJson = new JPushJson(null, "all", audience, null, message, options);
 
         String json = JSON.toJSONString(jPushJson);
+        logger.info("推送给目标 " + JSON.toJSONString(alias) + " 的json数据===>\n" + json);
 
         try {
             URL httpUrl = new URL(Consts.JPUSH_REQUEST_ADDRESS);
@@ -136,25 +194,33 @@ public class OrderServiceImpl implements OrderService {
             httpURLConnection.connect();
             OutputStream outputStream = httpURLConnection.getOutputStream();
             outputStream.write(json.getBytes("UTF-8"));
-            return httpURLConnection.getResponseCode() == 200;
+            if (httpURLConnection.getResponseCode() == 200) {
+                returnMsg.put("code", "1");
+                returnMsg.put("msg", "SUCCESS");
+            } else {
+                returnMsg.put("code", "0");
+                returnMsg.put("msg", "SEND_MSG_FAIL");
+            }
+            return returnMsg;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            returnMsg.put("code", "0");
+            returnMsg.put("msg", "SEND_MSG_FAIL");
+            return returnMsg;
         }
     }
 
     @Override
-    public Boolean pushCustomMsg(List<String> alias, Map<String, Object> extras, String type) {
+    public Map<String, Object> pushCustomMsg(List<String> alias, Map<String, Object> extras, String title) {
+        Map<String, Object> returnMsg = new HashMap<>();
         Audience audience = new Audience(null, alias, null);
-        Message<Map<String, Object>> message = new Message<>(type, null, null, extras);
-//        Map<String, String> message = new HashMap<>();
-//        message.put("msg_content", Consts.CONTENT_ORDER_ACCEPT);
-//        message.put("extras", extras);
+        Message<Map<String, Object>> message = new Message<>(title, title, null, extras);
 
         Options options = new Options(60);
         JPushJson<Map<String, String>> jPushJson = new JPushJson(null, "all", audience, null, message, options);
 
         String json = JSON.toJSONString(jPushJson);
+        logger.info("推送给目标 " + JSON.toJSONString(alias) + " 的json数据===>\n" + json);
 
         try {
             URL httpUrl = new URL(Consts.JPUSH_REQUEST_ADDRESS);
@@ -171,10 +237,19 @@ public class OrderServiceImpl implements OrderService {
             httpURLConnection.connect();
             OutputStream outputStream = httpURLConnection.getOutputStream();
             outputStream.write(json.getBytes("UTF-8"));
-            return httpURLConnection.getResponseCode() == 200;
+            if (httpURLConnection.getResponseCode() == 200) {
+                returnMsg.put("code", "1");
+                returnMsg.put("msg", "SUCCESS");
+            } else {
+                returnMsg.put("code", "0");
+                returnMsg.put("msg", "SEND_MSG_FAIL");
+            }
+            return returnMsg;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            returnMsg.put("code", "0");
+            returnMsg.put("msg", "SEND_MSG_FAIL");
+            return returnMsg;
         }
     }
 

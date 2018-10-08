@@ -3,7 +3,6 @@ package com.jundger.carservice.activity;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -15,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.View;
@@ -32,31 +30,24 @@ import com.jundger.carservice.base.ActivityCollector;
 import com.jundger.carservice.base.BaseActivity;
 import com.jundger.carservice.bean.json.OrderJson;
 import com.jundger.carservice.constant.APPConsts;
-import com.jundger.carservice.constant.Actions;
-import com.jundger.carservice.constant.UrlConsts;
 import com.jundger.carservice.fragment.MainPageFragment;
 import com.jundger.carservice.fragment.MaintainFragment;
 import com.jundger.carservice.fragment.MineFragment;
 import com.jundger.carservice.fragment.RepairFragment;
 import com.jundger.carservice.bean.User;
-import com.jundger.carservice.util.HttpUtil;
 import com.jundger.carservice.util.InjectUtil;
 
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
-
-import static com.jundger.carservice.constant.APPConsts.CONTENT_ORDER_ACCEPT;
-import static com.jundger.carservice.constant.APPConsts.CUSTOMER_TO_REPAIRMAN_RESPONSE;
-import static com.jundger.carservice.constant.APPConsts.ORDER_FINISH_REQUEST;
+import static com.jundger.carservice.constant.APPConsts.MESSAGE_ORDER_ACCEPT;
 import static com.jundger.carservice.constant.APPConsts.ORDER_FINISH_RESPONSE;
 import static com.jundger.carservice.constant.APPConsts.ORDER_KEY_CODE;
-import static com.jundger.carservice.constant.APPConsts.ORDER_KEY_NAME;
-import static com.jundger.carservice.constant.APPConsts.ORDER_KEY_ORDERNO;
+import static com.jundger.carservice.constant.APPConsts.ORDER_KEY_MESSAGE;
+import static com.jundger.carservice.constant.APPConsts.ORDER_NOTIFICATION_FINISH_TITLE;
+import static com.jundger.carservice.constant.APPConsts.PUSH_TYPE_MESSAGE;
+import static com.jundger.carservice.constant.APPConsts.PUSH_TYPE_NOTIFY;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener,
         MainPageFragment.OnFragmentInteractionListener,
@@ -72,7 +63,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     private User user;
 
-    private List<OrderJson> jsonList = new ArrayList<>();
+    public OrderJson orderJson;
 
     @InjectView(R.id.main_page_rl)
     private RelativeLayout main_page_rl;
@@ -249,82 +240,71 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         public void onReceive(Context context, Intent intent) {
             try {
                 if (APPConsts.MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
-                    String type = intent.getStringExtra(APPConsts.KEY_MESSAGE);
+                    String title = intent.getStringExtra(APPConsts.KEY_TITLE);
+                    String type = intent.getStringExtra(APPConsts.KEY_TYPE);
                     String extras = intent.getStringExtra(APPConsts.KEY_EXTRAS);
-                    Log.i(TAG, "MESSAGE===>" + type + "  ====>\n" + extras);
+                    Log.i(TAG, "TYPE===>" + type + " | TITLE===>" + title + "  ====>\n" + extras);
 
                     switch (type) {
-                        case CONTENT_ORDER_ACCEPT:
-//                            Boolean is = MainPageFragment.processAcceptOrder();
-
-                            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-                            OrderJson orderJson = gson.fromJson(extras, new TypeToken<OrderJson>() {}.getType());
-//                            Log.i(TAG, "Extras===> " + gson.toJson(orderJson));
-                            jsonList.add(orderJson);
-                            OrderDetailActivity.launchActivity(MainActivity.this, orderJson);
-
-                            // 判断OrderActivity是否已经存在，如果存在则更新其显示内容
-                            OrderActivity orderActivity = ActivityCollector.getActivity(OrderActivity.class);
-                            if (null != orderActivity) {
-                                Log.i(TAG, "onReceive: 接单活动已经存在！！");
-                                orderActivity.orderJsonList.add(orderJson);
-                                orderActivity.refreshOrders();
-                            } else {
-                                Log.i(TAG, "onReceive: 接单活动不存在！！");
-                            }
+                        case PUSH_TYPE_NOTIFY:
+                            processNotification(title, extras);
                             break;
-                        case ORDER_FINISH_REQUEST:
-                            Map<String, Object> request = new Gson().fromJson(extras, new TypeToken<Map<String, Object>>() {}.getType());
-
-                            final String orderNo = (String) request.get(ORDER_KEY_ORDERNO);
-                            String name = (String) request.get(ORDER_KEY_NAME);
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setIcon(R.mipmap.app_log);
-                            builder.setTitle("订单");
-                            builder.setMessage(name + "请求结束订单，是否同意？");
-                            builder.setPositiveButton("同意", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    RequestBody requestBody = new FormBody.Builder()
-                                            .add("orderNo", orderNo)
-                                            .add("operate", CUSTOMER_TO_REPAIRMAN_RESPONSE)
-                                            .add("answer", "1")
-                                            .build();
-                                    HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_FINISH_ORDER), requestBody, null);
-                                }
-                            });
-
-                            builder.setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    RequestBody requestBody = new FormBody.Builder()
-                                            .add("orderNo", orderNo)
-                                            .add("operate", CUSTOMER_TO_REPAIRMAN_RESPONSE)
-                                            .add("answer", "0")
-                                            .build();
-                                    HttpUtil.okHttpPost(UrlConsts.getRequestURL(Actions.ACTION_FINISH_ORDER), requestBody, null);
-                                }
-                            });
-                            builder.show();
+                        case PUSH_TYPE_MESSAGE:
+                            processMessage(title, extras);
                             break;
-                        case ORDER_FINISH_RESPONSE:
-                            Map<String, Object> response = new Gson().fromJson(extras, new TypeToken<Map<String, Object>>() {}.getType());
-                            Integer code = (Integer) response.get(ORDER_KEY_CODE);
-                            if (code == 1) {
-                                Toast.makeText(MainActivity.this, "订单结束成功！", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(MainActivity.this, "订单结束请求被拒绝！", Toast.LENGTH_SHORT).show();
-                            }
+                        default:
                             break;
-                        default: break;
                     }
-
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void processNotification(String title, String extras) {
+        if (null == title) {
+            Log.i(TAG, "processNotification: 消息title为空");
+            return;
+        }
+        switch (title) {
+            // 从维修人员发起的订单结束请求
+            case ORDER_NOTIFICATION_FINISH_TITLE:
+                Log.i(TAG, "processNotification: 从维修人员发起的订单结束请求" + extras);
+                break;
+        }
+    }
+
+    private void processMessage(String title, String extras) {
+        if (null == title) {
+            Log.i(TAG, "processMessage: 消息title为空");
+            return;
+        }
+        switch (title) {
+            // 订单结束请求的响应结果通知
+            case ORDER_FINISH_RESPONSE:
+                Map<String, Object> response = new Gson().fromJson(extras, new TypeToken<Map<String, Object>>() {
+                }.getType());
+                Log.i(TAG, "processMessage: 订单请求响应结果-->" + new Gson().toJson(response));
+                if (response != null) {
+                    String msg = (String) response.get(ORDER_KEY_MESSAGE);
+                    ActivityCollector.getActivity(OrderDetailActivity.class).processOrderFinishResponse(msg);
+                }
+                break;
+            // 创建的订单被维修人员接收后的反馈消息
+            case MESSAGE_ORDER_ACCEPT:
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                orderJson = gson.fromJson(extras, new TypeToken<OrderJson>() {}.getType());
+                OrderDetailActivity.launchActivity(MainActivity.this, orderJson);
+
+                // 判断OrderActivity是否已经存在，如果存在则更新其显示内容
+//                OrderActivity orderActivity = ActivityCollector.getActivity(OrderActivity.class);
+//                if (null != orderActivity) {
+//                    Log.i(TAG, "processMessage: 接单活动已经存在！！");
+//                    orderActivity.orderJsonList.add(orderJson);
+//                    orderActivity.refreshOrders();
+//                }
+                break;
         }
     }
 

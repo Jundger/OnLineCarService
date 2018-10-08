@@ -8,18 +8,26 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jundger.carservice.activity.MainActivity;
-import com.jundger.carservice.activity.MapActivity;
+import com.jundger.carservice.activity.OrderDetailActivity;
+import com.jundger.carservice.base.ActivityCollector;
+import com.jundger.carservice.bean.json.OrderJson;
 import com.jundger.carservice.constant.APPConsts;
 import com.jundger.carservice.util.FormatCheckUtil;
-import com.jundger.carservice.util.SharedPreferencesUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
+import java.util.Map;
 
 import cn.jpush.android.api.JPushInterface;
+
+import static com.jundger.carservice.base.MyApplication.isShowFinishRequestDialog;
+import static com.jundger.carservice.constant.APPConsts.ORDER_NOTIFICATION_FINISH_TITLE;
+import static com.jundger.carservice.constant.APPConsts.PUSH_TYPE_MESSAGE;
+import static com.jundger.carservice.constant.APPConsts.PUSH_TYPE_NOTIFY;
 
 public class JPushReceiver extends BroadcastReceiver {
 
@@ -29,46 +37,44 @@ public class JPushReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         try {
             Bundle bundle = intent.getExtras();
-            Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
+            String action = intent.getAction();
+            assert bundle != null;
+            assert action != null;
+//            Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
+            switch (intent.getAction()) {
+                case JPushInterface.ACTION_REGISTRATION_ID:
+//                    String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
+//                    Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
+//                    SharedPreferencesUtil.save(context, APPConsts.SHARED_KEY_REGISTRATION_ID, regId);
+                    break;
+                case JPushInterface.ACTION_MESSAGE_RECEIVED:
+                    Log.d(TAG, "===============================  接收到推送下来的自定义消息Message  ==================================");
+                    sendToMainActivity(context, bundle, PUSH_TYPE_MESSAGE);
 
-            if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
-                String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-                Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
-                // 在本地存储登录状态
-                SharedPreferencesUtil.save(context, APPConsts.SHARED_KEY_REGISTRATION_ID, regId);
-                //send the Registration Id to your server...
+                    break;
+                case JPushInterface.ACTION_NOTIFICATION_RECEIVED:
+                    Log.d(TAG, "===============================  接收到推送下来的通知Notification  ==================================");
+                    sendToMainActivity(context, bundle, PUSH_TYPE_NOTIFY);
+                    break;
+                case JPushInterface.ACTION_NOTIFICATION_OPENED:
+                    Log.d(TAG, "======================================  用户点击打开了通知  =========================================");
+                    processOpenNotify(context, bundle);
+                    break;
+                case JPushInterface.ACTION_RICHPUSH_CALLBACK:
+                    Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
+                    //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
 
-            } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-                Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-                processCustomMessage(context, bundle);
-
-            } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-                Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
-                int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-                Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-
-            } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-                Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
-
-                //打开自定义的Activity
-                Intent i = new Intent(context, MapActivity.class);
-                i.putExtras(bundle);
-                //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                context.startActivity(i);
-
-            } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
-                Log.d(TAG, "[MyReceiver] 用户收到到RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
-                //在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
-
-            } else if (JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent.getAction())) {
-                boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
-                Log.w(TAG, "[MyReceiver]" + intent.getAction() + " connected state change to " + connected);
-            } else {
-                Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
+                    break;
+                case JPushInterface.ACTION_CONNECTION_CHANGE:
+                    boolean connected = intent.getBooleanExtra(JPushInterface.EXTRA_CONNECTION_CHANGE, false);
+                    Log.w(TAG, "[MyReceiver]" + intent.getAction() + " connected state change to " + connected);
+                    break;
+                default:
+                    Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
+                    break;
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
     }
@@ -87,19 +93,6 @@ public class JPushReceiver extends BroadcastReceiver {
                     Log.i(TAG, "This message has no Extra data");
                     continue;
                 }
-//                try {
-//                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-//                    Iterator<String> it =  json.keys();
-//
-//                    while (it.hasNext()) {
-//                        String myKey = it.next();
-//                        sb.append("\nkey:" + key + ", value: [" +
-//                                myKey + " - " +json.optString(myKey) + "]");
-//                    }
-//                } catch (JSONException e) {
-//                    Log.e(TAG, "Get message extra JSON error!");
-//                }
-
             } else {
                 sb.append("\nkey:" + key + ", value:" + bundle.get(key));
             }
@@ -107,15 +100,55 @@ public class JPushReceiver extends BroadcastReceiver {
         return sb.toString();
     }
 
-    private void processCustomMessage(Context context, Bundle bundle) {
-//        String msgType = bundle.getString(JPushInterface.EXTRA_CONTENT_TYPE);
-//        String title = bundle.getString(JPushInterface.EXTRA_TITLE);
+    private void processOpenNotify(Context context, Bundle bundle) {
+        String title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
+        String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+        Log.i(TAG, "processNotify: title-->" + title);
+        Log.i(TAG, "processNotify: extras-->" + extras);
+        if (ORDER_NOTIFICATION_FINISH_TITLE.equals(title)) {
+            Map<String, Object> request = new Gson().fromJson(extras, new TypeToken<Map<String, Object>>() {
+            }.getType());
+            if (request != null) {
+//                String orderNo = (String) request.get(ORDER_KEY_ORDERNO);
+//                String name = (String) request.get(ORDER_KEY_NAME);
+
+                OrderDetailActivity orderDetailActivity = ActivityCollector.getActivity(OrderDetailActivity.class);
+
+                if (null != orderDetailActivity) {
+                    orderDetailActivity.showFinishRequestDialog();
+                } else {
+                    isShowFinishRequestDialog = true;
+
+                    OrderJson orderJson = ActivityCollector.getActivity(MainActivity.class).orderJson;
+
+                    // 打开自定义的Activity
+                    Intent intent = new Intent(context, OrderDetailActivity.class);
+                    intent.putExtra("ORDER", orderJson);
+                    // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    context.startActivity(intent);
+                }
+            }
+        }
+    }
+
+    private void sendToMainActivity(Context context, Bundle bundle, String type) {
+        String title = bundle.getString(JPushInterface.EXTRA_TITLE);
+        String notify_title = bundle.getString(JPushInterface.EXTRA_NOTIFICATION_TITLE);
         String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
         String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-        Log.i(TAG, "processCustomMessage: msg-->" + message);
-        Log.i(TAG, "processCustomMessage: extras-->" + extras);
+        Log.i(TAG, "processNotify: title-->" + title);
+        Log.i(TAG, "processNotify: notify_title-->" + notify_title);
+        Log.i(TAG, "processNotify: message-->" + message);
+        Log.i(TAG, "processNotify: extras-->" + extras);
+
         Intent msgIntent = new Intent(APPConsts.MESSAGE_RECEIVED_ACTION);
-        msgIntent.putExtra(APPConsts.KEY_MESSAGE, message);
+        msgIntent.putExtra(APPConsts.KEY_TYPE, type);
+        if (PUSH_TYPE_MESSAGE.equals(type)) {
+            msgIntent.putExtra(APPConsts.KEY_TITLE, title);
+        } else if (PUSH_TYPE_NOTIFY.equals(type)) {
+            msgIntent.putExtra(APPConsts.KEY_TITLE, notify_title);
+        }
         if (!FormatCheckUtil.isEmpty(extras)) {
             try {
                 JSONObject extraJson = new JSONObject(extras);

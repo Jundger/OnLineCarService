@@ -49,7 +49,10 @@ public class Consts {
 	public static final String JPUSH_REQUEST_ADDRESS = "https://api.jpush.cn/v3/push";
 	public static final String JPUSH_APP_KEY = "4b806c384e519434c62dde31";
 	public static final String JPUSH_MASTER_SECRET = "f3cb514d970caddc52007411";
-	public static final String ORDER_NOTIFICATION_ALERT = "您有一个订单待接收";
+	public static final String ORDER_NOTIFICATION_ACCEPT_ALERT = "您有一个订单待接收";
+	public static final String ORDER_NOTIFICATION_FINISH_ALERT = "有一个订单被对方请求结束";
+	public static final String ORDER_NOTIFICATION_ACCEPT_TITLE = "订单接收请求";
+	public static final String ORDER_NOTIFICATION_FINISH_TITLE = "订单结束请求";
 	public static final String CONTENT_ORDER_ACCEPT = "ORDER_ACCEPT";
 	public static final String ORDER_FINISH_REQUEST = "FINISH_REQUEST";
 	public static final String ORDER_FINISH_RESPONSE = "FINISH_RESPONSE";

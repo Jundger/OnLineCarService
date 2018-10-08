@@ -133,6 +133,7 @@ public class MainPageFragment extends Fragment {
                     connectedThread.write(APPConsts.BLUETOOTH_READ_COMMAND.getBytes());
                     connectedThread.start();
                     stopProgressDialog();
+                    Toast.makeText(getActivity(), "蓝牙连接成功，请再次点击按钮获取数据", Toast.LENGTH_SHORT).show();
                     break;
                 case APPConsts.MESSAGE_READ:
                     receiveData = (String) msg.obj;
