@@ -371,9 +371,9 @@
   </select>
 
   <resultMap id="orderStatisticsMap" type="map">
-    <result column="todayCount" javaType="string" property="todayCount"/>
-    <result column="monthCount" javaType="string" property="monthCount"/>
-    <result column="totalCount" javaType="string" property="totalCount"/>
+    <result column="todayCount" javaType="Integer" property="todayCount"/>
+    <result column="monthCount" javaType="Integer" property="monthCount"/>
+    <result column="totalCount" javaType="Integer" property="totalCount"/>
   </resultMap>
 
   <select id="getStatisticsByResolverId" parameterType="java.lang.Integer" resultMap="orderStatisticsMap">

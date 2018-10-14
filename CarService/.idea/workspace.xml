@@ -21,8 +21,8 @@
       <filter>
         <option name="logLevel" value="verbose" />
         <option name="logMessagePattern" value="" />
-        <option name="logTagPattern" value="OrderDetailActivity" />
-        <option name="name" value="OrderDetailActivity" />
+        <option name="logTagPattern" value="MapActivity" />
+        <option name="name" value="MapActivity" />
         <option name="packageNamePattern" value="" />
         <option name="pid" value="" />
       </filter>
@@ -58,7 +58,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="MainPageFragment" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="MapActivity" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b943f2b-5825-474e-aef0-d9806c5be91c" name="Default" comment="" />
@@ -86,7 +86,7 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
+            <state relative-caret-position="0">
               <caret line="295" column="92" lean-forward="false" selection-start-line="295" selection-start-column="92" selection-end-line="295" selection-end-column="92" />
               <folding />
             </state>
@@ -96,38 +96,18 @@
       <file leaf-file-name="JPushReceiver.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/receiver/JPushReceiver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="466">
+            <state relative-caret-position="100">
               <caret line="126" column="65" lean-forward="false" selection-start-line="126" selection-start-column="65" selection-end-line="126" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OrderDetailActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/OrderDetailActivity.java">
+      <file leaf-file-name="MainPageFragment.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/fragment/MainPageFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="208" column="37" lean-forward="false" selection-start-line="208" selection-start-column="37" selection-end-line="208" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Actions.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/Actions.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="56" column="40" lean-forward="true" selection-start-line="56" selection-start-column="40" selection-end-line="56" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MapActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/MapActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="151" column="41" lean-forward="true" selection-start-line="151" selection-start-column="41" selection-end-line="151" selection-end-column="41" />
+            <state relative-caret-position="309">
+              <caret line="228" column="13" lean-forward="true" selection-start-line="228" selection-start-column="13" selection-end-line="228" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -136,18 +116,8 @@
       <file leaf-file-name="HttpUtil.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/util/HttpUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainPageFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/fragment/MainPageFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="511" column="28" lean-forward="false" selection-start-line="511" selection-start-column="8" selection-end-line="511" selection-end-column="28" />
+            <state relative-caret-position="558">
+              <caret line="45" column="29" lean-forward="true" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -165,8 +135,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>startProgressDialog</find>
-      <find>onClick: 打开蓝牙</find>
       <find>onCreate</find>
       <find>discovery</find>
       <find>startdiscovery</find>
@@ -176,7 +144,6 @@
       <find>onRece</find>
       <find>ACTION_ACL_CONNECTED</find>
       <find>mHandler</find>
-      <find>onLocationChanged</find>
       <find>infoList</find>
       <find>onClick</find>
       <find>orderno_value_tv</find>
@@ -195,6 +162,9 @@
       <find>订单号</find>
       <find>orderJson</find>
       <find>isShowFinishRequestDialog</find>
+      <find>getInfoFab</find>
+      <find>recieve from bluetooth</find>
+      <find>onLocationChanged</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -2048,10 +2018,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/receiver/PushReceiver.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/util/JPushUtil.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/LoginActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/util/HttpUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_feedback.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/util/SharedPreferencesUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/bean/FaultCode.java" />
@@ -2080,7 +2046,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/adapter/CommentAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/bean/json/OrderJson.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/item_order.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_order.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/fragment/MineFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/adapter/OrderAdapter.java" />
@@ -2088,17 +2053,22 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_order_detail.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/Actions.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/OrderActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/fragment/MainPageFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/base/MyApplication.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/APPConsts.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/UrlConsts.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/ShopDetailActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/receiver/JPushReceiver.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/OrderDetailActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/item_order.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/item_service_point.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/item_maintain_article.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/UrlConsts.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/item_fault_info.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/MapActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/util/HttpUtil.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/fragment/MainPageFragment.java" />
       </list>
     </option>
   </component>
@@ -2159,6 +2129,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -2182,14 +2153,20 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="carservice" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="activity" type="462c0819:PsiDirectoryNode" />
+              <item name="fragment" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="CarService" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="carservice" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2396,11 +2373,10 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5063966" order="12" side_tool="true" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32916668" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Logcat" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35729167" sideWeight="0.4936034" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28020832" sideWeight="0.4936034" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2418,6 +2394,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -2431,47 +2408,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_comment_rv.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-628">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_mine_grid.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/bean/Comment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="e#1390#1391#0" expanded="false" />
-            <element signature="e#1417#1418#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_maintain_article.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="38" column="49" lean-forward="true" selection-start-line="38" selection-start-column="49" selection-end-line="38" selection-end-column="49" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/icon_profile_arrow.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -2481,7 +2417,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
           <caret line="49" column="18" lean-forward="false" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2531,7 +2466,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
           <caret line="21" column="39" lean-forward="false" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -2542,7 +2476,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
           <caret line="92" column="72" lean-forward="false" selection-start-line="92" selection-start-column="72" selection-end-line="92" selection-end-column="72" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2585,7 +2518,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
           <caret line="120" column="20" lean-forward="false" selection-start-line="120" selection-start-column="8" selection-end-line="120" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2603,7 +2535,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="365">
           <caret line="95" column="31" lean-forward="false" selection-start-line="95" selection-start-column="17" selection-end-line="95" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2635,7 +2566,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="367">
           <caret line="54" column="26" lean-forward="false" selection-start-line="54" selection-start-column="26" selection-end-line="54" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2654,7 +2584,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-227">
           <caret line="21" column="45" lean-forward="true" selection-start-line="21" selection-start-column="45" selection-end-line="21" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2670,7 +2599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-593">
           <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2678,7 +2606,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="117" column="92" lean-forward="true" selection-start-line="117" selection-start-column="92" selection-end-line="117" selection-end-column="92" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2693,7 +2620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
           <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2709,7 +2635,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
           <caret line="136" column="0" lean-forward="false" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer2">
@@ -2720,15 +2645,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="110" column="53" lean-forward="true" selection-start-line="110" selection-start-column="53" selection-end-line="110" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/util/HttpUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2736,7 +2652,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="60" column="36" lean-forward="false" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2747,19 +2662,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/UrlConsts.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="87" lean-forward="false" selection-start-line="14" selection-start-column="87" selection-end-line="14" selection-end-column="87" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/ShopDetailActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="333">
           <caret line="167" column="92" lean-forward="false" selection-start-line="167" selection-start-column="92" selection-end-line="167" selection-end-column="92" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2767,31 +2673,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="21" column="60" lean-forward="false" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/fragment/MainPageFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="511" column="28" lean-forward="false" selection-start-line="511" selection-start-column="8" selection-end-line="511" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/APPConsts.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="101" column="54" lean-forward="false" selection-start-line="101" selection-start-column="54" selection-end-line="101" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/receiver/JPushReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="466">
-          <caret line="126" column="65" lean-forward="false" selection-start-line="126" selection-start-column="65" selection-end-line="126" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2799,60 +2680,135 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
           <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
+        <state relative-caret-position="0">
           <caret line="295" column="92" lean-forward="false" selection-start-line="295" selection-start-column="92" selection-end-line="295" selection-end-column="92" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_order.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="105" column="51" lean-forward="true" selection-start-line="105" selection-start-column="51" selection-end-line="105" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_fault_info.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="41" column="48" lean-forward="false" selection-start-line="41" selection-start-column="48" selection-end-line="41" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/OrderDetailActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
+        <state relative-caret-position="3744">
           <caret line="208" column="37" lean-forward="false" selection-start-line="208" selection-start-column="37" selection-end-line="208" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_service_point.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="93" column="44" lean-forward="false" selection-start-line="93" selection-start-column="44" selection-end-line="93" selection-end-column="44" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_maintain_article.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="55" column="52" lean-forward="false" selection-start-line="55" selection-start-column="52" selection-end-line="55" selection-end-column="52" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_order.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="28" column="48" lean-forward="false" selection-start-line="28" selection-start-column="48" selection-end-line="28" selection-end-column="48" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_comment.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/UrlConsts.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="756">
+          <caret line="42" column="7" lean-forward="false" selection-start-line="42" selection-start-column="7" selection-end-line="42" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/APPConsts.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="74" column="28" lean-forward="false" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-26/android.jar!/java/lang/String.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="244" column="20" lean-forward="false" selection-start-line="244" selection-start-column="20" selection-end-line="244" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_fault_info.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="738">
+          <caret line="41" column="48" lean-forward="false" selection-start-line="41" selection-start-column="48" selection-end-line="41" selection-end-column="48" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/constant/Actions.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="56" column="40" lean-forward="true" selection-start-line="56" selection-start-column="40" selection-end-line="56" selection-end-column="40" />
+        <state relative-caret-position="1008">
+          <caret line="56" column="40" lean-forward="false" selection-start-line="56" selection-start-column="40" selection-end-line="56" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/activity/MapActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="151" column="41" lean-forward="true" selection-start-line="151" selection-start-column="41" selection-end-line="151" selection-end-column="41" />
+        <state relative-caret-position="338">
+          <caret line="241" column="34" lean-forward="true" selection-start-line="241" selection-start-column="34" selection-end-line="241" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/receiver/JPushReceiver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="126" column="65" lean-forward="false" selection-start-line="126" selection-start-column="65" selection-end-line="126" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/util/HttpUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="45" column="29" lean-forward="true" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jundger/carservice/fragment/MainPageFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="228" column="13" lean-forward="true" selection-start-line="228" selection-start-column="13" selection-end-line="228" selection-end-column="13" />
           <folding />
         </state>
       </provider>

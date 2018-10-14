@@ -238,6 +238,7 @@ public class MapActivity extends BaseActivity implements  LocationSource, AMapLo
     public void onLocationChanged(AMapLocation aMapLocation) {
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
+
                 // 定位成功回调信息，设置相关消息
                 aMapLocation.getLocationType(); // 获取当前定位结果来源，如网络定位结果，详见官方定位类型表
                 aMapLocation.getLatitude();     // 获取纬度
@@ -275,20 +276,22 @@ public class MapActivity extends BaseActivity implements  LocationSource, AMapLo
 
                     // Toolbar右上角显示定位点城市
                     location_city_info_tv.setText(aMapLocation.getCity());
+
+
                     // 获取定位信息
                     StringBuffer buffer = new StringBuffer();
                     buffer.append(aMapLocation.getCountry() + "" + aMapLocation.getProvince() + "" + aMapLocation.getCity() + "" + aMapLocation.getProvince() + "" + aMapLocation.getDistrict() + "" + aMapLocation.getStreet() + "" + aMapLocation.getStreetNum());
                     Toast.makeText(getApplicationContext(), buffer.toString(), Toast.LENGTH_LONG).show();
-                    Log.d("AmapDebug", "location Info -->:"
+                    Log.d(TAG, "location Info -->:"
                             + buffer.toString());
-                    Log.d("AmapDebug", "经度 -->:"
+                    Log.d(TAG, "经度 -->:"
                             + aMapLocation.getLatitude() + "  纬度 -->" + aMapLocation.getLongitude());
                     isFirstLoc = false;
                 }
 
             } else {
                 // 显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                Log.e("AmapDebug", "location Error, ErrCode:"
+                Log.e(TAG, "location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
                         + aMapLocation.getErrorInfo());
 

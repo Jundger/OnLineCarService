@@ -28,6 +28,7 @@
                 android:id="@+id/article_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:maxLines="2"
                 android:textStyle="italic"
                 android:layout_alignParentTop="true"
@@ -42,6 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
+                    android:textColor="@color/black"
                     android:id="@+id/article_from_tv"
                     android:text="网易汽车"/>
                 <TextView
@@ -51,6 +53,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:textSize="12sp"
+                    android:textColor="@color/black"
                     android:layout_toRightOf="@id/article_from_tv"
                     android:layout_toEndOf="@id/article_from_tv"
                     android:text="01-04 21:28"/>

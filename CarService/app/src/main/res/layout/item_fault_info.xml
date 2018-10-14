@@ -40,7 +40,6 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:textColor="@color/black"
-                android:maxLines="1"
                 android:text="动力总成系统"/>
         </LinearLayout>
 
@@ -59,7 +58,6 @@
                 android:layout_marginStart="4dp"
                 android:id="@+id/use_scope_tv"
                 android:textColor="@color/black"
-                android:maxLines="1"
                 android:text="尼桑（日产）、英菲尼迪" />
         </LinearLayout>
 
@@ -77,8 +75,6 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:textColor="@color/black"
-                android:maxLines="2"
-                android:ellipsize="end"
                 android:text="排气阀门正时控制位置传感器-电路故障"/>
         </LinearLayout>
 

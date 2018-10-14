@@ -26,6 +26,7 @@
             android:singleLine="true"
             android:textSize="16sp"
             android:maxEms="12"
+            android:textColor="@color/black"
             android:textStyle="bold"/>
 
         <LinearLayout
@@ -39,20 +40,24 @@
                 android:id="@+id/shop_score_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="3.6"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="分  距此"/>
             <TextView
                 android:id="@+id/shop_distance_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="2.5"/>
             <TextView
                 android:id="@+id/distance_unit_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="km"/>
         </LinearLayout>
 
@@ -65,15 +70,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="评价人数："/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="358"
+                android:textColor="@color/black"
                 android:id="@+id/evaluation_count_tv"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="人"/>
         </LinearLayout>
 
@@ -83,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/line2_ll"
             android:text="重庆市南岸区南坪大石路56号坪大石路5号"
+            android:textColor="@color/black"
             android:maxEms="15"
             android:singleLine="true"/>
 

@@ -26,6 +26,7 @@
                 android:layout_marginStart="3dp"
                 android:textStyle="bold"
                 android:textSize="17sp"
+                android:textColor="@color/black"
                 android:text="20181003021655233" />
 
             <LinearLayout
@@ -69,6 +70,7 @@
                 android:maxEms="12"
                 android:maxLines="1"
                 android:ellipsize="end"
+                android:textColor="@color/black"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_toRightOf="@+id/order_resolver_iv"
@@ -90,6 +92,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_toRightOf="@+id/order_distance_iv"
                 android:layout_toEndOf="@+id/order_distance_iv"
+                android:textColor="@color/black"
                 android:text="1.62km" />
         </RelativeLayout>
 
@@ -108,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:ellipsize="end"
+                android:textColor="@color/black"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_toRightOf="@+id/order_describe_iv"
@@ -129,6 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginStart="3dp"
+                android:textColor="@color/black"
                 android:text="2018-10-06 18:34:21" />
         </LinearLayout>
 

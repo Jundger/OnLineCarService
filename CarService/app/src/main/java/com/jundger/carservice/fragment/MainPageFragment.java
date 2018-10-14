@@ -66,6 +66,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -189,16 +190,23 @@ public class MainPageFragment extends Fragment {
         }
     }
 
-    private void queryCodeAndShowResult(String fault_code) {
-        if (fault_code == null) {
+    private void queryCodeAndShowResult(String receive_data) {
+        if (receive_data == null) {
             Toast.makeText(getActivity(), "获取数据失败", Toast.LENGTH_SHORT).show();
             return ;
         }
 
+        Integer count = (int) receive_data.charAt(0) - 48;
+        Log.i(TAG, "queryCodeAndShowResult: TROUBLE CODE NUMBER-->" + count);
+
         List<String> list = new ArrayList<>();
-        list = new Gson().fromJson(fault_code, new TypeToken<List<String>>(){}.getType());
-        for (String str : list) {
-            Log.i(TAG, "onClick: " + str);
+        if (count == 0) {
+            Log.i(TAG, "queryCodeAndShowResult: NO TROUBLE CODE!");
+            Toast.makeText(getActivity(), "当前没有故障码", Toast.LENGTH_SHORT).show();
+            return ;
+        } else {
+            String[] code = receive_data.substring(2).split(",");
+            list.addAll(Arrays.asList(code));
         }
 
         Map<String, Object> sendMsg = new HashMap<>();
